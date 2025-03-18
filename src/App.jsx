@@ -31,8 +31,8 @@ function App() {
         <Route path='/' element={<Favorites />} />
       </Routes>
       <Footer />
-      <TemplatePage />
-      <InvitationCard />
+      {/* <TemplatePage />
+      <InvitationCard /> */}
     </>
   )
 }
