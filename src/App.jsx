@@ -1,35 +1,40 @@
 import './App.css'
 import Home from "./pages/HomePage/home.jsx";
-import Trendings from "./pages/HomePage/trendings.jsx";
-import Editings from "./pages/HomePage/editings.jsx";
-import Celebrates from "./pages/HomePage/celebrates.jsx";
-import Shares from "./pages/HomePage/shares.jsx";
-import Inspiration from "./components/homepage/inspiration.jsx";
-import Inspirations from "./pages/HomePage/inspirations.jsx";
 import Footer from './components/global/Footer'
 import Navbar from './components/global/navbar'
 import Favorites from "./pages/myprofile/favorites.jsx";
 import TemplatePage from "./pages/templatePage.jsx";
-import Invitation from './pages/Invitation.jsx';
+import About from './pages/About.jsx';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import Blog from './pages/Blog.jsx';
 import ContactPage from "./pages/contactPage.jsx";
+import InvitationCard from './components/Invitation/InvitationCard .jsx';
 
 function App() {
+  function ScrollToTop() {
+    const { pathname } = useLocation();
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+    return null;
+  }
 
   return (
     <>
+      <ScrollToTop />
       <Navbar />
-      {/*<Home />*/}
-      {/*<Trendings />*/}
-      {/*<Editings />*/}
-      {/*<Celebrates />*/}
-      {/*<Shares />*/}
-      {/*<Inspirations />*/}
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/blog' element={<Blog />} />
+        <Route path='/contact' element={<ContactPage/>} />
+        <Route path='/' element={<TemplatePage />} />
+        <Route path='/' element={<Favorites />} />
+      </Routes>
       <Footer />
-      {/*<TemplatePage />*/}
-      {/*<Invitation />*/}
-        {/*<TemplatePage />*/}
-        {/*<Favorites/>*/}
-        <ContactPage/>
+      {/* <TemplatePage />
+      <InvitationCard /> */}
     </>
   )
 }

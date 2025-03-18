@@ -22,8 +22,12 @@ import Play from "../../assets/logo/google-play-6647242_1280.webp";
 import LanguageIcon from "@mui/icons-material/Language";
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{ backgroundColor: "#f4f4f4", padding: { xs: "20px", md: "40px" } }}
@@ -371,6 +375,7 @@ const Footer = () => {
                 {["About us", "Blog"].map((item, idx) => (
                   <Typography
                     key={idx}
+                    onClick={() => navigate(item === "About us" ? "/about" : "/blog")}
                     variant="body2"
                     sx={{
                       color: "#20282D",
