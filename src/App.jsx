@@ -8,6 +8,7 @@ import About from './pages/About.jsx';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Blog from './pages/Blog.jsx';
+import InvitationCard from './components/Invitation/InvitationCard .jsx';
 
 function App() {
   function ScrollToTop() {
@@ -31,7 +32,7 @@ function App() {
       </Routes>
       <Footer />
       <TemplatePage />
-      <InvitationCard/>
+      <InvitationCard />
     </>
   )
 }
