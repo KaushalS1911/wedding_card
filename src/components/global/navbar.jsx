@@ -21,6 +21,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Logo from "../../assets/logo/logo.svg";
+import { useNavigate } from "react-router-dom";
 
 const menuItems = [
   {
@@ -280,6 +281,8 @@ const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
+  const navigate = useNavigate();
+
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
@@ -314,7 +317,7 @@ const Navbar = () => {
             <Grid container spacing={2} sx={{ maxWidth: "1300px", margin: "0 auto" }}>
               {Object.entries(item.subMenu).map(([category, items], subIndex) => (
                 <Grid item key={subIndex} xs={12} sm={6} md={4} lg={2.4}>
-                  <Typography sx={{ fontSize:'14px',fontWeight:'600' }}>{category}</Typography>
+                  <Typography sx={{ fontSize:'14px',fontWeight:'600',pb:1 }}>{category}</Typography>
                   {items.map((subItem, i) => (
                     <Typography key={i} sx={{ fontSize:'14px',fontWeight:'500',cursor: "pointer", mt: 1,"&:hover": { color: "#1bc47d" }  }}>
                       {subItem}
@@ -348,10 +351,10 @@ const Navbar = () => {
             fontWeight: "bold",
             display: "flex",
             alignItems: "center",
-            width: "146px",
+            width: "146px",cursor:'pointer'
           }}
         >
-          <Typography component={"img"} src={Logo} width={"100%"} />
+          <Typography component={"img"} src={Logo} width={"100%"} onClick={() => navigate('/')} />
         </Typography>
         {/* Center - Navigation Links */}
         {!isMobile && (
@@ -359,9 +362,8 @@ const Navbar = () => {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "start",
+              justifyContent: "center",
               width: "100%",
-              ml: { lg: 14, md: 1 }
             }}
           >
             {renderMenuItems()}
@@ -450,7 +452,7 @@ const Navbar = () => {
       <Drawer anchor="top" open={drawerOpen} onClose={handleDrawerToggle}>
         {/* Drawer Header */}
         <Box sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
-          <Typography component="img" src={Logo} width={120} />
+          <Typography component="img" src={Logo} width={120} onClick={() => navigate('/')} />
           <IconButton onClick={handleDrawerToggle}>
             <CloseIcon />
           </IconButton>
