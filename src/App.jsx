@@ -11,23 +11,25 @@ import Navbar from './components/global/navbar'
 import Favorites from "./pages/myprofile/favorites.jsx";
 import TemplatePage from "./pages/templatePage.jsx";
 import Invitation from './pages/Invitation.jsx';
+import ContactPage from "./pages/contactPage.jsx";
 
 function App() {
 
   return (
     <>
       <Navbar />
-      <Home />
-      <Trendings />
-      <Editings />
-      <Celebrates />
-      <Shares />
-      <Inspirations />
+      {/*<Home />*/}
+      {/*<Trendings />*/}
+      {/*<Editings />*/}
+      {/*<Celebrates />*/}
+      {/*<Shares />*/}
+      {/*<Inspirations />*/}
       <Footer />
-      <TemplatePage />
-      <Invitation />
+      {/*<TemplatePage />*/}
+      {/*<Invitation />*/}
         {/*<TemplatePage />*/}
-      {/*  <Favorites/>*/}
+        {/*<Favorites/>*/}
+        <ContactPage/>
     </>
   )
 }

@@ -4,8 +4,8 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SavedDraft from "../../components/favorite/saved-draft.jsx";
 import MyEvent from "../../components/favorite/my-event.jsx";
 import Purchases from "../../components/favorite/purchases.jsx";
-import {Settings} from "@mui/icons-material";
 import Ffavorites from "../../components/favorite/ffavorites.jsx";
+import Settings from "../../components/favorite/settings.jsx";
 
 function Favorites() {
     return (
