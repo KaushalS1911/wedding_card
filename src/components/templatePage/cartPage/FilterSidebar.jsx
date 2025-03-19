@@ -155,9 +155,10 @@ const FilterSidebar = () => {
               <Grid item xs={3} key={index}>
                 <Box
                   sx={{
+                    fontSize: "13px",
                     textAlign: "center",
                     border: "1px solid #000",
-                    padding: "12px 0",
+                    padding: "10px 0",
                     borderRadius: "30px",
                     cursor: "pointer",
                     "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
@@ -206,9 +207,10 @@ const FilterSidebar = () => {
               <Grid item xs={3} key={index}>
                 <Box
                   sx={{
+                    fontSize: "13px",
                     textAlign: "center",
                     border: "1px solid #000",
-                    padding: "12px 0",
+                    padding: "10px 0",
                     borderRadius: "30px",
                     cursor: "pointer",
                     "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
@@ -222,15 +224,16 @@ const FilterSidebar = () => {
         </Box>
 
         <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-          <Typography sx={{ fontWeight: "bold", mb: 1 }}>Photo</Typography>
+          <Typography sx={{ fontWeight: "bold", mb: 1 }}>Orientation</Typography>
           <Grid container spacing={1}>
             {orientation.map((item, index) => (
               <Grid item xs={3} key={index}>
                 <Box
                   sx={{
+                    fontSize: "13px",
                     textAlign: "center",
                     border: "1px solid #000",
-                    padding: "12px 0",
+                    padding: "10px 0",
                     borderRadius: "30px",
                     cursor: "pointer",
                     "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
@@ -244,15 +247,16 @@ const FilterSidebar = () => {
         </Box>
 
         <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-          <Typography sx={{ fontWeight: "bold", mb: 1 }}>Photo</Typography>
+          <Typography sx={{ fontWeight: "bold", mb: 1 }}>Sort by</Typography>
           <Grid container spacing={1}>
             {sortBy.map((item, index) => (
-              <Grid item xs={3} key={index}>
+              <Grid item xs={4} key={index}>
                 <Box
-                  sx={{
+                   sx={{
+                    fontSize: "13px",
                     textAlign: "center",
                     border: "1px solid #000",
-                    padding: "12px 0",
+                    padding: "10px 0",
                     borderRadius: "30px",
                     cursor: "pointer",
                     "&:hover": { bgcolor: "#E9E9EA", color: "#000" },

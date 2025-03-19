@@ -226,6 +226,7 @@ const Footer = () => {
               Invitations
             </Button>
             <Button
+              onClick={() => navigate("/cards")}
               variant="contained"
               sx={{
                 backgroundColor: "white",
