@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Container, Grid, Typography} from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import Img1 from "../../assets/Home/Img3.webp";
 import LightbulbIcon from "@mui/icons-material/LightbulbOutlined";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
@@ -9,122 +9,126 @@ import Img3 from "../../assets/Home/Img3.webp";
 import BabyChangingStationIcon from "@mui/icons-material/BabyChangingStation";
 
 function PerfectMatch() {
-
     const sections = [
         {
             title: "Make a wish and celebrate with style",
+            borderColor: "#ff9059",
             image: Img1,
             buttons: [
-                { label: "Birthday invites", icon: <LightbulbIcon sx={{ color: "orange" }} /> },
-                { label: "Birthday cards", icon: <InsertPhotoIcon sx={{ color: "orange" }} /> },
+                { label: "Birthday invites", icon: <LightbulbIcon sx={{ color: "#ff9059" }} /> },
+                { label: "Birthday cards", icon: <InsertPhotoIcon sx={{ color: "#ff9059" }} /> },
             ],
         },
         {
             title: 'Say "I do" to happily ever after',
+            borderColor: "#ff5985",
             image: Img2,
             buttons: [
-                { label: "Wedding invites", icon: <CakeIcon sx={{ color: "pink" }} /> },
-                { label: "Engagement party", icon: <InsertPhotoIcon sx={{ color: "pink" }} /> },
-                { label: "Save the date", icon: <LightbulbIcon sx={{ color: "pink" }} /> },
+                { label: "Wedding invites", icon: <CakeIcon sx={{ color: "#ff5985" }} /> },
+                { label: "Engagement party", icon: <InsertPhotoIcon sx={{ color: "#ff5985" }} /> },
+                { label: "Save the date", icon: <LightbulbIcon sx={{ color: "#ff5985" }} /> },
             ],
         },
         {
             title: "Welcome tiny treasures",
+            borderColor: "#4dc6d6",
             image: Img3,
             buttons: [
-                { label: "Baby shower", icon: <BabyChangingStationIcon sx={{ color: "blue" }} /> },
-                { label: "Gender reveal", icon: <LightbulbIcon sx={{ color: "blue" }} /> },
-                { label: "Baptism", icon: <InsertPhotoIcon sx={{ color: "blue" }} /> },
+                { label: "Baby shower", icon: <BabyChangingStationIcon sx={{ color: "#4dc6d6" }} /> },
+                { label: "Gender reveal", icon: <LightbulbIcon sx={{ color: "#4dc6d6" }} /> },
+                { label: "Baptism", icon: <InsertPhotoIcon sx={{ color: "#4dc6d6" }} /> },
             ],
         },
     ];
 
     return (
-        <Container maxWidth={"xl"}>
-            <Box component={"h1"} sx={{display: "flex", justifyContent: "center" , color:"#20282D" , fontSize: "47px" , fontWeight: 500 , paddingTop:"48px"}}>
+        <Container maxWidth="xl">
+            <Typography 
+                component="h1" 
+                sx={{ textAlign: "center", color: "#20282D", fontSize: { xs: "32px", md: "47px" }, fontWeight: 500, pt: 4 }}>
                 Find your perfect match
-            </Box>
-            <Box sx={{ py: 6, px: { xs: 2, md: 15 } }}>
+            </Typography>
+
+            <Box sx={{ py: 6, px: { xs: 2, md: 8 } }}>
                 {sections.map((section, index) => (
                     <Box
                         key={index}
                         sx={{
                             display: "flex",
-                            flexDirection: { xs: "column-reverse", md: index % 2 === 0 ? "row-reverse" : "row"},
+                            flexDirection: { xs: "column-reverse", md: index % 2 === 0 ? "row-reverse" : "row" },
                             alignItems: "center",
                             justifyContent: "space-between",
-                            gap: { xs: 4, md: 8 },
-                            mb: index !== sections.length - 1 ? {lg:"200px",xs:"50px"} : 0, // Adds space only between boxes
-                            border:"2px solid #C3A994",
-                            borderRadius:"35px"
+                            gap: { xs: 4, md: 6 },
+                            mb: 6,
+                            border: `2px solid ${section.borderColor}`,
+                            borderRadius: "35px",
+                            overflow: "hidden",
+                            width: "100%",
+                            minHeight: { xs: "auto", md: "350px" }
                         }}
                     >
-                        <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
+                        {/* Image Section */}
+                        <Box sx={{ flex: 1, width: "100%", height: "100%", display: "flex" }}>
                             <Box
                                 component="img"
                                 src={section.image}
                                 alt="Invitation Card"
                                 sx={{
                                     width: "100%",
-                                    maxWidth: "100%",
                                     height: "100%",
-                                    borderTopLeftRadius: {md:index % 2 === 0 ? "unset" : "35px" , xs:"unset"},
-                                    borderTopRightRadius: {md:index % 2 === 0 ? "35px" : "unset" , xs:"unset"},
-                                    borderBottomLeftRadius: {md:index % 2 === 0 ? "unset" : "35px" , xs:"35px" },
-                                    borderBottomRightRadius: {md:index % 2 === 0 ? "35px" : "unset" , xs:"35px" },
+                                    objectFit: "cover",
+                                    borderRadius: { xs: "35px", md: index % 2 === 0 ? "35px 0 0 35px" : "0 35px 35px 0" }
                                 }}
                             />
                         </Box>
 
+                        {/* Content Section */}
                         <Box
                             sx={{
                                 flex: 1,
                                 display: "flex",
-                                padding: {xs:"20px" ,md:"10px 0 10px 10px" ,lg:"10px 0 10px 50px"},
                                 flexDirection: "column",
-                                alignItems: { xs: "center", md: "flex-start" },
+                                padding: { xs: "20px", md: "40px" },
+                                textAlign: { xs: "center", md: "left" },
+                                alignItems: { xs: "center", md: "flex-start" }
                             }}
                         >
                             <Typography
-                                variant="h1"
+                                variant="h2"
                                 sx={{
-                                    fontSize: { xs: "32px" ,md:"26px", lg:"45px" },
+                                    fontSize: { xs: "26px", md: "32px", lg: "40px" },
                                     fontWeight: "600",
-                                    lineHeight: "110%",
-                                    marginBottom: "16px",
-                                    textAlign: { xs: "center", md: "left" },
-                                    color:"#20282D"
+                                    color: "#20282D",
+                                    mb: 2
                                 }}
                             >
                                 {section.title}
                             </Typography>
 
-                            <Grid container sx={{ mt: 3, gap: "20px" }}>
+                            <Grid container spacing={2} sx={{ width: "100%" }}>
                                 {section.buttons.map((btn, idx) => (
-                                    <Grid item xs={12} lg={5}
-                                        key={idx}
-                                        sx={{
-                                            background: "#F5F5F5",
-                                            color: "black",
-                                            borderRadius: "50px",
-                                            py:"8px",
-                                            paddingLeft:"16px",
-                                            paddingRight:"8px",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                            fontWeight: 500,
-                                            fontSize:"16px",
-                                            letterSpacing: "0px",
-                                            cursor: "pointer",
-                                            transition: "all 0.2s ease-in-out",
-                                            "&:hover": {
-                                                paddingRight:"5px",
-                                                paddingLeft:"12px",
-                                            },
-                                        }}
-                                    >
-                                        {btn.label} {btn.icon}
+                                    <Grid item xs={12} sm={6} key={idx}>
+                                        <Box
+                                            sx={{
+                                                background: "#F5F5F5",
+                                                borderRadius: "50px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "space-between",
+                                                py: "8px",
+                                                px: 2,
+                                                fontSize: "16px",
+                                                fontWeight: 500,
+                                                cursor: "pointer",
+                                                transition: "all 0.3s ease",
+                                                "&:hover": {
+                                                    background: "#e0e0e0"
+                                                }
+                                            }}
+                                        >
+                                            <Typography>{btn.label}</Typography>
+                                            {btn.icon}
+                                        </Box>
                                     </Grid>
                                 ))}
                             </Grid>

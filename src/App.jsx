@@ -9,7 +9,6 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Blog from './pages/Blog.jsx';
 import ContactPage from "./pages/contactPage.jsx";
-import InvitationCard from './components/Invitation/InvitationCard .jsx';
 import Invitations from "./pages/invitations.jsx";
 import Card from './pages/Card.jsx';
 
@@ -31,10 +30,10 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/blog' element={<Blog />} />
         <Route path='/cards' element={<Card />} />
+        <Route path='/invitations' element={<Invitations />} />
         <Route path='/contact' element={<ContactPage/>} />
         <Route path='/' element={<TemplatePage />} />
         <Route path='/' element={<Favorites />} />
-        <Route path='/invitations' element={<Invitations />} />
       </Routes>
       <Footer />
       {/*<TemplatePage />*/}
