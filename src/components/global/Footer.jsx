@@ -210,6 +210,7 @@ const Footer = () => {
           >
             <Button
               variant="contained"
+              onClick={() => navigate("/invitations")}
               sx={{
                 backgroundColor: "white",
                 color: "black",

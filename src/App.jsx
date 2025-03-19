@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import Blog from './pages/Blog.jsx';
 import ContactPage from "./pages/contactPage.jsx";
 import InvitationCard from './components/Invitation/InvitationCard .jsx';
+import Invitations from "./pages/invitations.jsx";
 
 function App() {
   function ScrollToTop() {
@@ -31,6 +32,7 @@ function App() {
         <Route path='/contact' element={<ContactPage/>} />
         <Route path='/' element={<TemplatePage />} />
         <Route path='/' element={<Favorites />} />
+        <Route path='/invitations' element={<Invitations />} />
       </Routes>
       <Footer />
       {/* <TemplatePage />
