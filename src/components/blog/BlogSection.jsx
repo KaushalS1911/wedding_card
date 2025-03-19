@@ -46,7 +46,7 @@ const BlogSection = () => {
             <Grid container spacing={4}>
                 {blogPosts.map((post) => (
                     <Grid item xs={12} sm={6} key={post.id}>
-                        <Card sx={{ boxShadow: "none", borderRadius:0 }}>
+                        <Card sx={{ boxShadow: "none", borderRadius: 0 }}>
                             {/* Blog Image */}
                             <CardMedia
                                 component="img"
@@ -86,10 +86,7 @@ const BlogSection = () => {
                                     {post.description}
                                 </Typography>
 
-                                <Link
-                                    href={post.link}
-                                    sx={{ textDecoration: "none", color: "#18B071",fontSize: "14px", fontWeight: "500" }}
-                                >
+                                <Link sx={{ textDecoration: "none", color: "#18B071", fontSize: "14px", fontWeight: "500", cursor: 'pointer' }}>
                                     Continue reading...
                                 </Link>
                             </CardContent>

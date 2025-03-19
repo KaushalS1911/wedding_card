@@ -9,6 +9,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Blog from './pages/Blog.jsx';
 import InvitationCard from './components/Invitation/InvitationCard .jsx';
+import Card from './pages/Card.jsx';
 
 function App() {
   function ScrollToTop() {
@@ -27,12 +28,13 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
         <Route path='/blog' element={<Blog />} />
+        <Route path='/cards' element={<Card />} />
         <Route path='/' element={<TemplatePage />} />
         <Route path='/' element={<Favorites />} />
       </Routes>
       <Footer />
-      {/* <TemplatePage />
-      <InvitationCard /> */}
+      <TemplatePage />
+      {/* <InvitationCard /> */}
     </>
   )
 }
