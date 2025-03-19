@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid, Typography, Card, CardMedia, CardContent, Link } from "@mui/material";
+import { Box, Grid, Typography, Card, CardMedia, CardContent, Link, Container } from "@mui/material";
 import blog1 from '../../assets/blog/blog1.webp';
 import blog2 from '../../assets/blog/blog2.webp';
 import blog3 from '../../assets/blog/blog3.jpg';
@@ -42,59 +42,61 @@ const blogPosts = [
 
 const BlogSection = () => {
     return (
-        <Box sx={{ py: 8, px: { xs: 2, sm: 4, md: 8 } }}>
-            <Grid container spacing={4}>
-                {blogPosts.map((post) => (
-                    <Grid item xs={12} sm={6} key={post.id}>
-                        <Card sx={{ boxShadow: "none", borderRadius: 0 }}>
-                            {/* Blog Image */}
-                            <CardMedia
-                                component="img"
-                                height="300"
-                                image={post.image}
-                                alt={post.title}
-                                sx={{ objectFit: "cover" }}
-                            />
+        <Container>
+            <Box sx={{ py: 8, px: { xs: 2, sm: 4, md: 8 } }}>
+                <Grid container spacing={4}>
+                    {blogPosts.map((post) => (
+                        <Grid item xs={12} sm={6} key={post.id}>
+                            <Card sx={{ boxShadow: "none", borderRadius: 0 }}>
+                                {/* Blog Image */}
+                                <CardMedia
+                                    component="img"
+                                    height="300"
+                                    image={post.image}
+                                    alt={post.title}
+                                    sx={{ objectFit: "cover" }}
+                                />
 
-                            {/* Blog Content */}
-                            <CardContent sx={{ textAlign: "left", p: 2 }}>
-                                <Typography
-                                    variant="body2"
-                                    sx={{ color: "#707177", fontSize: "12px", mb: 1 }}
-                                >
-                                    {post.category}
-                                </Typography>
+                                {/* Blog Content */}
+                                <CardContent sx={{ textAlign: "left", p: 2 }}>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ color: "#707177", fontSize: "12px", mb: 1 }}
+                                    >
+                                        {post.category}
+                                    </Typography>
 
-                                <Typography
-                                    variant="h6"
-                                    sx={{
-                                        fontWeight: "500",
-                                        color: "#000",
-                                        mb: 1,
-                                        fontSize: { xs: "16px", sm: "18px", md: "20px" },
-                                        transition: "color 0.3s ease",
-                                        "&:hover": { color: "#18B071", cursor: "pointer" },
-                                    }}
-                                >
-                                    {post.title}
-                                </Typography>
+                                    <Typography
+                                        variant="h6"
+                                        sx={{
+                                            fontWeight: "500",
+                                            color: "#000",
+                                            mb: 1,
+                                            fontSize: { xs: "16px", sm: "18px", md: "20px" },
+                                            transition: "color 0.3s ease",
+                                            "&:hover": { color: "#18B071", cursor: "pointer" },
+                                        }}
+                                    >
+                                        {post.title}
+                                    </Typography>
 
-                                <Typography
-                                    variant="body2"
-                                    sx={{ color: "#555", fontSize: "14px", mb: 1 }}
-                                >
-                                    {post.description}
-                                </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ color: "#555", fontSize: "14px", mb: 1 }}
+                                    >
+                                        {post.description}
+                                    </Typography>
 
-                                <Link sx={{ textDecoration: "none", color: "#18B071", fontSize: "14px", fontWeight: "500", cursor: 'pointer' }}>
-                                    Continue reading...
-                                </Link>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
-        </Box>
+                                    <Link sx={{ textDecoration: "none", color: "#18B071", fontSize: "14px", fontWeight: "500", cursor: 'pointer' }}>
+                                        Continue reading...
+                                    </Link>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>
+        </Container>
     );
 };
 
