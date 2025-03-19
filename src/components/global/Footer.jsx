@@ -28,6 +28,13 @@ const Footer = () => {
 
   const navigate = useNavigate();
 
+    const handleClick = (item) => {
+        if (item === "Contact us") {
+            navigate("/contact");
+        }
+    };
+
+
   return (
     <Box
       sx={{ backgroundColor: "#f4f4f4", padding: { xs: "20px", md: "40px" } }}
@@ -419,6 +426,7 @@ const Footer = () => {
                         mb: 2,
                         "&:hover": { color: "#18B071" },
                       }}
+                      onClick={() => handleClick(item)}
                     >
                       {item}
                     </Typography>
