@@ -25,7 +25,7 @@ function Inspiration() {
         <Container maxWidth="lg">
             <Box sx={{ textAlign: "center", py: 8 }}>
                 {/* Title */}
-                <Typography variant="h4" sx={{ fontWeight: "500", mb: 3 }}>
+                <Typography variant="h4" sx={{ fontSize: {xs:'30px',sm:'42px'}, fontWeight: '500', color: '#20282d',mb:3 }}>
                     Find inspiration for your <br /> next celebration
                 </Typography>
 
@@ -76,14 +76,14 @@ function Inspiration() {
                     variant="contained"
                     sx={{
                         mt: 4,
-                        backgroundColor: "#18B071",
+                        backgroundColor: "#1BC47D",
                         color: "white",
                         borderRadius: "20px",
                         px: 4,
                         py: 1,
                         fontSize: "16px",
                         textTransform: "none",
-                        "&:hover": { backgroundColor: "#00B04A" },
+                        boxShadow:'none'
                     }}
                 >
                     Get inspired

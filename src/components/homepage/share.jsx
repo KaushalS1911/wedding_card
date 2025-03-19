@@ -1,10 +1,9 @@
 import React from "react";
-import {Box, Typography, Grid, Container} from "@mui/material";
+import { Box, Typography, Grid, Container } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 import ShareIcon from "@mui/icons-material/Share";
 import EventIcon from "@mui/icons-material/Event";
-import Celebrate from "./celebrate.jsx";
 
 const features = [
     {
@@ -31,33 +30,46 @@ const features = [
 
 function ShareSection() {
     return (
-        <Container maxWidth={"lg"}>
-            <Box sx={{ textAlign: "center", py: {md:15,xs:4} }}>
-                {/* Title */}
-                <Typography variant="h4" sx={{ fontWeight: "500", mb: 1 }}>
-                    Endless ways to spread the joy
-                </Typography>
-                <Typography variant="body1" sx={{ color: "gray", mb: 4 }}>
-                    Design it once, share it everywhere!
-                </Typography>
+        <Container sx={{ textAlign: "center", py: 8 }}>
+            <Typography
+                variant="h2"
+                sx={{
+                    fontSize: { xs: "24px", sm: "32px", md: "36px", lg: "40px" },
+                    fontWeight: "400",
+                    mb: 2,
+                    color: '#20282d'
+                }}
+            >
+                Endless ways to spread the joy
+            </Typography>
 
-                {/* Features Grid */}
-                <Grid container spacing={4} justifyContent="center">
-                    {features.map((feature, index) => (
-                        <Grid item xs={12} sm={6} md={3} key={index}>
-                            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center",mt:3 }}>
-                                {feature.icon}
-                                <Typography variant="h6" sx={{ mt: 2, fontWeight: "500" }}>
-                                    {feature.title}
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: "gray", mt: 1,width:"70%" }}>
-                                    {feature.description}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
+            <Typography
+                sx={{
+                    fontSize: { xs: "12px", sm: "14px", md: "14px" },
+                    fontWeight: "400",
+                    color: '#20282d',
+                    mb: { xs: 6, sm: 8, md: 10 }
+                }}
+            >
+                Design it once, share it everywhere!
+            </Typography>
+
+
+            <Grid container spacing={4} justifyContent="center">
+                {features.map((feature, index) => (
+                    <Grid item key={index} xs={6} sm={3}>
+                        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", color: '#20282d' }}>
+                            {feature.icon}
+                            <Typography variant="h6" sx={{ fontSize: "16px", fontWeight: "500", my: 1, color: '#20282d' }}>
+                                {feature.title}
+                            </Typography>
+                            <Typography sx={{ color: "#777",fontWeight:'400', maxWidth: "250px", fontSize: '12px', color: '#20282d' }}>
+                                {feature.description}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                ))}
+            </Grid>
         </Container>
     );
 }

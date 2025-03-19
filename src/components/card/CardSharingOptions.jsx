@@ -51,7 +51,7 @@ const CardSharingOptions = () => {
 
             <Grid container spacing={4} justifyContent="center">
                 {features.map((feature, index) => (
-                    <Grid item key={index} xs={12} sm={4}>
+                    <Grid item key={index} xs={6} sm={4}>
                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", color: '#20282d' }}>
                             {feature.icon}
                             <Typography variant="h6" sx={{ fontSize: "16px", fontWeight: "500", my: 1, color: '#20282d' }}>

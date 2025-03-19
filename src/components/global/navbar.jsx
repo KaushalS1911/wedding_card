@@ -319,7 +319,10 @@ const Navbar = () => {
                 <Grid item key={subIndex} xs={12} sm={6} md={4} lg={2.4}>
                   <Typography sx={{ fontSize:'14px',fontWeight:'600',pb:1 }}>{category}</Typography>
                   {items.map((subItem, i) => (
-                    <Typography key={i} sx={{ fontSize:'14px',fontWeight:'500',cursor: "pointer", mt: 1,"&:hover": { color: "#1bc47d" }  }}>
+                    <Typography key={i}   onClick={() => {
+                        navigate("/template-page");
+                        setOpenMenu(null); // Mega menu close karne ke liye
+                      }} sx={{ fontSize:'14px',fontWeight:'500',cursor: "pointer", mt: 1,"&:hover": { color: "#1bc47d" }  }}>
                       {subItem}
                     </Typography>
                   ))}
@@ -474,7 +477,10 @@ const Navbar = () => {
                   <Grid item key={subIndex} xs={12} sm={3} md={2}>
                     <Typography sx={{ fontWeight: "bold" }}>{category}</Typography>
                     {items.map((subItem, i) => (
-                      <Typography key={i} sx={{ mt: 1 }}>{subItem}</Typography>
+                      <Typography key={i} sx={{ mt: 1 }}   onClick={() => {
+                        navigate("/template-page");
+                        setOpenMenu(null); // Mega menu close karne ke liye
+                      }} >{subItem}</Typography>
                     ))}
                   </Grid>
                 ))}

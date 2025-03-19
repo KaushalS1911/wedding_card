@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import Img1 from "../../assets/Home/Img2.svg";
 import Img2 from "../../assets/Home/Img4.png";
 import Img3 from "../../assets/Home/Img5.png";
@@ -12,20 +12,20 @@ function Trending() {
     ];
 
     return (
-        <Box sx={{ textAlign: "center", pt: {md:"100px",xs:"50px"}, pb: {md:"120px",xs:"30px"} }}>
+        <Container>
+        <Box sx={{ textAlign: "center", pt: { md: "100px", xs: "50px" }, pb: { md: "120px", xs: "30px" } }}>
             {/* Title */}
-            <Typography variant="h4" fontWeight="bold" mb={5}>
+            <Typography variant="h4" mb={5} sx={{ fontSize: {xs:'30px',sm:'42px'}, fontWeight: '500', color: '#20282d' }} >
                 Explore what's trending
             </Typography>
 
-            {/* Flex Container without Grid */}
+            {/* Flex Container */}
             <Box
                 sx={{
                     display: "flex",
                     justifyContent: "center",
-                    gap: "20px",
                     flexWrap: "wrap",
-
+                    gap: { xs: "16px", md: "24px" },
                 }}
             >
                 {trendingItems.map((item, index) => (
@@ -37,25 +37,21 @@ function Trending() {
                             backgroundPosition: "center",
                             borderRadius: "20px",
                             pt: 2,
-                            height: "480px",
+                            height: { xs: "400px", md: "480px" },
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
                             width: "100%",
                             maxWidth: "440px",
                             position: "relative",
-                            objectFit: "cover",
-                            "&:hover .topimage": {
-                                transform: "scale(1.1)",
-                            },
-                            "&:hover .brunch": {
-                                mx:0,
-                                px:0
-                            }
+                            transition: "all 0.4s ease-in-out",
+                            "&:hover .topimage": { transform: "scale(1.1)" },
+                            "&:hover .label-box": { px: 0 },
                         }}
                     >
                         {/* Image */}
-                        <Box className={"topimage"}
+                        <Box
+                            className="topimage"
                             component="img"
                             src={item.img}
                             alt={item.label}
@@ -66,14 +62,12 @@ function Trending() {
                                 mt: "30px",
                                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
                                 transition: "all 0.4s ease-in-out",
-                                "&:hover": {
-                                    transform: "scale(1.1)",
-                                }
                             }}
                         />
 
                         {/* Label with Icon */}
                         <Box
+                            className="label-box"
                             sx={{
                                 display: "flex",
                                 alignItems: "center",
@@ -87,12 +81,20 @@ function Trending() {
                                 maxWidth: "440px",
                                 boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
                                 zIndex: 999,
+                                transition: "all 0.4s ease-in-out",
                             }}
                         >
-                            <Box className={"brunch"} sx={{ fontSize: "21px", fontWeight: "500" , px:1 ,transition: "all 0.4s ease-in-out",  }}>
+                            <Box
+                                sx={{
+                                    fontSize: { xs: "18px", md: "21px" },
+                                    fontWeight: "500",
+                                    px: 1,
+                                    transition: "all 0.4s ease-in-out",
+                                }}
+                            >
                                 {item.label}
                             </Box>
-                            <Box className={"brunch"}
+                            <Box
                                 sx={{
                                     background: "#9C27B0",
                                     borderRadius: "50%",
@@ -102,7 +104,7 @@ function Trending() {
                                     alignItems: "center",
                                     justifyContent: "center",
                                     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                                    mx:1,
+                                    mx: 1,
                                     transition: "all 0.4s ease-in-out",
                                 }}
                             >
@@ -113,6 +115,7 @@ function Trending() {
                 ))}
             </Box>
         </Box>
+        </Container>
     );
 }
 
