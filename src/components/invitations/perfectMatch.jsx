@@ -55,11 +55,10 @@ function PerfectMatch() {
                             justifyContent: "space-between",
                             gap: { xs: 4, md: 8 },
                             mb: index !== sections.length - 1 ? {lg:"200px",xs:"50px"} : 0, // Adds space only between boxes
-                            border:"2px solid #000",
+                            border:"2px solid #C3A994",
                             borderRadius:"35px"
                         }}
                     >
-                        {/* Image */}
                         <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
                             <Box
                                 component="img"
@@ -77,7 +76,6 @@ function PerfectMatch() {
                             />
                         </Box>
 
-                        {/* Text + Buttons */}
                         <Box
                             sx={{
                                 flex: 1,
@@ -95,13 +93,12 @@ function PerfectMatch() {
                                     lineHeight: "110%",
                                     marginBottom: "16px",
                                     textAlign: { xs: "center", md: "left" },
-
+                                    color:"#20282D"
                                 }}
                             >
                                 {section.title}
                             </Typography>
 
-                            {/* Dynamic Buttons */}
                             <Grid container sx={{ mt: 3, gap: "20px" }}>
                                 {section.buttons.map((btn, idx) => (
                                     <Grid item xs={12} lg={5}
