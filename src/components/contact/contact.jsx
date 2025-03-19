@@ -17,7 +17,7 @@ function Contact() {
         <Container maxWidth={'xxl'}>
             <Box sx={{
                 display: 'flex',
-                justifyContent: 'space-between',
+                justifyContent: {lg:'space-between' , md:"center"},
                 alignItems: 'center',
                 backgroundColor: '#E8F9F2',
                 padding: "10px 24px 0 32px",
@@ -26,10 +26,10 @@ function Contact() {
             }}>
                 <Box >
                     <Typography variant={'h1'}
-                        sx={{ fontSize: "47px", fontWeight: "500", color: "#20282D", marginBottom: "16px", textWrap: "wrap", textAlign: "center" }}>Chat
+                        sx={{ fontSize: {md:"47px" , xs:"32px"}, width: { xl: "476px",lg:"430px" ,xs: "unset" },fontWeight: "500", color: "#20282D" ,marginBottom: "16px", textWrap: "wrap", textAlign: {xs:"center" , lg:"unset"} }}>Chat
                         with our team!</Typography>
                     <Typography sx={{
-                        width: { lg: "476px", xs: "unset" },
+                        width: { xl: "476px",lg:"430px" ,xs: "unset" },
                         textAlign: { xs: "center", lg: "unset" },
                         color: "#20282D",
                         letterSpacing: "0",
@@ -37,7 +37,7 @@ function Contact() {
                     }}>If you need help with a design, have a question about your account,
                         or want to talk business, you're in the right place.</Typography>
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Box sx={{ display: "flex" }}>
                     <img src={img} alt="contact" style={{ maxWidth: '100%', minHeight: "284px", objectFit: 'contain' }} />
                 </Box>
             </Box>
@@ -104,7 +104,7 @@ function Contact() {
                         </Button>
                     </form>
                 </Box>
-                <Box sx={{ maxWidth: 400, p: 2, ml: 20 }}>
+                <Box sx={{ maxWidth: 400, p: 2, ml: {md:"100px"} , mt:{xs:"50px" , md:"unset"} }}>
                     <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
                         Need answers fast?
                     </Typography>
