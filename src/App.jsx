@@ -12,6 +12,7 @@ import ContactPage from "./pages/contactPage.jsx";
 import Invitations from "./pages/invitations.jsx";
 import Card from './pages/Card.jsx';
 import InvitationCard from './components/Invitation/InvitationCard .jsx';
+import SingleBlog from "./components/blog/singleBlog.jsx";
 
 function App() {
   function ScrollToTop() {
@@ -26,6 +27,7 @@ function App() {
     <>
       <ScrollToTop />
       <Navbar />
+      {/* <Favorites /> */}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
@@ -35,7 +37,8 @@ function App() {
         <Route path='/contact' element={<ContactPage/>} />
         <Route path='/template-page' element={<TemplatePage />} />
         <Route path='/template-page/invitation-card' element={<InvitationCard />} />
-        <Route path='/' element={<Favorites />} />
+        <Route path='/singleblog' element={<SingleBlog />} />
+        <Route path="/profile/*" element={<Favorites />} />
       </Routes>
       <Footer />
     </>

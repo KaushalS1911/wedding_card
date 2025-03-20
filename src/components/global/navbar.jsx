@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -15,6 +15,9 @@ import {
   AccordionSummary,
   AccordionDetails,
   Container,
+  Menu,
+  MenuItem,
+  Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -22,6 +25,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Logo from "../../assets/logo/logo.svg";
 import { useNavigate } from "react-router-dom";
+import Ragister from "../login/ragister.jsx";
+import Login from "../login/login.jsx";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PersonIcon from "@mui/icons-material/Person";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const menuItems = [
   {
@@ -280,13 +289,41 @@ const Navbar = () => {
   const [expandedAccordion, setExpandedAccordion] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  const [openLoginPage, setOpenLoginPage] = useState(false);
+  const [user, setUser] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
 
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpandedAccordion(isExpanded ? panel : null);
+  };
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/");
   };
 
   const renderMenuItems = () => (
@@ -314,21 +351,21 @@ const Navbar = () => {
             }}
           >
             <Container>
-            <Grid container spacing={2} sx={{ maxWidth: "1300px", margin: "0 auto" }}>
-              {Object.entries(item.subMenu).map(([category, items], subIndex) => (
-                <Grid item key={subIndex} xs={12} sm={6} md={4} lg={2.4}>
-                  <Typography sx={{ fontSize:'14px',fontWeight:'600',pb:1 }}>{category}</Typography>
-                  {items.map((subItem, i) => (
-                    <Typography key={i}   onClick={() => {
+              <Grid container spacing={2} sx={{ maxWidth: "1300px", margin: "0 auto" }}>
+                {Object.entries(item.subMenu).map(([category, items], subIndex) => (
+                  <Grid item key={subIndex} xs={12} sm={6} md={4} lg={2.4}>
+                    <Typography sx={{ fontSize: '14px', fontWeight: '600', pb: 1 }}>{category}</Typography>
+                    {items.map((subItem, i) => (
+                      <Typography key={i} onClick={() => {
                         navigate("/template-page");
                         setOpenMenu(null); // Mega menu close karne ke liye
-                      }} sx={{ fontSize:'14px',fontWeight:'500',cursor: "pointer", mt: 1,"&:hover": { color: "#1bc47d" }  }}>
-                      {subItem}
-                    </Typography>
-                  ))}
-                </Grid>
-              ))}
-            </Grid>
+                      }} sx={{ fontSize: '14px', fontWeight: '500', cursor: "pointer", mt: 1, "&:hover": { color: "#1bc47d" } }}>
+                        {subItem}
+                      </Typography>
+                    ))}
+                  </Grid>
+                ))}
+              </Grid>
             </Container>
           </Paper>
         )}
@@ -337,201 +374,380 @@ const Navbar = () => {
   );
 
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: "white", boxShadow: 0, zIndex: 1100 }}>
-      <Toolbar
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          position: "relative",
-        }}
-      >
-        {/* Left Side - Logo */}
-        <Typography
-          variant="h6"
-          component="div"
+    <>
+      <AppBar position="sticky" sx={{ backgroundColor: "white", boxShadow: 0, zIndex: 1100 }}>
+        <Toolbar
           sx={{
-            color: "green",
-            fontWeight: "bold",
             display: "flex",
-            alignItems: "center",
-            width: "146px",cursor:'pointer'
+            justifyContent: "space-between",
+            position: "relative",
           }}
         >
-          <Typography component={"img"} src={Logo} width={"100%"} onClick={() => navigate('/')} />
-        </Typography>
-        {/* Center - Navigation Links */}
-        {!isMobile && (
+          {/* Left Side - Logo */}
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              color: "green",
+              fontWeight: "bold",
+              display: "flex",
+              alignItems: "center",
+              width: "146px", cursor: 'pointer'
+            }}
+          >
+            <Typography component={"img"} src={Logo} width={"100%"} onClick={() => navigate('/')} />
+          </Typography>
+          {/* Center - Navigation Links */}
+          {!isMobile && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              {renderMenuItems()}
+            </Box>
+          )}
+          {/* Right Side - Search Icon, Log in & Go Premium */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
+              gap: "4px",
+              position: "absolute",
+              right: "20px",
             }}
           >
-            {renderMenuItems()}
-          </Box>
-        )}
-        {/* Right Side - Search Icon, Log in & Go Premium */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: "4px",
-            position: "absolute",
-            right: "20px",
-          }}
-        >
-          {/* Search Icon */}
-          {!isMobile && (
-            <IconButton
-              sx={{
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "#f2f2f2",
-                },
-              }}
-            >
-              <SearchIcon />
-            </IconButton>
-          )}
-          {isMobile ? (
-            <IconButton onClick={handleDrawerToggle}>
-              {!isMobile && (
-                <IconButton
-                  sx={{
-                    color: "black",
-                    "&:hover": {
+            {/* Search Icon */}
+            {!isMobile && (
+              <IconButton
+                sx={{
+                  color: "black",
+                  "&:hover": {
+                    backgroundColor: "#f2f2f2",
+                  },
+                }}
+              >
+                <SearchIcon />
+              </IconButton>
+            )}
+            {isMobile ? (
+              <>
+                {token ? (
+                  <>
+                    <IconButton
+                      sx={{
+                        backgroundColor: "#f2f2f2",
+                        borderRadius: "50%",
+                        width: 40,
+                        height: 40,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontWeight: "bold",
+                      }}
+                      onClick={handleClick}
+                    >
+                      {user?.firstName ? (
+                        <Typography sx={{ color: "black", fontWeight: "bold" }}>
+                          {user.firstName.charAt(0).toUpperCase()}
+                        </Typography>
+                      ) : (
+                        <AccountCircleIcon sx={{ color: "black" }} />
+                      )}
+                    </IconButton>
+
+                    {/* Dropdown Menu */}
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right", // ✅ Open menu aligned to right
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right", // ✅ Ensure it stays aligned to right
+                      }}
+                      PaperProps={{
+                        elevation: 3,
+                        sx: {
+                          borderRadius: "16px",
+                          padding: "5px",
+                          minWidth: "200px",
+                        },
+                      }}
+                    >
+                      {/* Profile */}
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/profile/favorites");
+                          handleClose(); // ✅ Menu close ho jayega
+                        }}
+                      >
+                        <PersonIcon sx={{ marginRight: 1 }} />
+                        Profile
+                      </MenuItem>
+
+                      {/* Settings */}
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/profile/settings");
+                          handleClose(); // ✅ Menu close ho jayega
+                        }}
+                      >
+                        <SettingsIcon sx={{ marginRight: 1 }} />
+                        Settings
+                      </MenuItem>
+
+                      <Divider />
+
+                      {/* Logout */}
+                      <MenuItem
+                        onClick={() => {
+                          handleLogout();
+                          handleClose(); // ✅ Menu close ho jayega
+                        }}
+                      >
+                        <LogoutIcon sx={{ marginRight: 1 }} />
+                        Log out
+                      </MenuItem>
+                    </Menu>
+                  </>
+
+                ) : (
+                  <Button
+                    variant="contained"
+                    sx={{
                       backgroundColor: "#f2f2f2",
+                      color: "black",
+                      borderRadius: "40px",
+                      fontWeight: "600",
+                      textTransform: "none",
+                      boxShadow: "none",
+                      "&:hover": {
+                        backgroundColor: "#e0e0e0",
+                        boxShadow: "none",
+                      },
+                    }}
+                    onClick={() => {
+                      setOpenLoginPage((prev) => !prev);
+                    }}
+                  >
+                    Log in
+                  </Button>
+                )}
+                <IconButton onClick={handleDrawerToggle}>
+                  {!isMobile && (
+                    <IconButton
+                      sx={{
+                        color: "black",
+                        "&:hover": {
+                          backgroundColor: "#f2f2f2",
+                        },
+                      }}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  )}
+                  <MenuIcon />
+                </IconButton>
+              </>
+            ) : (
+              <>
+                {token ? (
+                  <>
+                    <IconButton
+                      sx={{
+                        backgroundColor: "#f2f2f2",
+                        borderRadius: "50%",
+                        width: 40,
+                        height: 40,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontWeight: "bold",
+                      }}
+                      onClick={handleClick}
+                    >
+                      {user?.firstName ? (
+                        <Typography sx={{ color: "black", fontWeight: "bold" }}>
+                          {user.firstName.charAt(0).toUpperCase()}
+                        </Typography>
+                      ) : (
+                        <AccountCircleIcon sx={{ color: "black" }} />
+                      )}
+                    </IconButton>
+
+                    {/* Dropdown Menu */}
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right", // ✅ Open menu aligned to right
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right", // ✅ Ensure it stays aligned to right
+                      }}
+                      PaperProps={{
+                        elevation: 3,
+                        sx: {
+                          borderRadius: "16px",
+                          padding: "5px",
+                          minWidth: "200px",
+                        },
+                      }}
+                    >
+                      {/* Profile */}
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/profile/favorites");
+                          handleClose(); // ✅ Menu close ho jayega
+                        }}
+                      >
+                        <PersonIcon sx={{ marginRight: 1 }} />
+                        Profile
+                      </MenuItem>
+
+                      {/* Settings */}
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/profile/settings");
+                          handleClose(); // ✅ Menu close ho jayega
+                        }}
+                      >
+                        <SettingsIcon sx={{ marginRight: 1 }} />
+                        Settings
+                      </MenuItem>
+
+                      <Divider />
+
+                      {/* Logout */}
+                      <MenuItem
+                        onClick={() => {
+                          handleLogout();
+                          handleClose(); // ✅ Menu close ho jayega
+                        }}
+                      >
+                        <LogoutIcon sx={{ marginRight: 1 }} />
+                        Log out
+                      </MenuItem>
+                    </Menu>
+                  </>
+
+                ) : (
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#f2f2f2",
+                      color: "black",
+                      borderRadius: "40px",
+                      fontWeight: "600",
+                      textTransform: "none",
+                      boxShadow: "none",
+                      "&:hover": {
+                        backgroundColor: "#e0e0e0",
+                        boxShadow: "none",
+                      },
+                    }}
+                    onClick={() => {
+                      setOpenLoginPage((prev) => !prev);
+                    }}
+                  >
+                    Log in
+                  </Button>
+                )}
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#8D51E7",
+                    color: "white",
+                    borderRadius: "40px",
+                    fontWeight: "600",
+                    textTransform: "none",
+                    boxShadow: "none",
+                    "&:hover": {
+                      backgroundColor: "#7a44d6",
+                      boxShadow: "none",
                     },
                   }}
                 >
-                  <SearchIcon />
-                </IconButton>
-              )}
-              <MenuIcon />
+                  Go Premium
+                </Button>
+              </>
+            )}
+          </Box>
+        </Toolbar>
+
+        <Drawer anchor="top" open={drawerOpen} onClose={handleDrawerToggle}>
+          {/* Drawer Header */}
+          <Box sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
+            <Typography component="img" src={Logo} width={120} onClick={() => navigate('/')} />
+            <IconButton onClick={handleDrawerToggle}>
+              <CloseIcon />
             </IconButton>
-          ) : (
-            <>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#f2f2f2",
-                  color: "black",
-                  borderRadius: "40px",
-                  fontWeight: "600",
-                  textTransform: "none",
-                  boxShadow: "none",
-                  "&:hover": {
-                    backgroundColor: "#e0e0e0",
-                    boxShadow: "none",
-                  },
-                }}
-              >
-                Log in
-              </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#8D51E7",
-                  color: "white",
-                  borderRadius: "40px",
-                  fontWeight: "600",
-                  textTransform: "none",
-                  boxShadow: "none",
-                  "&:hover": {
-                    backgroundColor: "#7a44d6",
-                    boxShadow: "none",
-                  },
-                }}
-              >
-                Go Premium
-              </Button>
-            </>
-          )}
-        </Box>
-      </Toolbar>
+          </Box>
 
-      <Drawer anchor="top" open={drawerOpen} onClose={handleDrawerToggle}>
-        {/* Drawer Header */}
-        <Box sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
-          <Typography component="img" src={Logo} width={120} onClick={() => navigate('/')} />
-          <IconButton onClick={handleDrawerToggle}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
+          {/* Menu Items */}
+          {menuItems.map((item, index) => (
+            <Accordion
+              key={index}
+              expanded={expandedAccordion === `panel${index}`}
+              onChange={handleAccordionChange(`panel${index}`)}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                {item.name}
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container spacing={2}>
+                  {Object.entries(item.subMenu).map(([category, items], subIndex) => (
+                    <Grid item key={subIndex} xs={12} sm={3} md={2}>
+                      <Typography sx={{ fontWeight: "bold" }}>{category}</Typography>
+                      {items.map((subItem, i) => (
+                        <Typography key={i} sx={{ mt: 1 }} onClick={() => {
+                          navigate("/template-page");
+                          setOpenMenu(null);
+                        }} >{subItem}</Typography>
+                      ))}
+                    </Grid>
+                  ))}
+                </Grid>
+              </AccordionDetails>
 
-        {/* Menu Items */}
-        {menuItems.map((item, index) => (
-          <Accordion
-            key={index}
-            expanded={expandedAccordion === `panel${index}`}
-            onChange={handleAccordionChange(`panel${index}`)}
-          >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              {item.name}
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid container spacing={2}>
-                {Object.entries(item.subMenu).map(([category, items], subIndex) => (
-                  <Grid item key={subIndex} xs={12} sm={3} md={2}>
-                    <Typography sx={{ fontWeight: "bold" }}>{category}</Typography>
-                    {items.map((subItem, i) => (
-                      <Typography key={i} sx={{ mt: 1 }}   onClick={() => {
-                        navigate("/template-page");
-                        setOpenMenu(null); // Mega menu close karne ke liye
-                      }} >{subItem}</Typography>
-                    ))}
-                  </Grid>
-                ))}
-              </Grid>
-            </AccordionDetails>
+            </Accordion>
+          ))}
 
-          </Accordion>
-        ))}
-
-        {/* LOGIN & GO PREMIUM BUTTONS IN DROPDOWN */}
-        <Box sx={{ textAlign: "center", mt: 3, p: 2 }}>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{
-              backgroundColor: "#f2f2f2",
-              color: "black",
-              borderRadius: "40px",
-              fontWeight: "600",
-              textTransform: "none",
-              boxShadow: "none",
-              mb: 1, // Add margin bottom for spacing
-              "&:hover": {
-                backgroundColor: "#e0e0e0",
+          {/* LOGIN & GO PREMIUM BUTTONS IN DROPDOWN */}
+          <Box sx={{ textAlign: "center", mt: 3, p: 2 }}>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{
+                backgroundColor: "#8D51E7",
+                color: "white",
+                borderRadius: "40px",
+                fontWeight: "600",
+                textTransform: "none",
                 boxShadow: "none",
-              },
-            }}
-          >
-            Log in
-          </Button>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{
-              backgroundColor: "#8D51E7",
-              color: "white",
-              borderRadius: "40px",
-              fontWeight: "600",
-              textTransform: "none",
-              boxShadow: "none",
-              "&:hover": {
-                backgroundColor: "#7a44d6",
-                boxShadow: "none",
-              },
-            }}
-          >
-            Go Premium
-          </Button>
-        </Box>
-      </Drawer>
-    </AppBar>
+                "&:hover": {
+                  backgroundColor: "#7a44d6",
+                  boxShadow: "none",
+                },
+              }}
+            >
+              Go Premium
+            </Button>
+          </Box>
+        </Drawer>
+      </AppBar>
+      <Login openLoginPage={openLoginPage} setOpenLoginPage={setOpenLoginPage} />
+    </>
   );
 };
 

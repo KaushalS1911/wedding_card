@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   baseURL: 'https://wedding-card-be.onrender.com',
   headers: {
     // athorName: "syket",
-    token: `Bearer ${token}`,
+    authorization: `Bearer ${token}`,
   },
 });
 
