@@ -142,7 +142,7 @@ function Register({openRegister, setOpenRegister, setOpenLoginPage}) {
                         cursor: "pointer"
                     }}>Log in</a>
                     </Typography>
-                    <Typography variant="caption" sx={{display: 'block', marginTop: '10px', color: '#63696C'}}>
+                    <Typography variant="caption" sx={{display: 'block',textAlign:"center" ,marginTop: '10px', color: '#63696C'}}>
                         By signing up, I accept Greetings Island’s <a href="#"
                                                                       style={{color: 'black', fontWeight: 'bold'}}>Terms
                         of Use</a> & <a href="#" style={{color: 'black', fontWeight: 'bold'}}>Privacy Policy</a>
