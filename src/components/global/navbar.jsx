@@ -22,6 +22,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Logo from "../../assets/logo/logo.svg";
 import { useNavigate } from "react-router-dom";
+import Ragister from "../login/ragister.jsx";
+import Login from "../login/login.jsx";
 
 const menuItems = [
   {
@@ -280,6 +282,7 @@ const Navbar = () => {
   const [expandedAccordion, setExpandedAccordion] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  const [openLoginPage , setOpenLoginPage] = useState(false);
 
   const navigate = useNavigate();
 
@@ -427,6 +430,9 @@ const Navbar = () => {
                     boxShadow: "none",
                   },
                 }}
+                onClick={() => {
+                  setOpenLoginPage((prev) => !prev);
+                }}
               >
                 Log in
               </Button>
@@ -502,13 +508,16 @@ const Navbar = () => {
               fontWeight: "600",
               textTransform: "none",
               boxShadow: "none",
-              mb: 1, // Add margin bottom for spacing
+              mb: 1,
               "&:hover": {
                 backgroundColor: "#e0e0e0",
                 boxShadow: "none",
               },
             }}
-          >
+            onClick={() => {
+              setOpenLoginPage((prev) => !prev);
+            }}
+                    >
             Log in
           </Button>
           <Button
@@ -531,6 +540,7 @@ const Navbar = () => {
           </Button>
         </Box>
       </Drawer>
+      <Login openLoginPage={openLoginPage} setOpenLoginPage={setOpenLoginPage} />
     </AppBar>
   );
 };
