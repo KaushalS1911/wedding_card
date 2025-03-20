@@ -5,12 +5,20 @@ import { Autocomplete, Box, Button, Container, MenuItem, Select, TextField, Typo
 import { Link } from "react-router-dom";
 import { Instagram } from "@mui/icons-material";
 import CallMadeIcon from '@mui/icons-material/CallMade';
+import axios from "axios";
 
 function Contact() {
-    const { register, control, handleSubmit, formState: { errors } } = useForm();
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
 
     const onSubmit = (data) => {
-        console.log(data);
+        const payload = {
+            topic: data.topic,
+            name: data.name,
+            email: data.email,
+            description: data.description,
+        };
+       axios.post("https://wedding-card-be.onrender.com/api/contact" , payload)
+        reset()
     };
 
     const options = [
@@ -139,7 +147,7 @@ function Contact() {
                         </Button>
                     </form>
                 </Box>
-                <Box sx={{ maxWidth: 400, p: 2, ml: { md: "100px" }, mt: { xs: "50px", md: "unset" } }}>
+                <Box sx={{ maxWidth: 400, p: 2, ml: { md: "100px" }, mt: { xs: "50px", md: "unset" }}}>
                     <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
                         Need answers fast?
                     </Typography>
