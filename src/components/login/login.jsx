@@ -29,7 +29,7 @@ function Login({openLoginPage, setOpenLoginPage}) {
     };
 
     return (
-        <Box textAlign="center" mt={5}>
+        <Box textAlign="center" >
             <Dialog open={openLoginPage} onClose={handleClose}
                     sx={{'& .MuiPaper-root': {borderRadius: '16px', padding: '20px'}}}>
                 <Box onClick={() => handleClose()} sx={{

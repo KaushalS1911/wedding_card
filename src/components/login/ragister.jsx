@@ -28,7 +28,7 @@ function Register({openRegister, setOpenRegister, setOpenLoginPage}) {
 
 
     return (
-        <Box textAlign="center" mt={5}>
+        <Box textAlign="center">
             <Dialog open={openRegister} onClose={handleClose}
                     sx={{'& .MuiPaper-root': {borderRadius: '16px', padding: '20px'}}}>
                 <Box onClick={() => handleClose()} sx={{
