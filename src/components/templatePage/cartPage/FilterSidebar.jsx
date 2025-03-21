@@ -114,164 +114,164 @@
 import React from "react";
 import TuneIcon from "@mui/icons-material/Tune";
 import CloseIcon from "@mui/icons-material/Close";
-import { Grid, Typography, Box, Drawer, Button } from "@mui/material";
+import {Grid, Typography, Box, Drawer, Button} from "@mui/material";
 
 
 const priceOptions = ["Free", "Premium"];
 
 const colorOptions = [
-  { color: "blue" },
-  { color: "black" },
-  { color: "white" },
-  { color: "#f5f5dc" },
-  { color: "grey" },
-  { color: "#e3dac9" },
-  { color: "green" },
-  { color: "red" },
-  { color: "brown" },
-  { color: "purple" },
-  { color: "pink" },
-  { color: "orange" },
-  { color: "silver" },
-  { color: "yellow" },
+    {color: "blue"},
+    {color: "black"},
+    {color: "white"},
+    {color: "#f5f5dc"},
+    {color: "grey"},
+    {color: "#e3dac9"},
+    {color: "green"},
+    {color: "red"},
+    {color: "brown"},
+    {color: "purple"},
+    {color: "pink"},
+    {color: "orange"},
+    {color: "silver"},
+    {color: "yellow"},
 ];
 
 const photoOptions = ['With photo'];
 
-const orientation = ['Portrait','Landscape','Square'];
+const orientation = ['Portrait', 'Landscape', 'Square'];
 
-const sortBy = ['Most popular','Newest'];
+const sortBy = ['Most popular', 'Newest'];
 
-const FilterSidebar = () => {
-  return (
-    <>
-      <Box sx={{ width: 400, p: 2 }}>
-        {/* price Section */}
-        <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-          <Box sx={{display:"flex",justifyContent:"end"}}> <CloseIcon/> </Box>
-          <Typography sx={{ fontWeight: "bold", mb: 1 }}>Price</Typography>
-          <Grid container spacing={1}>
-            {priceOptions.map((price, index) => (
-              <Grid item xs={3} key={index}>
-                <Box
-                  sx={{
-                    fontSize: "13px",
-                    textAlign: "center",
-                    border: "1px solid #000",
-                    padding: "10px 0",
-                    borderRadius: "30px",
-                    cursor: "pointer",
-                    "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
-                  }}
-                >
-                  {price}
+const FilterSidebar = ({setOpenDrawer}) => {
+    return (
+        <>
+            <Box sx={{width: {lg: "100%", xs: "100%", sm: "450px"}, p: 2}}>
+                {/* price Section */}
+                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
+                    <Box sx={{display: {xs: "flex", lg: "none"}, justifyContent: "end"}}
+                         onClick={() => setOpenDrawer(false)}> <CloseIcon/> </Box>
+                    <Typography sx={{fontWeight: "bold", mb: 1}}>Price</Typography>
+                    <Box sx={{display: "flex"}}>
+                        {priceOptions.map((price, index) => (
+                            <Box key={index} sx={{padding: "10px 10px 10px 0"}}>
+                                <Box
+                                    sx={{
+                                        display: "inline-block",
+                                        fontSize: "13px",
+                                        textAlign: "center",
+                                        border: "1px solid #000",
+                                        padding: "10px 20px",
+                                        borderRadius: "30px",
+                                        cursor: "pointer",
+                                        "&:hover": {bgcolor: "#E9E9EA", color: "#000"},
+                                    }}
+                                >
+                                    {price}
+                                </Box>
+                            </Box>
+                        ))}
+                    </Box>
                 </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
 
-        {/* Color Section */}
-        <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-          <Typography sx={{ fontWeight: "bold", mb: 1 }}>Color</Typography>
-          <Grid container spacing={1}>
-            {colorOptions.map((item, index) => (
-              <Grid item xs={1} key={index}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 2,
-                    cursor: "pointer",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: "25px",
-                      height: "25px",
-                      borderRadius: "50%",
-                      border: "1px solid #000",
-                      backgroundColor: item.color,
-                    }}
-                  />
+                {/* Color Section */}
+                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
+                    <Typography sx={{fontWeight: "bold", mb: 1}}>Color</Typography>
+                    <Box sx={{display: "flex", flexWrap: "wrap"}}>
+                        {colorOptions.map((item, index) => (
+                            <Box
+                                key={index}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    p: 1,
+                                    cursor: "pointer",
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        p:1.5,
+                                        borderRadius: "50%",
+                                        border: "1px solid #000",
+                                        backgroundColor: item.color,
+                                    }}
+                                />
+                            </Box>
+                        ))}
+                    </Box>
                 </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
 
-        <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-          <Typography sx={{ fontWeight: "bold", mb: 1 }}>Photo</Typography>
-          <Grid container spacing={1}>
-            {photoOptions.map((photo, index) => (
-              <Grid item xs={3} key={index}>
-                <Box
-                  sx={{
-                    fontSize: "13px",
-                    textAlign: "center",
-                    border: "1px solid #000",
-                    padding: "10px 0",
-                    borderRadius: "30px",
-                    cursor: "pointer",
-                    "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
-                  }}
-                >
-                  {photo}
+                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
+                    <Typography sx={{fontWeight: "bold", mb: 1}}>Photo</Typography>
+                    <Box sx={{display: "flex", flexWrap: "wrap"}}>
+                        {photoOptions.map((photo, index) => (
+                            <Box key={index} sx={{padding: "10px 10px 10px 0"}}>
+                                <Box
+                                    sx={{
+                                        fontSize: "13px",
+                                        textAlign: "center",
+                                        border: "1px solid #000",
+                                        padding: "10px 20px",
+                                        borderRadius: "30px",
+                                        cursor: "pointer",
+                                        "&:hover": {bgcolor: "#E9E9EA", color: "#000"},
+                                    }}
+                                >
+                                    {photo}
+                                </Box>
+                            </Box>
+                        ))}
+                    </Box>
                 </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
 
-        <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-          <Typography sx={{ fontWeight: "bold", mb: 1 }}>Orientation</Typography>
-          <Grid container spacing={1}>
-            {orientation.map((item, index) => (
-              <Grid item xs={3} key={index}>
-                <Box
-                  sx={{
-                    fontSize: "13px",
-                    textAlign: "center",
-                    border: "1px solid #000",
-                    padding: "10px 0",
-                    borderRadius: "30px",
-                    cursor: "pointer",
-                    "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
-                  }}
-                >
-                  {item}
+                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
+                    <Typography sx={{fontWeight: "bold", mb: 1}}>Orientation</Typography>
+                    <Box sx={{display: "flex", flexWrap: "wrap"}}>
+                        {orientation.map((item, index) => (
+                            <Box key={index} sx={{padding: "10px 10px 10px 0"}}>
+                                <Box
+                                    sx={{
+                                        fontSize: "13px",
+                                        textAlign: "center",
+                                        border: "1px solid #000",
+                                        padding: "10px 20px",
+                                        borderRadius: "30px",
+                                        cursor: "pointer",
+                                        "&:hover": {bgcolor: "#E9E9EA", color: "#000"},
+                                    }}
+                                >
+                                    {item}
+                                </Box>
+                            </Box>
+                        ))}
+                    </Box>
                 </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
 
-        <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-          <Typography sx={{ fontWeight: "bold", mb: 1 }}>Sort by</Typography>
-          <Grid container spacing={1}>
-            {sortBy.map((item, index) => (
-              <Grid item xs={4} key={index}>
-                <Box
-                   sx={{
-                    fontSize: "13px",
-                    textAlign: "center",
-                    border: "1px solid #000",
-                    padding: "10px 0",
-                    borderRadius: "30px",
-                    cursor: "pointer",
-                    "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
-                  }}
-                >
-                  {item}
+                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
+                    <Typography sx={{fontWeight: "bold", mb: 1}}>Sort by</Typography>
+                    <Box sx={{display: "flex", flexWrap: "wrap"}}>
+                        {sortBy.map((item, index) => (
+                            <Box key={index} sx={{padding: "10px 10px 10px 0"}}>
+                                <Box
+                                    sx={{
+                                        fontSize: "13px",
+                                        textAlign: "center",
+                                        border: "1px solid #000",
+                                        padding: "10px 20px",
+                                        borderRadius: "30px",
+                                        cursor: "pointer",
+                                        "&:hover": {bgcolor: "#E9E9EA", color: "#000"},
+                                    }}
+                                >
+                                    {item}
+                                </Box>
+                            </Box>
+                        ))}
+                    </Box>
                 </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
 
-      </Box>
-    </>
-  );
+            </Box>
+        </>
+    );
 };
 
 export default FilterSidebar;
