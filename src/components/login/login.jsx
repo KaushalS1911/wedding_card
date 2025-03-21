@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useForm} from 'react-hook-form';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
     Box,
     Button,
@@ -11,21 +11,40 @@ import {
     IconButton,
     Typography
 } from '@mui/material';
-import {Visibility, VisibilityOff} from '@mui/icons-material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Ragister from "./ragister.jsx";
 import CloseIcon from "@mui/icons-material/Close";
+import axiosInstance from '../../Instance.jsx';
 
-function Login({openLoginPage, setOpenLoginPage}) {
-    const {register, handleSubmit, formState: {errors} , reset} = useForm();
+
+function Login({ openLoginPage, setOpenLoginPage }) {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [showPassword, setShowPassword] = useState(false);
     const [openRegister, setOpenRegister] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        try {
+            const response = await axiosInstance.post('api/auth/login', data);
+    
+            if (response.data?.token) {
+                localStorage.setItem('token', response.data.token); // Store token
+                console.log("Login Successful:", response.data);
+            } else {
+                console.error("No token received!");
+            }
+    
+            setOpenLoginPage(false);
+            reset();
+        } catch (error) {
+            setErrorMessage(error.response?.data?.message || "Login failed");
+        }
     };
+
     const handleClose = () => {
-        setOpenLoginPage(false)
+        setOpenLoginPage(false);
         reset();
+        setErrorMessage("");
     };
 
     return (
@@ -43,8 +62,8 @@ function Login({openLoginPage, setOpenLoginPage}) {
                     position: "absolute",
                     right: "2%",
                     top: "2%",
-                }}><CloseIcon/></Box>
-                <DialogTitle sx={{textAlign: 'center', fontWeight: 'bold'}}>Log in</DialogTitle>
+                }}><CloseIcon /></Box>
+                <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>Log in</DialogTitle>
                 <DialogContent>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <TextField
@@ -54,11 +73,11 @@ function Login({openLoginPage, setOpenLoginPage}) {
                             variant="outlined"
                             {...register("email", {
                                 required: "Email is required",
-                                pattern: {value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email format"}
+                                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email format" }
                             })}
                             error={!!errors.email}
                             helperText={errors.email?.message}
-                            sx={{borderRadius: '24px'}}
+                            sx={{ borderRadius: '24px' }}
                         />
                         <Box position="relative">
                             <TextField
@@ -69,19 +88,20 @@ function Login({openLoginPage, setOpenLoginPage}) {
                                 variant="outlined"
                                 {...register("password", {
                                     required: "Password is required",
-                                    minLength: {value: 6, message: "At least 6 characters"}
+                                    minLength: { value: 6, message: "At least 6 characters" }
                                 })}
                                 error={!!errors.password}
                                 helperText={errors.password?.message || "At least 6 characters"}
-                                sx={{borderRadius: '24px'}}
+                                sx={{ borderRadius: '24px' }}
                             />
                             <IconButton
                                 onClick={() => setShowPassword(!showPassword)}
-                                sx={{position: 'absolute', right: 10, top: '18%'}}
+                                sx={{ position: 'absolute', right: 10, top: '18%' }}
                             >
-                                {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
                             </IconButton>
                         </Box>
+                        {errorMessage && <Typography color="error" sx={{ mt: 1 }}>{errorMessage}</Typography>}
                         <Button
                             type="submit"
                             fullWidth
@@ -99,22 +119,22 @@ function Login({openLoginPage, setOpenLoginPage}) {
                             Log in
                         </Button>
                     </form>
-                    <Typography variant="body2" sx={{marginTop: '16px', textAlign: 'center', color: '#63696C'}}>
+                    <Typography variant="body2" sx={{ marginTop: '16px', textAlign: 'center', color: '#63696C' }}>
                         Already a member? <a onClick={() => {
-                        setOpenLoginPage(false);
-                        setOpenRegister(true);
-                    }}
-                                             style={{
-                        color: '#14C76C',
-                        textDecoration: 'none',
-                        fontWeight: 'bold',
-                        cursor: "pointer"
-                    }}>Sign up</a>
+                            setOpenLoginPage(false);
+                            setOpenRegister(true);
+                        }}
+                            style={{
+                                color: '#14C76C',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                cursor: "pointer"
+                            }}>Sign up</a>
                     </Typography>
                     <Typography variant="caption" sx={{display: 'block',textAlign:"center", marginTop: '10px', color: '#63696C'}}>
                         By signing up, I accept Greetings Island’s <a href="#"
-                                                                      style={{color: 'black', fontWeight: 'bold'}}>Terms
-                        of Use</a> & <a href="#" style={{color: 'black', fontWeight: 'bold'}}>Privacy Policy</a>
+                            style={{ color: 'black', fontWeight: 'bold' }}>Terms
+                            of Use</a> & <a href="#" style={{ color: 'black', fontWeight: 'bold' }}>Privacy Policy</a>
                     </Typography>
                 </DialogContent>
             </Dialog>

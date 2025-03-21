@@ -14,7 +14,7 @@ function Ffavorites() {
     ];
 
     return (
-        <Container maxWidth={"xxl"}>
+        <Container maxWidth="xl" sx={{my:5}} >
             {/* Image Box */}
             <Box sx={{
                 height: "479px",
@@ -27,7 +27,7 @@ function Ffavorites() {
                 },
             }}>
                 <img
-                    src={colors[selectedIndex].image} // Change image based on selected color
+                    src={colors[selectedIndex].image}
                     alt="Wedding Invite"
                     style={{
                         width: "100%",
