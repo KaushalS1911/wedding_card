@@ -32,7 +32,7 @@ function Favorite() {
                     flexWrap: "nowrap", // ✅ Icons ek hi row me rahenge
                     gap: 1,
                     alignItems: "center",
-                    justifyContent: "space-evenly", // ✅ Even spacing between icons
+                    justifyContent: "center", // ✅ Even spacing between icons
                     my: 2,
                 }}
             >
@@ -49,6 +49,7 @@ function Favorite() {
                             minWidth: "50px", // ✅ Buttons chhoti size ke honge
                             px: 1,
                             py: 1,
+                            mx: {xs:0, sm:1},
                             fontWeight: "bold",
                             color: activeTab === item.route ? "#00C853" : "black",
                             backgroundColor: activeTab === item.route ? "#E8F5E9" : "transparent",
