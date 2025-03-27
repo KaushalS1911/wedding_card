@@ -114,26 +114,26 @@
 import React from "react";
 import TuneIcon from "@mui/icons-material/Tune";
 import CloseIcon from "@mui/icons-material/Close";
-import {Grid, Typography, Box, Drawer, Button} from "@mui/material";
+import { Grid, Typography, Box, Drawer, Button } from "@mui/material";
 
 
 const priceOptions = ["Free", "Premium"];
 
 const colorOptions = [
-    {color: "blue"},
-    {color: "black"},
-    {color: "white"},
-    {color: "#f5f5dc"},
-    {color: "grey"},
-    {color: "#e3dac9"},
-    {color: "green"},
-    {color: "red"},
-    {color: "brown"},
-    {color: "purple"},
-    {color: "pink"},
-    {color: "orange"},
-    {color: "silver"},
-    {color: "yellow"},
+    { color: "blue" },
+    { color: "black" },
+    { color: "white" },
+    { color: "#f5f5dc" },
+    { color: "grey" },
+    { color: "#e3dac9" },
+    { color: "green" },
+    { color: "red" },
+    { color: "brown" },
+    { color: "purple" },
+    { color: "pink" },
+    { color: "orange" },
+    { color: "silver" },
+    { color: "yellow" },
 ];
 
 const photoOptions = ['With photo'];
@@ -142,18 +142,18 @@ const orientation = ['Portrait', 'Landscape', 'Square'];
 
 const sortBy = ['Most popular', 'Newest'];
 
-const FilterSidebar = ({setOpenDrawer}) => {
+const FilterSidebar = ({ setOpenDrawer }) => {
     return (
         <>
-            <Box sx={{width: {lg: "100%", xs: "100%", sm: "450px"}, p: 2}}>
+            <Box sx={{ width: { lg: "100%", xs: "100%", sm: "450px" }, p: 2 }}>
                 {/* price Section */}
-                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
-                    <Box sx={{display: {xs: "flex", lg: "none"}, justifyContent: "end"}}
-                         onClick={() => setOpenDrawer(false)}> <CloseIcon/> </Box>
-                    <Typography sx={{fontWeight: "bold", mb: 1}}>Price</Typography>
-                    <Box sx={{display: "flex"}}>
+                <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
+                    <Box sx={{ display: { xs: "flex", lg: "none" }, justifyContent: "end" }}
+                        onClick={() => setOpenDrawer(false)}> <CloseIcon /> </Box>
+                    <Typography sx={{ fontWeight: "bold", mb: 1 }}>Price</Typography>
+                    <Box sx={{ display: "flex" }}>
                         {priceOptions.map((price, index) => (
-                            <Box key={index} sx={{padding: "10px 10px 10px 0"}}>
+                            <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
                                 <Box
                                     sx={{
                                         display: "inline-block",
@@ -163,7 +163,7 @@ const FilterSidebar = ({setOpenDrawer}) => {
                                         padding: "10px 20px",
                                         borderRadius: "30px",
                                         cursor: "pointer",
-                                        "&:hover": {bgcolor: "#E9E9EA", color: "#000"},
+                                        "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
                                     }}
                                 >
                                     {price}
@@ -174,9 +174,9 @@ const FilterSidebar = ({setOpenDrawer}) => {
                 </Box>
 
                 {/* Color Section */}
-                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
-                    <Typography sx={{fontWeight: "bold", mb: 1}}>Color</Typography>
-                    <Box sx={{display: "flex", flexWrap: "wrap"}}>
+                <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
+                    <Typography sx={{ fontWeight: "bold", mb: 1 }}>Color</Typography>
+                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
                         {colorOptions.map((item, index) => (
                             <Box
                                 key={index}
@@ -189,10 +189,14 @@ const FilterSidebar = ({setOpenDrawer}) => {
                             >
                                 <Box
                                     sx={{
-                                        p:1.5,
+                                        p: 1.5,
                                         borderRadius: "50%",
-                                        border: "1px solid #000",
                                         backgroundColor: item.color,
+                                        transition: "border 0.3s ease-in-out", // Smooth transition
+                                        border: "2px solid transparent", // Default border (invisible)
+                                        "&:hover": {
+                                            border: "2px solid black", // Border visible on hover
+                                        },
                                     }}
                                 />
                             </Box>
@@ -200,11 +204,11 @@ const FilterSidebar = ({setOpenDrawer}) => {
                     </Box>
                 </Box>
 
-                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
-                    <Typography sx={{fontWeight: "bold", mb: 1}}>Photo</Typography>
-                    <Box sx={{display: "flex", flexWrap: "wrap"}}>
+                <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
+                    <Typography sx={{ fontWeight: "bold", mb: 1 }}>Photo</Typography>
+                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
                         {photoOptions.map((photo, index) => (
-                            <Box key={index} sx={{padding: "10px 10px 10px 0"}}>
+                            <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
                                 <Box
                                     sx={{
                                         fontSize: "13px",
@@ -213,7 +217,7 @@ const FilterSidebar = ({setOpenDrawer}) => {
                                         padding: "10px 20px",
                                         borderRadius: "30px",
                                         cursor: "pointer",
-                                        "&:hover": {bgcolor: "#E9E9EA", color: "#000"},
+                                        "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
                                     }}
                                 >
                                     {photo}
@@ -223,11 +227,11 @@ const FilterSidebar = ({setOpenDrawer}) => {
                     </Box>
                 </Box>
 
-                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
-                    <Typography sx={{fontWeight: "bold", mb: 1}}>Orientation</Typography>
-                    <Box sx={{display: "flex", flexWrap: "wrap"}}>
+                <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
+                    <Typography sx={{ fontWeight: "bold", mb: 1 }}>Orientation</Typography>
+                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
                         {orientation.map((item, index) => (
-                            <Box key={index} sx={{padding: "10px 10px 10px 0"}}>
+                            <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
                                 <Box
                                     sx={{
                                         fontSize: "13px",
@@ -236,7 +240,7 @@ const FilterSidebar = ({setOpenDrawer}) => {
                                         padding: "10px 20px",
                                         borderRadius: "30px",
                                         cursor: "pointer",
-                                        "&:hover": {bgcolor: "#E9E9EA", color: "#000"},
+                                        "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
                                     }}
                                 >
                                     {item}
@@ -246,11 +250,11 @@ const FilterSidebar = ({setOpenDrawer}) => {
                     </Box>
                 </Box>
 
-                <Box sx={{borderBottom: "1px solid #ccc", py: 2}}>
-                    <Typography sx={{fontWeight: "bold", mb: 1}}>Sort by</Typography>
-                    <Box sx={{display: "flex", flexWrap: "wrap"}}>
+                <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
+                    <Typography sx={{ fontWeight: "bold", mb: 1 }}>Sort by</Typography>
+                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
                         {sortBy.map((item, index) => (
-                            <Box key={index} sx={{padding: "10px 10px 10px 0"}}>
+                            <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
                                 <Box
                                     sx={{
                                         fontSize: "13px",
@@ -259,7 +263,7 @@ const FilterSidebar = ({setOpenDrawer}) => {
                                         padding: "10px 20px",
                                         borderRadius: "30px",
                                         cursor: "pointer",
-                                        "&:hover": {bgcolor: "#E9E9EA", color: "#000"},
+                                        "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
                                     }}
                                 >
                                     {item}

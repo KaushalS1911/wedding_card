@@ -1,11 +1,12 @@
 import React from 'react';
-import img from '../../assets/contact/banner-desktop.avif'
+import img from '../../assets/contact/banner-desktop.avif';
 import { Controller, useForm } from "react-hook-form";
-import { Autocomplete, Box, Button, Container, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Container, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Instagram } from "@mui/icons-material";
 import CallMadeIcon from '@mui/icons-material/CallMade';
 import axios from "axios";
+import axiosInstance from '../../Instance';
 
 function Contact() {
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
@@ -17,8 +18,15 @@ function Contact() {
             email: data.email,
             description: data.description,
         };
-       axios.post("https://wedding-card-be.onrender.com/api/contact" , payload)
-        reset()
+
+        axiosInstance.post("/api/inquiry", payload)
+            .then(response => {
+                console.log("Inquiry submitted successfully:", response.data);
+                reset();
+            })
+            .catch(error => {
+                console.error("Error submitting inquiry:", error);
+            });
     };
 
     const options = [
@@ -65,7 +73,6 @@ function Contact() {
                     <img src={img} alt="contact" style={{ width: '100%', objectFit: 'contain' }} />
                 </Box>
             </Box>
-
 
             <Box sx={{ display: { md: "flex", xs: "unset" }, justifyContent: "center", p: 4 }}>
                 <Box width={500} sx={{ width: { md: "500px", xs: "100%" } }} p={3} borderRadius={8} bgcolor="#F4F4F4">
@@ -147,7 +154,7 @@ function Contact() {
                         </Button>
                     </form>
                 </Box>
-                <Box sx={{ maxWidth: 400, p: 2, ml: { md: "100px" }, mt: { xs: "50px", md: "unset" }}}>
+                <Box sx={{ maxWidth: 400, p: 2, ml: { md: "100px" }, mt: { xs: "50px", md: "unset" } }}>
                     <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
                         Need answers fast?
                     </Typography>
@@ -179,7 +186,7 @@ function Contact() {
 
                     <Typography sx={{ fontSize: 14, color: "#333", mt: 3 }}>Message us on social</Typography>
                     <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                        <Box sx={{ backgroundColor: "#1BC47D", borderRadius: "50%", p: "12px 12px 5px 12px", }}>
+                        <Box sx={{ backgroundColor: "#1BC47D", borderRadius: "50%", p: "12px 12px 5px 12px",cursor:'pointer' }}>
                             <Instagram sx={{ color: "white" }} />
                         </Box>
                     </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Grid,
@@ -23,16 +23,29 @@ import LanguageIcon from "@mui/icons-material/Language";
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../Instance";
 
 const Footer = () => {
 
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
 
-    const handleClick = (item) => {
-        if (item === "Contact us") {
-            navigate("/contact");
-        }
-    };
+  useEffect(() => {
+    axiosInstance
+      .get("/api/parent-category")
+      .then((response) => {
+        setCategories(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+
+  const handleClick = (item) => {
+    if (item === "Contact us") {
+      navigate("/contact");
+    }
+  };
 
 
   return (
@@ -195,7 +208,7 @@ const Footer = () => {
         {/* Main Links Section */}
         <Grid container spacing={3} justifyContent="center">
           {/* Left Section (Buttons) */}
-          <Grid
+          {/* <Grid
             item
             xs={12}
             lg={1.5}
@@ -242,6 +255,41 @@ const Footer = () => {
             >
               Cards
             </Button>
+          </Grid> */}
+
+          <Grid
+            item
+            xs={12}
+            lg={1.5}
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "row", lg: "column" },
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px",
+              mb: { xs: 2, lg: 0 },
+            }}
+          >
+            {categories && categories?.map((category, index) => (
+              <Button
+                key={index}
+                variant="contained"
+                onClick={() => navigate(`/${category.name}`)}
+                sx={{
+                  backgroundColor: "white",
+                  color: "black",
+                  boxShadow: "none",
+                  borderRadius: "50px",
+                  width: "118px",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  textTransform: "capitalize",
+                  "&:hover": { backgroundColor: "#e0e0e0", boxShadow: "none" },
+                }}
+              >
+                {category?.name}
+              </Button>
+            ))}
           </Grid>
 
           {/* Divider Line */}
