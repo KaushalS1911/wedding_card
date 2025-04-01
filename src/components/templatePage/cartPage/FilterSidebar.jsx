@@ -192,10 +192,10 @@ const FilterSidebar = ({ setOpenDrawer }) => {
                                         p: 1.5,
                                         borderRadius: "50%",
                                         backgroundColor: item.color,
-                                        transition: "border 0.3s ease-in-out", // Smooth transition
-                                        border: "2px solid transparent", // Default border (invisible)
+                                        transition: "0.3s",
+                                        border: "1px solid #000",
                                         "&:hover": {
-                                            border: "2px solid black", // Border visible on hover
+                                            border: "2px solid black",
                                         },
                                     }}
                                 />

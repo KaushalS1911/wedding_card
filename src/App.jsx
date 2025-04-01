@@ -36,7 +36,7 @@ function App() {
         <Route path='/invitations' element={<Invitations />} />
         <Route path='/contact' element={<ContactPage/>} />
         <Route path='/template-page' element={<TemplatePage />} />
-        <Route path='/template-page/invitation-card' element={<InvitationCard />} />
+        <Route path='/template-page/invitation-card/:id' element={<InvitationCard />} />
         <Route path='/singleblog' element={<SingleBlog />} />
         <Route path="/profile/*" element={<Favorites />} />
       </Routes>

@@ -1,26 +1,43 @@
-import React, { useState } from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Container, Grid } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import Img1 from "../../../assets/TemplatePage/big-heart-12607.avif";
-import Img2 from "../../../assets/TemplatePage/decorative-stripes-35124.avif";
-import Img3 from "../../../assets/TemplatePage/big-heart-12607.avif";
 import { useNavigate } from "react-router-dom";
-
-const invitationData = [
-    { title: "Golden Minimalism", images: [Img1, Img2, Img3], colors: ["#F9F5F3", "#BDA88D", "#1C1C1C"] },
-    { title: "Modern Elegance", images: [Img2, Img3, Img1], colors: ["#EFEFEF", "#A8937B", "#2E2E2E"], isPremium: true },
-    { title: "Classic Vibes", images: [Img3, Img1, Img2], colors: ["#FFF5E1", "#C0A68B", "#3D3D3D"] },
-    { title: "Royal Touch", images: [Img1, Img2, Img3], colors: ["#EDEDED", "#D4AF37", "#4B4B4B"], isPremium: true }
-];
+import axiosInstance from "../../../Instance.jsx";
 
 const InvitationGallery = () => {
+    const [templates, setTemplates] = useState([]);
+
+    useEffect(() => {
+        axiosInstance.get('/api/template')
+            .then((res) => {
+                if (res.data && res.data.data) {
+                    const formattedTemplates = res.data.data.map(item => ({
+                        title: item.name || "Untitled",
+                        images: item.colors?.map(color => color.templateImages) || [],
+                        colors: item.colors?.map(c => c.hex) || ["#000000"],
+                        isPremium: item.isPremium || false,
+                        id: item._id,
+                    }));
+                    setTemplates(formattedTemplates);
+                } else {
+                    console.log("No templates found.");
+                }
+            })
+            .catch((err) => console.error("API Error:", err));
+    }, []);
+
     return (
         <Container maxWidth="xl">
             <Grid container spacing={2}>
-                {invitationData.map((invite, index) => (
+                {templates.map((template, index) => (
                     <Grid item xs={6} sm={6} md={4} xl={3} key={index}>
-                        <InvitationCard title={invite.title} images={invite.images} colors={invite.colors}
-                            isPremium={invite.isPremium} />
+                        <InvitationCard
+                            title={template.title}
+                            images={template.images}
+                            colors={template.colors}
+                            isPremium={template.isPremium}
+                            id={template.id}
+                        />
                     </Grid>
                 ))}
             </Grid>
@@ -28,12 +45,12 @@ const InvitationGallery = () => {
     );
 };
 
-const InvitationCard = ({ title, images, colors, isPremium }) => {
+const InvitationCard = ({ title, images, colors, isPremium, id }) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const navigate = useNavigate();
 
     return (
-        <Box textAlign="start" sx={{ position: "relative",mb:2 }}>
+        <Box textAlign="start" sx={{ position: "relative" }}>
             {/* Premium Badge */}
             {isPremium && (
                 <Box
@@ -59,18 +76,18 @@ const InvitationCard = ({ title, images, colors, isPremium }) => {
 
             {/* Image Box */}
             <Box
-                onClick={() => navigate('/template-page/invitation-card')}
+                onClick={() => navigate(`/template-page/invitation-card/${id}`)}
                 sx={{
-                    height: "auto",
+                    height: {sm:"400px" , xs:"auto"},
                     width: "100%",
                     borderRadius: "8px",
                     overflow: "hidden",
-                    border: "2px solid #EBEBEB",
+                    border: "1px solid #EBEBEB",
                     "&:hover": { border: "2px solid #000" }
                 }}
             >
                 <img
-                    src={images[selectedIndex]}
+                    src={images[selectedIndex] || images[0]} // Display selected image
                     alt={title}
                     style={{
                         width: "100%",
@@ -83,15 +100,16 @@ const InvitationCard = ({ title, images, colors, isPremium }) => {
             </Box>
 
             {/* Title */}
-            <Box
-                sx={{ fontSize: { sm: "16px", xs: "12px" }, mt: "13px", color: "#63696c", fontWeight: "500" }}>{title}</Box>
+            <Box sx={{ fontSize: { sm: "16px", xs: "12px" }, mt: "13px", color: "#63696c", fontWeight: "500" }}>
+                {title}
+            </Box>
 
             {/* Color Selector Section */}
             <Box sx={{ display: "flex", justifyContent: "start", gap: "5px", mt: "10px" }}>
                 {colors.map((color, index) => (
                     <Box
                         key={index}
-                        onClick={() => setSelectedIndex(index)}
+                        onClick={() => setSelectedIndex(index)} // Change image on color click
                         sx={{
                             p: "1.5px",
                             borderRadius: "50%",
