@@ -1,155 +1,43 @@
-// import React, { useState } from "react";
-// import {
-//   Box,
-//   Typography,
-//   ToggleButton,
-//   ToggleButtonGroup,
-//   Accordion,
-//   AccordionSummary,
-//   AccordionDetails,
-//   IconButton,
-//   Button,
-// } from "@mui/material";
-// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-// const FilterSidebar = () => {
-//   // State for filters
-//   const [selectedPrices, setSelectedPrices] = useState([]);
-//   const [selectedSort, setSelectedSort] = useState([]);
-//   const [selectedOrientation, setSelectedOrientation] = useState([]);
-//   const [selectedColor, setSelectedColor] = useState(null);
-
-//   const colors = [
-//     "#000", "#808080", "#fff", "#d32f2f", "#e91e63", "#81c784",
-//     "#3f51b5", "#673ab7", "#fdd835", "#ffeb3b", "#ffcc80", "#795548",
-//   ];
-
-//   return (
-//     <Box sx={{ width: "280px", padding: "16px", borderRight: "1px solid #ddd" }}>
-//       {/* Pregnancy Category */}
-//       <Accordion defaultExpanded>
-//         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-//           <Typography sx={{ fontWeight: "bold" }}>Pregnancy</Typography>
-//         </AccordionSummary>
-//         <AccordionDetails>
-//           <Typography sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-//             <span role="img" aria-label="baby">🎉</span> Baby shower invites
-//           </Typography>
-//           <Typography sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-//             <span role="img" aria-label="announcement">🌟</span> Birth announcements
-//           </Typography>
-//         </AccordionDetails>
-//       </Accordion>
-
-//       {/* Price Filter */}
-//       <Typography sx={{ mt: 2, fontWeight: "bold" }}>Price</Typography>
-//       <ToggleButtonGroup
-//         value={selectedPrices}
-//         onChange={(e, newPrices) => setSelectedPrices(newPrices)}
-//         aria-label="price filter"
-//         sx={{ mt: 1, display: "flex" }}
-//       >
-//         <ToggleButton value="free" sx={{ borderRadius: "50px" }}>Free</ToggleButton>
-//         <ToggleButton value="premium" sx={{ borderRadius: "50px" }}>Premium</ToggleButton>
-//       </ToggleButtonGroup>
-
-//       {/* Color Filter */}
-//       <Typography sx={{ mt: 2, fontWeight: "bold" }}>Color</Typography>
-//       <Box sx={{ display: "flex", flexWrap: "wrap", gap: "8px", mt: 1 }}>
-//         {colors.map((color, index) => (
-//           <IconButton
-//             key={index}
-//             sx={{
-//               width: 28,
-//               height: 28,
-//               backgroundColor: color,
-//               borderRadius: "50%",
-//               border: selectedColor === color ? "3px solid #000" : "1px solid #ccc",
-//             }}
-//             onClick={() => setSelectedColor(color)}
-//           />
-//         ))}
-//       </Box>
-
-//       {/* Photo Filter */}
-//       <Typography sx={{ mt: 2, fontWeight: "bold" }}>Photo</Typography>
-//       <Button
-//         variant={selectedPrices.includes("photo") ? "contained" : "outlined"}
-//         sx={{ mt: 1, borderRadius: "50px" }}
-//         onClick={() => setSelectedPrices(prev => prev.includes("photo") ? prev.filter(p => p !== "photo") : [...prev, "photo"])}
-//       >
-//         With photo
-//       </Button>
-
-//       {/* Orientation Filter */}
-//       <Typography sx={{ mt: 2, fontWeight: "bold" }}>Orientation</Typography>
-//       <ToggleButtonGroup
-//         value={selectedOrientation}
-//         onChange={(e, newOrientations) => setSelectedOrientation(newOrientations)}
-//         aria-label="orientation filter"
-//         sx={{ mt: 1, display: "flex", flexWrap: "wrap" }}
-//       >
-//         <ToggleButton value="portrait" sx={{ borderRadius: "50px" }}>Portrait</ToggleButton>
-//         <ToggleButton value="landscape" sx={{ borderRadius: "50px" }}>Landscape</ToggleButton>
-//         <ToggleButton value="square" sx={{ borderRadius: "50px" }}>Square</ToggleButton>
-//       </ToggleButtonGroup>
-
-//       {/* Sort By Filter */}
-//       <Typography sx={{ mt: 2, fontWeight: "bold" }}>Sort by</Typography>
-//       <ToggleButtonGroup
-//         value={selectedSort}
-//         onChange={(e, newSort) => setSelectedSort(newSort)}
-//         aria-label="sort by filter"
-//         sx={{ mt: 1, display: "flex" }}
-//       >
-//         <ToggleButton value="most-popular" sx={{ borderRadius: "50px" }}>Most popular</ToggleButton>
-//         <ToggleButton value="newest" sx={{ borderRadius: "50px" }}>Newest</ToggleButton>
-//       </ToggleButtonGroup>
-//     </Box>
-//   );
-// };
-
-// export default FilterSidebar;
-
-import React from "react";
-import TuneIcon from "@mui/icons-material/Tune";
+import React, { useEffect, useState } from "react";
+import { Typography, Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Grid, Typography, Box, Drawer, Button } from "@mui/material";
-
+import { useNavigate, useLocation } from "react-router-dom";
+import axiosInstance from "../../../Instance.jsx";
 
 const priceOptions = ["Free", "Premium"];
-
-const colorOptions = [
-    { color: "blue" },
-    { color: "black" },
-    { color: "white" },
-    { color: "#f5f5dc" },
-    { color: "grey" },
-    { color: "#e3dac9" },
-    { color: "green" },
-    { color: "red" },
-    { color: "brown" },
-    { color: "purple" },
-    { color: "pink" },
-    { color: "orange" },
-    { color: "silver" },
-    { color: "yellow" },
-];
-
-const photoOptions = ['With photo'];
-
-const orientation = ['Portrait', 'Landscape', 'Square'];
-
-const sortBy = ['Most popular', 'Newest'];
+const orientation = ["Portrait", "Landscape", "Square"];
 
 const FilterSidebar = ({ setOpenDrawer }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [data, setData] = useState(null);
+
+    const searchParams = new URLSearchParams(location.search);
+
+    const handleFilterClick = (key, value) => {
+        if (key === "isPremium") {
+            searchParams.set(key, value === "Premium" ? "true" : "false");
+        } else {
+            searchParams.set(key, value);
+        }
+        navigate(`?${searchParams.toString()}`, { replace: true });
+    };
+
+    useEffect(() => {
+        axiosInstance.get("/api/template/attributes")
+            .then(res => setData(res.data.data))
+            .catch(err => console.log(err));
+    }, []);
+
     return (
-        <>
-            <Box sx={{ width: { lg: "100%", xs: "100%", sm: "450px" }, p: 2 }}>
-                {/* price Section */}
+        <Box sx={{ width: { lg: "100%", xs: "100%", sm: "450px" }, p: 2 }}>
+            <Box>
+                <Box sx={{ display: { xs: "flex", lg: "none" }, justifyContent: "end" }} onClick={() => setOpenDrawer(false)}>
+                    <CloseIcon />
+                </Box>
+
+
                 <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-                    <Box sx={{ display: { xs: "flex", lg: "none" }, justifyContent: "end" }}
-                        onClick={() => setOpenDrawer(false)}> <CloseIcon /> </Box>
                     <Typography sx={{ fontWeight: "bold", mb: 1 }}>Price</Typography>
                     <Box sx={{ display: "flex" }}>
                         {priceOptions.map((price, index) => (
@@ -163,8 +51,10 @@ const FilterSidebar = ({ setOpenDrawer }) => {
                                         padding: "10px 20px",
                                         borderRadius: "30px",
                                         cursor: "pointer",
+                                        backgroundColor: searchParams.get("isPremium") === (price === "Premium" ? "true" : "false") ? "#E9E9EA" : "transparent",
                                         "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
                                     }}
+                                    onClick={() => handleFilterClick("isPremium", price)}
                                 >
                                     {price}
                                 </Box>
@@ -173,108 +63,170 @@ const FilterSidebar = ({ setOpenDrawer }) => {
                     </Box>
                 </Box>
 
-                {/* Color Section */}
-                <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-                    <Typography sx={{ fontWeight: "bold", mb: 1 }}>Color</Typography>
-                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                        {colorOptions.map((item, index) => (
-                            <Box
-                                key={index}
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    p: 1,
-                                    cursor: "pointer",
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        p: 1.5,
-                                        borderRadius: "50%",
-                                        backgroundColor: item.color,
-                                        transition: "0.3s",
-                                        border: "1px solid #000",
-                                        "&:hover": {
-                                            border: "2px solid black",
-                                        },
-                                    }}
-                                />
-                            </Box>
-                        ))}
-                    </Box>
-                </Box>
 
-                <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-                    <Typography sx={{ fontWeight: "bold", mb: 1 }}>Photo</Typography>
-                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                        {photoOptions.map((photo, index) => (
-                            <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
-                                <Box
-                                    sx={{
-                                        fontSize: "13px",
-                                        textAlign: "center",
-                                        border: "1px solid #000",
-                                        padding: "10px 20px",
-                                        borderRadius: "30px",
-                                        cursor: "pointer",
-                                        "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
-                                    }}
-                                >
-                                    {photo}
+                {data && data.colors && (
+                    <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
+                        <Typography sx={{ fontWeight: "bold", mb: 1 }}>Color</Typography>
+                        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                            {data.colors.map((color, index) => {
+
+                                const selectedColors = searchParams.getAll("color");
+                                const isSelected = selectedColors.includes(color.color);
+
+                                const handleColorClick = () => {
+                                    const newSearchParams = new URLSearchParams(location.search);
+
+                                    if (isSelected) {
+
+                                        newSearchParams.delete("color");
+                                        selectedColors
+                                            .filter(c => c !== color.color)
+                                            .forEach(c => newSearchParams.append("color", c));
+                                    } else {
+
+                                        newSearchParams.append("color", color.color);
+                                    }
+
+                                    navigate(`?${newSearchParams.toString()}`, { replace: true });
+                                };
+
+                                return (
+                                    <Box key={index} sx={{ p: 1, cursor: "pointer" }} onClick={handleColorClick}>
+                                        <Box
+                                            sx={{
+                                                p: 1.5,
+                                                borderRadius: "50%",
+                                                backgroundColor: color.hex,
+                                                border: isSelected ? "2px solid black" : "1px solid #000",
+                                                transition: "0.3s",
+                                                "&:hover": { border: "2px solid black" },
+                                            }}
+                                        />
+                                    </Box>
+                                );
+                            })}
+                        </Box>
+                    </Box>
+                )}
+
+                {orientation && (
+                    <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
+                        <Typography sx={{ fontWeight: "bold", mb: 1 }}>Orientation</Typography>
+                        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                            {orientation.map((item, index) => (
+                                <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
+                                    <Box
+                                        sx={{
+                                            fontSize: "13px",
+                                            textAlign: "center",
+                                            border: "1px solid #000",
+                                            padding: "10px 20px",
+                                            borderRadius: "30px",
+                                            cursor: "pointer",
+                                            backgroundColor: searchParams.get("orientation") === item ? "#E9E9EA" : "transparent",
+                                            "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
+                                        }}
+                                        onClick={() => handleFilterClick("orientation", item)}
+                                    >
+                                        {item}
+                                    </Box>
                                 </Box>
-                            </Box>
-                        ))}
+                            ))}
+                        </Box>
                     </Box>
-                </Box>
+                )}
 
-                <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-                    <Typography sx={{ fontWeight: "bold", mb: 1 }}>Orientation</Typography>
-                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                        {orientation.map((item, index) => (
-                            <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
-                                <Box
-                                    sx={{
-                                        fontSize: "13px",
-                                        textAlign: "center",
-                                        border: "1px solid #000",
-                                        padding: "10px 20px",
-                                        borderRadius: "30px",
-                                        cursor: "pointer",
-                                        "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
-                                    }}
-                                >
-                                    {item}
-                                </Box>
-                            </Box>
-                        ))}
+                {data && data.templateThemes && (
+                    <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
+                        <Typography sx={{ fontWeight: "bold", mb: 1 }}>Template Themes</Typography>
+                        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                            {data.templateThemes.map((theme, index) => {
+                                const selectedThemes = searchParams.getAll("templateTheme");
+                                const isSelected = selectedThemes.includes(theme);
+                                const handleThemeClick = () => {
+                                    const newSearchParams = new URLSearchParams(location.search);
+                                    if (isSelected) {
+                                        newSearchParams.delete("templateTheme");
+                                        selectedThemes
+                                            .filter(t => t !== theme)
+                                            .forEach(t => newSearchParams.append("templateTheme", t));
+                                    } else {
+                                        newSearchParams.append("templateTheme", theme);
+                                    }
+                                    navigate(`?${newSearchParams.toString()}`, { replace: true });
+                                };
+                                return (
+                                    <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
+                                        <Box
+                                            sx={{
+                                                fontSize: "13px",
+                                                textAlign: "center",
+                                                border: "1px solid #000",
+                                                padding: "10px 20px",
+                                                borderRadius: "30px",
+                                                cursor: "pointer",
+                                                backgroundColor: isSelected ? "#E9E9EA" : "transparent",
+                                                "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
+                                            }}
+                                            onClick={handleThemeClick}
+                                        >
+                                            {theme}
+                                        </Box>
+                                    </Box>
+                                );
+                            })}
+                        </Box>
                     </Box>
-                </Box>
+                )}
 
-                <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
-                    <Typography sx={{ fontWeight: "bold", mb: 1 }}>Sort by</Typography>
-                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                        {sortBy.map((item, index) => (
-                            <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
-                                <Box
-                                    sx={{
-                                        fontSize: "13px",
-                                        textAlign: "center",
-                                        border: "1px solid #000",
-                                        padding: "10px 20px",
-                                        borderRadius: "30px",
-                                        cursor: "pointer",
-                                        "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
-                                    }}
-                                >
-                                    {item}
-                                </Box>
-                            </Box>
-                        ))}
+                {data && data.tags && (
+                    <Box sx={{ borderBottom: "1px solid #ccc", py: 2 }}>
+                        <Typography sx={{ fontWeight: "bold", mb: 1 }}>Tags</Typography>
+                        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                            {data.tags.map((tagObj, index) => {
+                                const selectedTags = searchParams.getAll("tag");
+                                const isSelected = selectedTags.includes(tagObj.tag);
+
+                                const handleTagClick = () => {
+                                    const newSearchParams = new URLSearchParams(location.search);
+
+                                    if (isSelected) {
+                                        newSearchParams.delete("tag");
+                                        selectedTags
+                                            .filter(t => t !== tagObj.tag)
+                                            .forEach(t => newSearchParams.append("tag", t));
+                                    } else {
+                                        newSearchParams.append("tag", tagObj.tag);
+                                    }
+
+                                    navigate(`?${newSearchParams.toString()}`, { replace: true });
+                                };
+
+                                return (
+                                    <Box key={index} sx={{ padding: "10px 10px 10px 0" }}>
+                                        <Box
+                                            sx={{
+                                                fontSize: "13px",
+                                                textAlign: "center",
+                                                border: "1px solid #000",
+                                                padding: "10px 20px",
+                                                borderRadius: "30px",
+                                                cursor: "pointer",
+                                                backgroundColor: isSelected ? "#E9E9EA" : "transparent",
+                                                "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
+                                            }}
+                                            onClick={handleTagClick}
+                                        >
+                                            {tagObj.tag}
+                                        </Box>
+                                    </Box>
+                                );
+                            })}
+                        </Box>
                     </Box>
-                </Box>
-
+                )}
             </Box>
-        </>
+        </Box>
     );
 };
 

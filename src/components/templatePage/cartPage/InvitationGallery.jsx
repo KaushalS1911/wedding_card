@@ -1,35 +1,82 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container, Grid, CircularProgress } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../../../Instance.jsx";
 
 const InvitationGallery = () => {
     const [templates, setTemplates] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const searchParams = useLocation();
+
+    function query(query) {
+        axiosInstance.get(`/api/template${searchParams.search}`).then((res) => {
+            if (res.data && res.data.data) {
+                const formattedTemplates = res.data.data.map(item => ({
+                    title: item.name || "Untitled",
+                    images: item.colors?.map(color => color.templateImages) || [],
+                    colors: item.colors?.map(c => c.hex) || ["#000000"],
+                    isPremium: item.isPremium || false,
+                    id: item._id,
+                }));
+                setTemplates(formattedTemplates);
+            } else {
+                console.log("No templates found.");
+            }
+            setLoading(false);
+        })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
+    }
 
     useEffect(() => {
-        axiosInstance.get('/api/template')
-            .then((res) => {
-                if (res.data && res.data.data) {
-                    const formattedTemplates = res.data.data.map(item => ({
-                        title: item.name || "Untitled",
-                        images: item.colors?.map(color => color.templateImages) || [],
-                        colors: item.colors?.map(c => c.hex) || ["#000000"],
-                        isPremium: item.isPremium || false,
-                        id: item._id,
-                    }));
-                    setTemplates(formattedTemplates);
-                } else {
-                    console.log("No templates found.");
-                }
-            })
-            .catch((err) => console.error("API Error:", err));
-    }, []);
+        if (!searchParams) {
+            axiosInstance.get('/api/template')
+                .then((res) => {
+                    if (res.data && res.data.data) {
+                        const formattedTemplates = res.data.data.map(item => ({
+                            title: item.name || "Untitled",
+                            images: item.colors?.map(color => color.templateImages) || [],
+                            colors: item.colors?.map(c => c.hex) || ["#000000"],
+                            isPremium: item.isPremium || false,
+                            id: item._id,
+                        }));
+                        setTemplates(formattedTemplates);
+                    } else {
+                        console.log("No templates found.");
+                    }
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    console.error("API Error:", err);
+                    setLoading(false);
+                });
+        } else {
+            query(searchParams);
+        }
+    }, [searchParams]);
+
+
+    if (loading) {
+        return (
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <Container maxWidth="xl">
             <Grid container spacing={2}>
-                {templates.map((template, index) => (
+                {templates?.map((template, index) => (
                     <Grid item xs={6} sm={6} md={4} xl={3} key={index}>
                         <InvitationCard
                             title={template.title}
@@ -45,13 +92,12 @@ const InvitationGallery = () => {
     );
 };
 
-const InvitationCard = ({ title, images, colors, isPremium, id , onSelect}) => {
+const InvitationCard = ({ title, images, colors, isPremium, id, onSelect }) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const navigate = useNavigate();
 
     return (
         <Box textAlign="start" sx={{ position: "relative" }}>
-            {/* Premium Badge */}
             {isPremium && (
                 <Box
                     sx={{
@@ -67,57 +113,54 @@ const InvitationCard = ({ title, images, colors, isPremium, id , onSelect}) => {
                         fontSize: "12px",
                         fontWeight: "bold",
                         transition: "width 0.3s, padding 0.3s",
-                        "&:hover": { paddingX: "12px" }
+                        "&:hover": { paddingX: "12px" },
                     }}
                 >
                     <StarIcon sx={{ fontSize: 16, marginRight: "5px" }} /> Premium
                 </Box>
             )}
 
-            {/* Image Box */}
             <Box
                 onClick={() => navigate(`/template-page/invitation-card/${id}`)}
                 sx={{
-                    height: {sm:"400px" , xs:"auto"},
+                    height: { sm: "400px", xs: "auto" },
                     width: "100%",
                     borderRadius: "8px",
                     overflow: "hidden",
                     border: "1px solid #EBEBEB",
-                    "&:hover": { border: "2px solid #000" }
+                    "&:hover": { border: "2px solid #000" },
                 }}
             >
                 <img
-                    src={images[selectedIndex] || images[0]} // Display selected image
+                    src={images[selectedIndex] || images[0]}
                     alt={title}
                     style={{
                         width: "100%",
                         height: "100%",
                         objectFit: "cover",
                         borderRadius: "8px",
-                        transition: "opacity 0.3s ease-in-out"
+                        transition: "opacity 0.3s ease-in-out",
                     }}
                     onClick={() => onSelect(img)}
                 />
             </Box>
 
-            {/* Title */}
             <Box sx={{ fontSize: { sm: "16px", xs: "12px" }, mt: "13px", color: "#63696c", fontWeight: "500" }}>
                 {title}
             </Box>
 
-            {/* Color Selector Section */}
             <Box sx={{ display: "flex", justifyContent: "start", gap: "5px", mt: "10px" }}>
                 {colors.map((color, index) => (
                     <Box
                         key={index}
-                        onClick={() => setSelectedIndex(index)} // Change image on color click
+                        onClick={() => setSelectedIndex(index)}
                         sx={{
                             p: "1.5px",
                             borderRadius: "50%",
                             border: `1px solid ${selectedIndex === index ? "black" : "transparent"}`,
                             transition: "border 0.2s ease-in-out",
                             cursor: "pointer",
-                            "&:hover": { border: "1px solid black" }
+                            "&:hover": { border: "1px solid black" },
                         }}
                     >
                         <Box
@@ -125,7 +168,7 @@ const InvitationCard = ({ title, images, colors, isPremium, id , onSelect}) => {
                                 p: { xs: 1, sm: 1.3 },
                                 borderRadius: "50%",
                                 backgroundColor: color,
-                                cursor: "pointer"
+                                cursor: "pointer",
                             }}
                         />
                     </Box>

@@ -25,7 +25,7 @@ const BlogSection = () => {
                         <Grid item xs={12} sm={6} key={post._id}>
                             <Card
                                 sx={{ boxShadow: "none", borderRadius: 0, cursor: 'pointer' }}
-                                onClick={() => navigate(`/singleblog/${post._id}`)}
+                                // onClick={() => navigate(`/singleblog/${post._id}`)}
                             >
                                 <Box sx={{ width: "100%", height: "300px", overflow: "hidden" }}>
                                     <CardMedia

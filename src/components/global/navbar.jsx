@@ -89,7 +89,7 @@ const Navbar = () => {
     }, [])
 
     const renderMenuItems = () => (
-        parentcategories.map((item, index) => (
+        parentcategories?.map((item, index) => (
             <>
                 {item.categories.map((category, index) => (
                     <Box
@@ -134,10 +134,11 @@ const Navbar = () => {
                                                     pb: 1
                                                 }}>{subcategory.name}</Typography>
                                                 {subcategory.types.map((types, i) => (
-                                                    <Typography key={i} onClick={() => {
-                                                        navigate("/template-page");
-                                                        setOpenMenu(null);
-                                                    }} sx={{
+                                                    <Typography key={i}
+                                                                onClick={() => {
+                                                                    navigate(`/template-page?type=${types._id}`);
+                                                                    setOpenMenu(null);
+                                                                }} sx={{
                                                         fontSize: '14px',
                                                         fontWeight: '500',
                                                         cursor: "pointer",
@@ -489,7 +490,8 @@ const Navbar = () => {
                                 expanded={expandedAccordion === `panel${index}`}
                                 onChange={handleAccordionChange(`panel${index}`)}
                             >
-                                <AccordionSummary expandIcon={<ExpandMoreIcon/>} sx={{fontSize: "14px" , fontWeight: 600}}>
+                                <AccordionSummary expandIcon={<ExpandMoreIcon/>}
+                                                  sx={{fontSize: "14px", fontWeight: 600}}>
                                     {category.name}
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -498,13 +500,17 @@ const Navbar = () => {
                                             category.subcategories.map((subcategory, index) => (
                                                 <Grid item key={index} xs={12} sm={3} md={2}>
                                                     <Typography
-                                                        sx={{fontWeight: 600 , fontSize:"14px"}}>{subcategory.name}</Typography>
+                                                        sx={{
+                                                            fontWeight: 600,
+                                                            fontSize: "14px"
+                                                        }}>{subcategory.name}</Typography>
 
                                                     {subcategory.types.map((types, i) => (
-                                                        <Typography key={i} sx={{mt: 1 , fontSize:"14px"}} onClick={() => {
-                                                            navigate("/template-page");
-                                                            setOpenMenu(null);
-                                                        }} >{types.name}</Typography>
+                                                        <Typography key={i} sx={{mt: 1, fontSize: "14px"}}
+                                                                    onClick={() => {
+                                                                        navigate("/template-page");
+                                                                        setOpenMenu(null);
+                                                                    }}>{types.name}</Typography>
                                                     ))}
                                                 </Grid>
                                             ))
