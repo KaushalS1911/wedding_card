@@ -701,8 +701,8 @@ const Editor = () => {
                           style === "Heading"
                             ? "h6"
                             : style === "Subheading"
-                            ? "subtitle1"
-                            : "body2"
+                              ? "subtitle1"
+                              : "body2"
                         }
                         sx={{
                           fontFamily: style === "Fancy" ? "cursive" : "inherit",
