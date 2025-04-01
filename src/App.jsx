@@ -13,6 +13,7 @@ import Invitations from "./pages/invitations.jsx";
 import Card from './pages/Card.jsx';
 import InvitationCard from './components/Invitation/InvitationCard .jsx';
 import SingleBlog from "./components/blog/singleBlog.jsx";
+import Editor from './components/Editor/Editor.jsx';
 
 function App() {
   function ScrollToTop() {
@@ -23,10 +24,13 @@ function App() {
     return null;
   }
 
+  const location = useLocation();
+  const hideHeaderFooter = location.pathname.startsWith('/editor');
+
   return (
     <>
       <ScrollToTop />
-      <Navbar />
+      {!hideHeaderFooter && <Navbar />}
       {/* <Favorites /> */}
       <Routes>
         <Route path='/' element={<Home />} />
@@ -34,13 +38,14 @@ function App() {
         <Route path='/blog' element={<Blog />} />
         <Route path='/cards' element={<Card />} />
         <Route path='/invitations' element={<Invitations />} />
-        <Route path='/contact' element={<ContactPage/>} />
+        <Route path='/contact' element={<ContactPage />} />
         <Route path='/template-page' element={<TemplatePage />} />
         <Route path='/template-page/invitation-card/:id' element={<InvitationCard />} />
         <Route path='/singleblog' element={<SingleBlog />} />
         <Route path="/profile/*" element={<Favorites />} />
+        <Route path="/editor/:id" element={<Editor />} />
       </Routes>
-      <Footer />
+      {!hideHeaderFooter && <Footer />}
     </>
   )
 }
