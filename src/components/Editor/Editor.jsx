@@ -38,6 +38,7 @@ import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import { SketchPicker } from "react-color";
+import axiosInstance from "../../Instance.jsx";
 
 // Mock template data
 const templates = {
@@ -149,6 +150,9 @@ const Editor = () => {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [currentColor, setCurrentColor] = useState("#000000");
+  const [color, setColor] = useState("");
+  const [image, setImage] = useState("");
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     if (template && template.design) {
@@ -158,6 +162,21 @@ const Editor = () => {
       setHistoryIndex(0);
     }
   }, [template]);
+
+  useEffect(() => {
+    axiosInstance.get(`/api/template/${id}`)
+        .then((response) => {
+          const templateData = response.data.data;
+          setData(templateData);
+
+
+          if (templateData?.colors?.length > 0) {
+            setColor(templateData.colors[0]?.color || "");
+            setImage(templateData.colors[0]?.templateImages || "");
+          }
+        })
+        .catch((error) => console.error("API Error:", error));
+  }, [id]);
 
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
@@ -1022,17 +1041,18 @@ const Editor = () => {
             elevation={3}
             sx={{
               width: "350px",
-              height: "490px", // 5×7 inches aspect ratio at 70px per inch
+              height: "auto", // 5×7 inches aspect ratio at 70px per inch
               position: "relative",
               backgroundColor: template.design?.background || "#FFFFFF",
               overflow: "hidden",
             }}
           >
             {canvasElements.map(renderCanvasElement)}
+              <img src={image} style={{width: "100%", height: "100%"}} />
           </Paper>
         </Box>
 
-        {/* Right sidebar - Properties panel */}
+          {/* Right sidebar - Properties panel */}
         <Paper
           elevation={0}
           sx={{
@@ -1040,7 +1060,7 @@ const Editor = () => {
             borderLeft: "1px solid #ddd",
             display: "flex",
             flexDirection: "column",
-            overflow: "auto",
+            overflow: "auto"
           }}
         >
           <Typography
