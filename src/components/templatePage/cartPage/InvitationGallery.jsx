@@ -45,7 +45,7 @@ const InvitationGallery = () => {
     );
 };
 
-const InvitationCard = ({ title, images, colors, isPremium, id }) => {
+const InvitationCard = ({ title, images, colors, isPremium, id , onSelect}) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const navigate = useNavigate();
 
@@ -96,6 +96,7 @@ const InvitationCard = ({ title, images, colors, isPremium, id }) => {
                         borderRadius: "8px",
                         transition: "opacity 0.3s ease-in-out"
                     }}
+                    onClick={() => onSelect(img)}
                 />
             </Box>
 

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Card, Typography, Button, Box, IconButton, Grid, Chip, Paper, Stack } from "@mui/material";
 import { Share, Download, Print, PictureAsPdf, ShoppingCart } from "@mui/icons-material";
 import axiosInstance from "../../Instance.jsx";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const InvitationCard = () => {
     const [color, setColor] = useState("");
     const [image, setImage] = useState("");
     const [data, setData] = useState(null);
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!id) return;
@@ -31,6 +32,9 @@ const InvitationCard = () => {
     const handleColorChange = (selectedColor) => {
         setColor(selectedColor.color);
         setImage(selectedColor.templateImages);
+    };
+    const handleCustomize = () => {
+        navigate(`/editor/${id}`);
     };
 
     if (!data) {
@@ -64,7 +68,7 @@ const InvitationCard = () => {
                         )}
                     </Stack>
 
-                    <Button variant="contained" fullWidth sx={{
+                    <Button variant="contained" onClick={handleCustomize} fullWidth sx={{
                         mt: 2,
                         boxShadow: 'none',
                         bgcolor: "#1BC47D",
@@ -80,15 +84,15 @@ const InvitationCard = () => {
                             <Box sx={{ display: 'flex', gap: 1 }}>
                                 {data.colors.map((c, index) => (
                                     <Box key={index}
-                                         onClick={() => handleColorChange(c)}
-                                         sx={{
-                                             bgcolor: c.hex,
-                                             width: 24,
-                                             height: 24,
-                                             borderRadius: "50%",
-                                             cursor: "pointer",
-                                             border: color === c.color ? "2px solid black" : "2px solid transparent",
-                                         }}
+                                        onClick={() => handleColorChange(c)}
+                                        sx={{
+                                            bgcolor: c.hex,
+                                            width: 24,
+                                            height: 24,
+                                            borderRadius: "50%",
+                                            cursor: "pointer",
+                                            border: color === c.color ? "2px solid black" : "2px solid transparent",
+                                        }}
                                     />
                                 ))}
                             </Box>
