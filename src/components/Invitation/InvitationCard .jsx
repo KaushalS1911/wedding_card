@@ -56,8 +56,11 @@ const InvitationCard = () => {
                         <Typography variant="body2" sx={{ fontWeight: 500 }}>
                             Size <strong>{data.size}</strong>
                         </Typography>
-                        {data.isPremium && (
+                        {data.isPremium === true && (
                             <Chip label="Premium" color="secondary" variant="outlined" sx={{ fontSize: "12px", fontWeight: 500 }} />
+                        )}
+                        {data.isPremium === false && (
+                            <Chip label="free" color="secondary" variant="outlined" sx={{ fontSize: "12px", fontWeight: 500 }} />
                         )}
                     </Stack>
 
