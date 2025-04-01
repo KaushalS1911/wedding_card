@@ -141,7 +141,6 @@ const fonts = [
 const Editor = () => {
   const { id } = useParams();
   const template = templates[id] || {};
-  const [selectedImage, setSelectedImage] = useState(null);
 
   const [currentTab, setCurrentTab] = useState(0);
   const [canvasElements, setCanvasElements] = useState([]);
@@ -165,17 +164,17 @@ const Editor = () => {
 
   useEffect(() => {
     axiosInstance.get(`/api/template/${id}`)
-        .then((response) => {
-          const templateData = response.data.data;
-          setData(templateData);
+      .then((response) => {
+        const templateData = response.data.data;
+        setData(templateData);
 
 
-          if (templateData?.colors?.length > 0) {
-            setColor(templateData.colors[0]?.color || "");
-            setImage(templateData.colors[0]?.templateImages || "");
-          }
-        })
-        .catch((error) => console.error("API Error:", error));
+        if (templateData?.colors?.length > 0) {
+          setColor(templateData.colors[0]?.color || "");
+          setImage(templateData.colors[0]?.templateImages || "");
+        }
+      })
+      .catch((error) => console.error("API Error:", error));
   }, [id]);
 
   const handleTabChange = (event, newValue) => {
@@ -718,9 +717,9 @@ const Editor = () => {
                       <Typography
                         variant={
                           style === "Heading"
-                            ? "h6"
+                            ? "bold"
                             : style === "Subheading"
-                              ? "subtitle1"
+                              ? "subtitle6"
                               : "body2"
                         }
                         sx={{
@@ -1002,7 +1001,7 @@ const Editor = () => {
         <Paper
           elevation={0}
           sx={{
-            width: 240,
+            width: 300,
             borderRight: "1px solid #ddd",
             display: "flex",
             flexDirection: "column",
@@ -1048,11 +1047,11 @@ const Editor = () => {
             }}
           >
             {canvasElements.map(renderCanvasElement)}
-              <img src={image} style={{width: "100%", height: "100%"}} />
+            <img src={image} style={{ width: "100%", height: "100%" }} />
           </Paper>
         </Box>
 
-          {/* Right sidebar - Properties panel */}
+        {/* Right sidebar - Properties panel */}
         <Paper
           elevation={0}
           sx={{
