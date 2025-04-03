@@ -6,7 +6,6 @@ import {
     Button,
     IconButton,
     Box,
-    Paper,
     Grid,
     useMediaQuery,
     useTheme,
@@ -18,6 +17,7 @@ import {
     Menu,
     MenuItem,
     Divider,
+    Skeleton
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -44,6 +44,7 @@ const Navbar = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const [parentcategories, setParentCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -77,19 +78,38 @@ const Navbar = () => {
         navigate("/");
     };
 
-
-    function category(_id) {
+    function category() {
+        setLoading(true);
         axiosInstance.get("/api/category/all")
-            .then((res) => setParentCategories(res.data.data))
-            .catch((err) => console.log(err));
+            .then((res) => {
+                setParentCategories(res.data.data);
+            })
+            .catch((err) => console.log(err))
+            .finally(() => setLoading(false));
     }
 
     useEffect(() => {
-        category()
-    }, [])
+        category();
+    }, []);
 
-    const renderMenuItems = () => (
-        parentcategories?.map((item, index) => (
+    const renderMenuItems = () => {
+        if (loading) {
+            return (
+                <Box sx={{ display: "flex", gap: 2 }}>
+                    {[...Array(5)].map((_, index) => (
+                        <Skeleton 
+                            key={index} 
+                            variant="rounded" 
+                            width={100} 
+                            height={36} 
+                            animation="wave"
+                        />
+                    ))}
+                </Box>
+            );
+        }
+
+        return parentcategories?.map((item, index) => (
             <>
                 {item.categories.map((category, index) => (
                     <Box
@@ -103,8 +123,9 @@ const Navbar = () => {
                             fontSize: '13px',
                             textTransform: 'capitalize',
                             mx: 1
-                        }}>{category.name}</Button>
-
+                        }}>
+                            {category.name}
+                        </Button>
 
                         {openMenu === category.name && category.subcategories?.length > 0 &&
                             <Box
@@ -158,8 +179,8 @@ const Navbar = () => {
                     </Box>
                 ))}
             </>
-        ))
-    );
+        ));
+    };
 
     return (
         <>
@@ -180,11 +201,13 @@ const Navbar = () => {
                             fontWeight: "bold",
                             display: "flex",
                             alignItems: "center",
-                            width: "146px", cursor: 'pointer'
+                            width: "146px", 
+                            cursor: 'pointer'
                         }}
                     >
                         <Typography component={"img"} src={Logo} width={"100%"} onClick={() => navigate('/')}/>
                     </Typography>
+
                     {/* Center - Navigation Links */}
                     {!isMobile && (
                         <Box
@@ -198,6 +221,7 @@ const Navbar = () => {
                             {renderMenuItems()}
                         </Box>
                     )}
+
                     {/* Right Side - Search Icon, Log in & Go Premium */}
                     <Box
                         sx={{
@@ -221,9 +245,12 @@ const Navbar = () => {
                                 <SearchIcon/>
                             </IconButton>
                         )}
+                        
                         {isMobile ? (
                             <>
-                                {token ? (
+                                {loading ? (
+                                    <Skeleton variant="circular" width={40} height={40} />
+                                ) : token ? (
                                     <>
                                         <IconButton
                                             sx={{
@@ -247,18 +274,17 @@ const Navbar = () => {
                                             )}
                                         </IconButton>
 
-                                        {/* Dropdown Menu */}
                                         <Menu
                                             anchorEl={anchorEl}
                                             open={open}
                                             onClose={handleClose}
                                             anchorOrigin={{
                                                 vertical: "bottom",
-                                                horizontal: "right", // ✅ Open menu aligned to right
+                                                horizontal: "right",
                                             }}
                                             transformOrigin={{
                                                 vertical: "top",
-                                                horizontal: "right", // ✅ Ensure it stays aligned to right
+                                                horizontal: "right",
                                             }}
                                             PaperProps={{
                                                 elevation: 3,
@@ -269,22 +295,20 @@ const Navbar = () => {
                                                 },
                                             }}
                                         >
-                                            {/* Profile */}
                                             <MenuItem
                                                 onClick={() => {
                                                     navigate("/profile/favorites");
-                                                    handleClose(); // ✅ Menu close ho jayega
+                                                    handleClose();
                                                 }}
                                             >
                                                 <PersonIcon sx={{marginRight: 1}}/>
                                                 Profile
                                             </MenuItem>
 
-                                            {/* Settings */}
                                             <MenuItem
                                                 onClick={() => {
                                                     navigate("/profile/settings");
-                                                    handleClose(); // ✅ Menu close ho jayega
+                                                    handleClose();
                                                 }}
                                             >
                                                 <SettingsIcon sx={{marginRight: 1}}/>
@@ -293,11 +317,10 @@ const Navbar = () => {
 
                                             <Divider/>
 
-                                            {/* Logout */}
                                             <MenuItem
                                                 onClick={() => {
                                                     handleLogout();
-                                                    handleClose(); // ✅ Menu close ho jayega
+                                                    handleClose();
                                                 }}
                                             >
                                                 <LogoutIcon sx={{marginRight: 1}}/>
@@ -305,7 +328,6 @@ const Navbar = () => {
                                             </MenuItem>
                                         </Menu>
                                     </>
-
                                 ) : (
                                     <Button
                                         variant="contained"
@@ -346,7 +368,12 @@ const Navbar = () => {
                             </>
                         ) : (
                             <>
-                                {token ? (
+                                {loading ? (
+                                    <>
+                                        <Skeleton variant="circular" width={40} height={40} sx={{ mr: 1 }} />
+                                        <Skeleton variant="rounded" width={100} height={36} />
+                                    </>
+                                ) : token ? (
                                     <>
                                         <IconButton
                                             sx={{
@@ -370,18 +397,17 @@ const Navbar = () => {
                                             )}
                                         </IconButton>
 
-                                        {/* Dropdown Menu */}
                                         <Menu
                                             anchorEl={anchorEl}
                                             open={open}
                                             onClose={handleClose}
                                             anchorOrigin={{
                                                 vertical: "bottom",
-                                                horizontal: "right", // ✅ Open menu aligned to right
+                                                horizontal: "right",
                                             }}
                                             transformOrigin={{
                                                 vertical: "top",
-                                                horizontal: "right", // ✅ Ensure it stays aligned to right
+                                                horizontal: "right",
                                             }}
                                             PaperProps={{
                                                 elevation: 3,
@@ -392,22 +418,20 @@ const Navbar = () => {
                                                 },
                                             }}
                                         >
-                                            {/* Profile */}
                                             <MenuItem
                                                 onClick={() => {
                                                     navigate("/profile/favorites");
-                                                    handleClose(); // ✅ Menu close ho jayega
+                                                    handleClose();
                                                 }}
                                             >
                                                 <PersonIcon sx={{marginRight: 1}}/>
                                                 Profile
                                             </MenuItem>
 
-                                            {/* Settings */}
                                             <MenuItem
                                                 onClick={() => {
                                                     navigate("/profile/settings");
-                                                    handleClose(); // ✅ Menu close ho jayega
+                                                    handleClose();
                                                 }}
                                             >
                                                 <SettingsIcon sx={{marginRight: 1}}/>
@@ -416,11 +440,10 @@ const Navbar = () => {
 
                                             <Divider/>
 
-                                            {/* Logout */}
                                             <MenuItem
                                                 onClick={() => {
                                                     handleLogout();
-                                                    handleClose(); // ✅ Menu close ho jayega
+                                                    handleClose();
                                                 }}
                                             >
                                                 <LogoutIcon sx={{marginRight: 1}}/>
@@ -428,7 +451,6 @@ const Navbar = () => {
                                             </MenuItem>
                                         </Menu>
                                     </>
-
                                 ) : (
                                     <Button
                                         variant="contained"
@@ -483,21 +505,41 @@ const Navbar = () => {
                     </Box>
 
                     {/* Menu Items */}
-                    {parentcategories.map((item, index) => (
-                        item.categories.map((category, index) => (
-                            <Accordion
-                                key={index}
-                                expanded={expandedAccordion === `panel${index}`}
-                                onChange={handleAccordionChange(`panel${index}`)}
-                            >
-                                <AccordionSummary expandIcon={<ExpandMoreIcon/>}
-                                                  sx={{fontSize: "14px", fontWeight: 600}}>
-                                    {category.name}
+                    {loading ? (
+                        [...Array(3)].map((_, index) => (
+                            <Accordion key={index}>
+                                <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                                    <Skeleton variant="text" width="80%" />
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Grid container spacing={2}>
-                                        {
-                                            category.subcategories.map((subcategory, index) => (
+                                        {[...Array(4)].map((_, i) => (
+                                            <Grid item key={i} xs={12} sm={3} md={2}>
+                                                <Skeleton variant="text" width="60%" />
+                                                {[...Array(3)].map((_, j) => (
+                                                    <Skeleton key={j} variant="text" width="80%" sx={{ mt: 1 }} />
+                                                ))}
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </AccordionDetails>
+                            </Accordion>
+                        ))
+                    ) : (
+                        parentcategories.map((item, index) => (
+                            item.categories.map((category, index) => (
+                                <Accordion
+                                    key={index}
+                                    expanded={expandedAccordion === `panel${index}`}
+                                    onChange={handleAccordionChange(`panel${index}`)}
+                                >
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon/>}
+                                                      sx={{fontSize: "14px", fontWeight: 600}}>
+                                        {category.name}
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Grid container spacing={2}>
+                                            {category.subcategories.map((subcategory, index) => (
                                                 <Grid item key={index} xs={12} sm={3} md={2}>
                                                     <Typography
                                                         sx={{
@@ -513,14 +555,13 @@ const Navbar = () => {
                                                                     }}>{types.name}</Typography>
                                                     ))}
                                                 </Grid>
-                                            ))
-                                        }
-                                    </Grid>
-                                </AccordionDetails>
-
-                            </Accordion>
+                                            ))}
+                                        </Grid>
+                                    </AccordionDetails>
+                                </Accordion>
+                            ))
                         ))
-                    ))}
+                    )}
 
                     {/* LOGIN & GO PREMIUM BUTTONS IN DROPDOWN */}
                     <Box sx={{textAlign: "center", mt: 3, p: 2}}>
