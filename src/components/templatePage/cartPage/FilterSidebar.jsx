@@ -126,7 +126,7 @@ const FilterSidebar = ({ setOpenDrawer }) => {
                                             backgroundColor: searchParams.get("orientation") === item ? "#E9E9EA" : "transparent",
                                             "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
                                         }}
-                                        onClick={() => handleFilterClick("orientation", item)}
+                                        onClick={() => handleFilterClick("orientation", item.toLowerCase())}
                                     >
                                         {item}
                                     </Box>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import img from '../../assets/contact/banner-desktop.avif';
 import { Controller, useForm } from "react-hook-form";
 import { Autocomplete, Box, Button, Container, TextField, Typography } from "@mui/material";
@@ -10,6 +10,8 @@ import axiosInstance from '../../Instance';
 
 function Contact() {
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
+    const [config, setConfig] = useState(null);
+    const [options, setOptions] = useState([]);
 
     const onSubmit = (data) => {
         const payload = {
@@ -29,13 +31,16 @@ function Contact() {
             });
     };
 
-    const options = [
-        { label: "I need help with an invitation/card", value: "invitation" },
-        { label: "I need help with my account", value: "subscription" },
-        { label: "I need help with my premium subscription", value: "pricing" },
-        { label: "I have a business inquiry", value: "inquiry" },
-        { label: "Something else...", value: "Something" },
-    ];
+    useEffect(() => {
+        axiosInstance.get('/api/config')
+            .then(response => {
+                const data = response.data.data;
+                setConfig(data);
+                setOptions(data.types.map(type => ({ label: type, value: type })));
+            })
+            .catch(error => console.log(error));
+    }, []);
+
 
     return (
         <Container maxWidth={'xxl'}>
