@@ -7,7 +7,6 @@ import {
     DialogTitle,
     DialogContent,
     TextField,
-    DialogActions,
     IconButton,
     Typography
 } from '@mui/material';
@@ -15,26 +14,39 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Ragister from "./ragister.jsx";
 import CloseIcon from "@mui/icons-material/Close";
 import axiosInstance from '../../Instance.jsx';
+import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import google from '../../assets/login/google.png'
-import facebook from '../../assets/login/facebook.png'
-
+import google from '../../assets/login/google.png';
+import facebook from '../../assets/login/facebook.png';
 
 function Login({ openLoginPage, setOpenLoginPage }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [showPassword, setShowPassword] = useState(false);
     const [openRegister, setOpenRegister] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [user, setUser] = useState(null);
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Handle Google OAuth Token
+    // Fetch Google OAuth session data
+    useEffect(() => {
+        axiosInstance.get("/api/auth/google/success", { withCredentials: true })
+            .then(response => {
+                setUser(response.data.user);
+                localStorage.setItem("user", JSON.stringify(response.data.user));
+                navigate("/");
+            })
+            .catch(() => {
+                navigate("/"); // Redirect to login if not authenticated
+            });
+    }, []);
+
+    // Handle Google OAuth Token from URL
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const token = queryParams.get("token");
         if (token) {
             localStorage.setItem("token", token);
-            // navigate("/dashboard");  // Redirect after login
         }
     }, [location, navigate]);
 
@@ -43,8 +55,9 @@ function Login({ openLoginPage, setOpenLoginPage }) {
             const response = await axiosInstance.post('api/auth/login', data);
 
             if (response.data?.token) {
-                localStorage.setItem('token', response.data.token); // Store token
+                localStorage.setItem('token', response.data.token);
                 console.log("Login Successful:", response.data);
+                navigate("/");
             } else {
                 console.error("No token received!");
             }
@@ -56,14 +69,12 @@ function Login({ openLoginPage, setOpenLoginPage }) {
         }
     };
 
-    // Google Login
     const handleGoogleLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/google/callback";
+        window.location.href = "https://wedding-card-be.onrender.com/api/auth/google";
     };
 
-    // Facebook Login Handler
     const handleFacebookLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/facebook/callback";
+        window.location.href = "https://wedding-card-be.onrender.com/api/auth/facebook";
     };
 
     const handleClose = () => {
@@ -73,10 +84,10 @@ function Login({ openLoginPage, setOpenLoginPage }) {
     };
 
     return (
-        <Box textAlign="center" >
+        <Box textAlign="center">
             <Dialog open={openLoginPage} onClose={handleClose}
                 sx={{ '& .MuiPaper-root': { borderRadius: '16px', padding: '20px' } }}>
-                <Box onClick={() => handleClose()} sx={{
+                <Box onClick={handleClose} sx={{
                     backgroundColor: "#F7F7F7",
                     p: 1,
                     display: "flex",
@@ -87,7 +98,9 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                     position: "absolute",
                     right: "2%",
                     top: "2%",
-                }}><CloseIcon /></Box>
+                }}>
+                    <CloseIcon />
+                </Box>
                 <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>Log in</DialogTitle>
                 <DialogContent>
                     <Button fullWidth variant="outlined" sx={{ mb: 1 }} onClick={handleGoogleLogin}>
@@ -109,7 +122,6 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                             })}
                             error={!!errors.email}
                             helperText={errors.email?.message}
-                            sx={{ borderRadius: '24px' }}
                         />
                         <Box position="relative">
                             <TextField
@@ -124,7 +136,6 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                                 })}
                                 error={!!errors.password}
                                 helperText={errors.password?.message || "At least 6 characters"}
-                                sx={{ borderRadius: '24px' }}
                             />
                             <IconButton
                                 onClick={() => setShowPassword(!showPassword)}
@@ -152,7 +163,7 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                         </Button>
                     </form>
                     <Typography variant="body2" sx={{ marginTop: '16px', textAlign: 'center', color: '#63696C' }}>
-                        Already a member? <a onClick={() => {
+                        Not a member? <a onClick={() => {
                             setOpenLoginPage(false);
                             setOpenRegister(true);
                         }}
