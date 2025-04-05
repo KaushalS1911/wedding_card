@@ -1,30 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {
-    AppBar,
-    Toolbar,
-    Typography,
-    Button,
-    IconButton,
-    Box,
-    Grid,
-    useMediaQuery,
-    useTheme,
-    Drawer,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    Container,
-    Menu,
-    MenuItem,
-    Divider,
-    Skeleton
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { AppBar, Toolbar, Typography, Button, IconButton, Box, Grid, useMediaQuery, useTheme, Drawer, Accordion, AccordionSummary, AccordionDetails, Container, Menu, MenuItem, Divider, } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Logo from "../../assets/logo/logo.svg";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Ragister from "../login/ragister.jsx";
 import Login from "../login/login.jsx";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -93,22 +74,6 @@ const Navbar = () => {
     }, []);
 
     const renderMenuItems = () => {
-        if (loading) {
-            return (
-                <Box sx={{ display: "flex", gap: 2 }}>
-                    {[...Array(5)].map((_, index) => (
-                        <Skeleton 
-                            key={index} 
-                            variant="rounded" 
-                            width={100} 
-                            height={36} 
-                            animation="wave"
-                        />
-                    ))}
-                </Box>
-            );
-        }
-
         return parentcategories?.map((item, index) => (
             <>
                 {item.categories.map((category, index) => (
@@ -146,7 +111,7 @@ const Navbar = () => {
                                 }}
                             >
                                 <Container>
-                                    <Grid container spacing={2} sx={{maxWidth: "1300px", margin: "0 auto"}}>
+                                    <Grid container spacing={2} sx={{ maxWidth: "1300px", margin: "0 auto" }}>
                                         {openMenu === category.name && category.subcategories.map((subcategory, index) => (
                                             <Grid key={index} item xs={12} sm={6} md={4} lg={2.4}>
                                                 <Typography sx={{
@@ -156,16 +121,16 @@ const Navbar = () => {
                                                 }}>{subcategory.name}</Typography>
                                                 {subcategory.types.map((types, i) => (
                                                     <Typography key={i}
-                                                                onClick={() => {
-                                                                    navigate(`/template-page?type=${types._id}`);
-                                                                    setOpenMenu(null);
-                                                                }} sx={{
-                                                        fontSize: '14px',
-                                                        fontWeight: '500',
-                                                        cursor: "pointer",
-                                                        mt: 1,
-                                                        "&:hover": {color: "#1bc47d"}
-                                                    }}>
+                                                        onClick={() => {
+                                                            navigate(`/template-page?type=${types._id}`);
+                                                            setOpenMenu(null);
+                                                        }} sx={{
+                                                            fontSize: '14px',
+                                                            fontWeight: '500',
+                                                            cursor: "pointer",
+                                                            mt: 1,
+                                                            "&:hover": { color: "#1bc47d" }
+                                                        }}>
                                                         {types.name}
                                                     </Typography>
                                                 ))}
@@ -184,7 +149,7 @@ const Navbar = () => {
 
     return (
         <>
-            <AppBar position="sticky" sx={{backgroundColor: "white", boxShadow: 0, zIndex: 1100}}>
+            <AppBar position="sticky" sx={{ backgroundColor: "white", boxShadow: 0, zIndex: 1100 }}>
                 <Toolbar
                     sx={{
                         display: "flex",
@@ -201,11 +166,11 @@ const Navbar = () => {
                             fontWeight: "bold",
                             display: "flex",
                             alignItems: "center",
-                            width: "146px", 
+                            width: "146px",
                             cursor: 'pointer'
                         }}
                     >
-                        <Typography component={"img"} src={Logo} width={"100%"} onClick={() => navigate('/')}/>
+                        <Typography component={"img"} src={Logo} width={"100%"} onClick={() => navigate('/')} />
                     </Typography>
 
                     {/* Center - Navigation Links */}
@@ -242,15 +207,13 @@ const Navbar = () => {
                                     },
                                 }}
                             >
-                                <SearchIcon/>
+                                <SearchIcon />
                             </IconButton>
                         )}
-                        
+
                         {isMobile ? (
                             <>
-                                {loading ? (
-                                    <Skeleton variant="circular" width={40} height={40} />
-                                ) : token ? (
+                                {token ? (
                                     <>
                                         <IconButton
                                             sx={{
@@ -266,11 +229,11 @@ const Navbar = () => {
                                             onClick={handleClick}
                                         >
                                             {user?.firstName ? (
-                                                <Typography sx={{color: "black", fontWeight: "bold"}}>
+                                                <Typography sx={{ color: "black", fontWeight: "bold" }}>
                                                     {user.firstName.charAt(0).toUpperCase()}
                                                 </Typography>
                                             ) : (
-                                                <AccountCircleIcon sx={{color: "black"}}/>
+                                                <AccountCircleIcon sx={{ color: "black" }} />
                                             )}
                                         </IconButton>
 
@@ -301,7 +264,7 @@ const Navbar = () => {
                                                     handleClose();
                                                 }}
                                             >
-                                                <PersonIcon sx={{marginRight: 1}}/>
+                                                <PersonIcon sx={{ marginRight: 1 }} />
                                                 Profile
                                             </MenuItem>
 
@@ -311,11 +274,11 @@ const Navbar = () => {
                                                     handleClose();
                                                 }}
                                             >
-                                                <SettingsIcon sx={{marginRight: 1}}/>
+                                                <SettingsIcon sx={{ marginRight: 1 }} />
                                                 Settings
                                             </MenuItem>
 
-                                            <Divider/>
+                                            <Divider />
 
                                             <MenuItem
                                                 onClick={() => {
@@ -323,7 +286,7 @@ const Navbar = () => {
                                                     handleClose();
                                                 }}
                                             >
-                                                <LogoutIcon sx={{marginRight: 1}}/>
+                                                <LogoutIcon sx={{ marginRight: 1 }} />
                                                 Log out
                                             </MenuItem>
                                         </Menu>
@@ -360,20 +323,15 @@ const Navbar = () => {
                                                 },
                                             }}
                                         >
-                                            <SearchIcon/>
+                                            <SearchIcon />
                                         </IconButton>
                                     )}
-                                    <MenuIcon/>
+                                    <MenuIcon />
                                 </IconButton>
                             </>
                         ) : (
                             <>
-                                {loading ? (
-                                    <>
-                                        <Skeleton variant="circular" width={40} height={40} sx={{ mr: 1 }} />
-                                        <Skeleton variant="rounded" width={100} height={36} />
-                                    </>
-                                ) : token ? (
+                                {token ? (
                                     <>
                                         <IconButton
                                             sx={{
@@ -389,11 +347,11 @@ const Navbar = () => {
                                             onClick={handleClick}
                                         >
                                             {user?.firstName ? (
-                                                <Typography sx={{color: "black", fontWeight: "bold"}}>
+                                                <Typography sx={{ color: "black", fontWeight: "bold" }}>
                                                     {user.firstName.charAt(0).toUpperCase()}
                                                 </Typography>
                                             ) : (
-                                                <AccountCircleIcon sx={{color: "black"}}/>
+                                                <AccountCircleIcon sx={{ color: "black" }} />
                                             )}
                                         </IconButton>
 
@@ -424,7 +382,7 @@ const Navbar = () => {
                                                     handleClose();
                                                 }}
                                             >
-                                                <PersonIcon sx={{marginRight: 1}}/>
+                                                <PersonIcon sx={{ marginRight: 1 }} />
                                                 Profile
                                             </MenuItem>
 
@@ -434,11 +392,11 @@ const Navbar = () => {
                                                     handleClose();
                                                 }}
                                             >
-                                                <SettingsIcon sx={{marginRight: 1}}/>
+                                                <SettingsIcon sx={{ marginRight: 1 }} />
                                                 Settings
                                             </MenuItem>
 
-                                            <Divider/>
+                                            <Divider />
 
                                             <MenuItem
                                                 onClick={() => {
@@ -446,7 +404,7 @@ const Navbar = () => {
                                                     handleClose();
                                                 }}
                                             >
-                                                <LogoutIcon sx={{marginRight: 1}}/>
+                                                <LogoutIcon sx={{ marginRight: 1 }} />
                                                 Log out
                                             </MenuItem>
                                         </Menu>
@@ -497,35 +455,15 @@ const Navbar = () => {
 
                 <Drawer anchor="top" open={drawerOpen} onClose={handleDrawerToggle}>
                     {/* Drawer Header */}
-                    <Box sx={{p: 2, display: "flex", justifyContent: "space-between"}}>
-                        <Typography component="img" src={Logo} width={120} onClick={() => navigate('/')}/>
+                    <Box sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
+                        <Typography component="img" src={Logo} width={120} onClick={() => navigate('/')} />
                         <IconButton onClick={handleDrawerToggle}>
-                            <CloseIcon/>
+                            <CloseIcon />
                         </IconButton>
                     </Box>
 
                     {/* Menu Items */}
-                    {loading ? (
-                        [...Array(3)].map((_, index) => (
-                            <Accordion key={index}>
-                                <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-                                    <Skeleton variant="text" width="80%" />
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Grid container spacing={2}>
-                                        {[...Array(4)].map((_, i) => (
-                                            <Grid item key={i} xs={12} sm={3} md={2}>
-                                                <Skeleton variant="text" width="60%" />
-                                                {[...Array(3)].map((_, j) => (
-                                                    <Skeleton key={j} variant="text" width="80%" sx={{ mt: 1 }} />
-                                                ))}
-                                            </Grid>
-                                        ))}
-                                    </Grid>
-                                </AccordionDetails>
-                            </Accordion>
-                        ))
-                    ) : (
+                    {(
                         parentcategories.map((item, index) => (
                             item.categories.map((category, index) => (
                                 <Accordion
@@ -533,8 +471,8 @@ const Navbar = () => {
                                     expanded={expandedAccordion === `panel${index}`}
                                     onChange={handleAccordionChange(`panel${index}`)}
                                 >
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon/>}
-                                                      sx={{fontSize: "14px", fontWeight: 600}}>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}
+                                        sx={{ fontSize: "14px", fontWeight: 600 }}>
                                         {category.name}
                                     </AccordionSummary>
                                     <AccordionDetails>
@@ -548,11 +486,11 @@ const Navbar = () => {
                                                         }}>{subcategory.name}</Typography>
 
                                                     {subcategory.types.map((types, i) => (
-                                                        <Typography key={i} sx={{mt: 1, fontSize: "14px"}}
-                                                                    onClick={() => {
-                                                                        navigate("/template-page");
-                                                                        setOpenMenu(null);
-                                                                    }}>{types.name}</Typography>
+                                                        <Typography key={i} sx={{ mt: 1, fontSize: "14px" }}
+                                                            onClick={() => {
+                                                                navigate("/template-page");
+                                                                setOpenMenu(null);
+                                                            }}>{types.name}</Typography>
                                                     ))}
                                                 </Grid>
                                             ))}
@@ -564,7 +502,7 @@ const Navbar = () => {
                     )}
 
                     {/* LOGIN & GO PREMIUM BUTTONS IN DROPDOWN */}
-                    <Box sx={{textAlign: "center", mt: 3, p: 2}}>
+                    <Box sx={{ textAlign: "center", mt: 3, p: 2 }}>
                         <Button
                             fullWidth
                             variant="contained"
@@ -586,7 +524,7 @@ const Navbar = () => {
                     </Box>
                 </Drawer>
             </AppBar>
-            <Login openLoginPage={openLoginPage} setOpenLoginPage={setOpenLoginPage}/>
+            <Login openLoginPage={openLoginPage} setOpenLoginPage={setOpenLoginPage} />
         </>
     );
 };

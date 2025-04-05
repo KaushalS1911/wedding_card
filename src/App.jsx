@@ -13,7 +13,7 @@ import Invitations from "./pages/invitations.jsx";
 import Card from './pages/Card.jsx';
 import InvitationCard from './components/Invitation/InvitationCard .jsx';
 import SingleBlog from "./components/blog/singleBlog.jsx";
-import Editor from './components/Editor/Editor.jsx';
+// import Editor from './components/Editor/Editor.jsx';
 
 function App() {
   function ScrollToTop() {
@@ -43,7 +43,7 @@ function App() {
         <Route path='/template-page/invitation-card/:id' element={<InvitationCard />} />
         <Route path='/singleblog' element={<SingleBlog />} />
         <Route path="/profile/*" element={<Favorites />} />
-        <Route path="/editor/:id" element={<Editor />} />
+        {/* <Route path="/editor/:id" element={<Editor />} /> */}
       </Routes>
       {!hideHeaderFooter && <Footer />}
     </>
