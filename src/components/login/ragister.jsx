@@ -36,11 +36,11 @@ function Register({ openRegister, setOpenRegister, setOpenLoginPage }) {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/google/callback";
+        window.location.href = "https://wedding-card-be.onrender.com/api/auth/google";
     };
 
     const handleFacebookLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/facebook/callback";
+        window.location.href = "https://wedding-card-be.onrender.com/api/auth/facebook";
     };
 
     const handleClose = () => {
