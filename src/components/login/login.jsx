@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    TextField,
-    IconButton,
-    Typography
-} from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import React, {useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {Box, Button, Dialog, DialogContent, DialogTitle, IconButton, TextField, Typography} from '@mui/material';
+import {Visibility, VisibilityOff} from '@mui/icons-material';
 import Ragister from "./ragister.jsx";
 import CloseIcon from "@mui/icons-material/Close";
 import axiosInstance from '../../Instance.jsx';
-import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import google from '../../assets/login/google.png';
 import facebook from '../../assets/login/facebook.png';
 
@@ -24,24 +14,9 @@ function Login({ openLoginPage, setOpenLoginPage }) {
     const [showPassword, setShowPassword] = useState(false);
     const [openRegister, setOpenRegister] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [user, setUser] = useState(null);
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Fetch Google OAuth session data
-    useEffect(() => {
-        axiosInstance.get("/api/auth/google/success", { withCredentials: true })
-            .then(response => {
-                setUser(response.data.user);
-                localStorage.setItem("user", JSON.stringify(response.data.user));
-                navigate("/");
-            })
-            .catch(() => {
-                navigate("/"); // Redirect to login if not authenticated
-            });
-    }, []);
-
-    // Handle Google OAuth Token from URL
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const token = queryParams.get("token");

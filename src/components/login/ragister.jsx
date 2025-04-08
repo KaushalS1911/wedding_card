@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    TextField,
-    DialogActions,
-    IconButton,
-    Typography
-} from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import React, {useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {Box, Button, Dialog, DialogContent, DialogTitle, IconButton, TextField, Typography} from '@mui/material';
+import {Visibility, VisibilityOff} from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import axiosInstance from '../../Instance';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import google from '../../assets/login/google.png'
 import facebook from '../../assets/login/facebook.png'
 
@@ -25,15 +15,13 @@ function Register({ openRegister, setOpenRegister, setOpenLoginPage }) {
     const location = useLocation();
     const navigate = useNavigate();
 
-      // Handle Google OAuth Token
-        useEffect(() => {
-            const queryParams = new URLSearchParams(location.search);
-            const token = queryParams.get("token");
-            if (token) {
-                localStorage.setItem("token", token);
-                // navigate("/dashboard");  // Redirect after login
-            }
-        }, [location, navigate]);
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const token = queryParams.get("token");
+        if (token) {
+            localStorage.setItem("token", token);
+        }
+    }, [location, navigate]);
 
     const onSubmit = async (data) => {
         try {
@@ -47,14 +35,12 @@ function Register({ openRegister, setOpenRegister, setOpenLoginPage }) {
         }
     };
 
-       // Google Login
-       const handleGoogleLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/google/callback";
+    const handleGoogleLogin = () => {
+        window.location.href = "https://wedding-card-be.onrender.com/api/auth/google";
     };
 
-    // Facebook Login Handler
     const handleFacebookLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/facebook/callback";
+        window.location.href = "https://wedding-card-be.onrender.com/api/auth/facebook";
     };
 
     const handleClose = () => {
@@ -62,7 +48,6 @@ function Register({ openRegister, setOpenRegister, setOpenLoginPage }) {
         reset();
         setErrorMessage("");
     };
-
 
     return (
         <Box textAlign="center">
