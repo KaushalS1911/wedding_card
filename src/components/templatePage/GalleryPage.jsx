@@ -10,7 +10,7 @@ const GalleryPage = () => {
 
     return (
         <Box>
-            <Box sx={{display: {lg: "none", xs: "flex"}, flexDirection: "column", p: 3}}>
+            <Box sx={{display: {lg: "none", xs: "flex"}, flexDirection: "column", p: {sm:3 , xs:0}}}>
                 {/* Filter Button */}
                 <Button
                     variant="contained"
@@ -18,6 +18,7 @@ const GalleryPage = () => {
                     onClick={() => setOpenDrawer(true)}
                     sx={{
                         mb: 3,
+                        ml: {sm:3 , xs:2},
                         width: '150px',
                         bgcolor: "#8D51E7",
                         fontWeight: "bold",

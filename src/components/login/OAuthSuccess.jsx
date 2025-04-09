@@ -10,7 +10,7 @@ const OAuthSuccess = () => {
         const token = queryParams.get("token");
 
         if (token) {
-            localStorage.setItem("token", token);
+            sessionStorage.setItem("token", token);
             navigate("/");
         } else {
             navigate("/login");

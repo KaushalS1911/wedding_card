@@ -21,7 +21,7 @@ function Login({ openLoginPage, setOpenLoginPage }) {
         const queryParams = new URLSearchParams(location.search);
         const token = queryParams.get("token");
         if (token) {
-            localStorage.setItem("token", token);
+            sessionStorage.setItem("token", token);
         }
     }, [location, navigate]);
 
@@ -30,7 +30,7 @@ function Login({ openLoginPage, setOpenLoginPage }) {
             const response = await axiosInstance.post('api/auth/login', data);
 
             if (response.data?.token) {
-                localStorage.setItem('token', response.data.token);
+                sessionStorage.setItem('token', response.data.token);
                 console.log("Login Successful:", response.data);
                 navigate("/");
             } else {
@@ -45,11 +45,11 @@ function Login({ openLoginPage, setOpenLoginPage }) {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/google";
+        window.location.href = `${import.meta.env.VITE_PUBLIC_BASE_URL}/api/auth/google`;
     };
 
     const handleFacebookLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/facebook";
+        window.location.href = `${import.meta.env.VITE_PUBLIC_BASE_URL}/api/auth/facebook`;
     };
 
     const handleClose = () => {

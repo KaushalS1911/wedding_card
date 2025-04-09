@@ -19,7 +19,7 @@ function Register({ openRegister, setOpenRegister, setOpenLoginPage }) {
         const queryParams = new URLSearchParams(location.search);
         const token = queryParams.get("token");
         if (token) {
-            localStorage.setItem("token", token);
+            sessionStorage.setItem("token", token);
         }
     }, [location, navigate]);
 
@@ -36,11 +36,11 @@ function Register({ openRegister, setOpenRegister, setOpenLoginPage }) {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/google";
+        window.location.href = `${import.meta.env.VITE_PUBLIC_BASE_URL }/api/auth/google`;
     };
 
     const handleFacebookLogin = () => {
-        window.location.href = "https://wedding-card-be.onrender.com/api/auth/facebook";
+        window.location.href = `${import.meta.env.VITE_PUBLIC_BASE_URL }/api/auth/facebook`;
     };
 
     const handleClose = () => {

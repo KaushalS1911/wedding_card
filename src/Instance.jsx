@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 
 const axiosInstance = axios.create({
-  baseURL: 'https://wedding-card-be.onrender.com',
+  baseURL: import.meta.env.VITE_PUBLIC_BASE_URL ,
   headers: {
     // athorName: "syket",
     authorization: `Bearer ${token}`,

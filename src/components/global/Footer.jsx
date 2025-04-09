@@ -271,7 +271,7 @@ const Footer = () => {
                             mb: { xs: 2, lg: 0 },
                         }}
                     >
-                        {categories.map((category, index) => (
+                        {categories?.map((category, index) => (
                             <Button
                                 key={index}
                                 variant="contained"
@@ -306,7 +306,7 @@ const Footer = () => {
                     {/* Right Section (Links Grid) */}
                     <Grid item xs={12} sm>
                         <Grid container spacing={3} justifyContent="center">
-                            {subCategory.map((section, index) => (
+                            {subCategory?.map((section, index) => (
                                 section.categories.slice(0, 5).map((item, index) => (
                                     <Grid item xs={12} sm={6} md={2} lg={1.7} key={index}>
                                         <Typography

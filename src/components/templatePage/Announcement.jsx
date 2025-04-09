@@ -40,7 +40,7 @@ const Announcement = () => {
       <Box sx={{ position: "relative", zIndex: 1 }}>
         <Typography
           variant="h1"
-          sx={{ fontSize: "36px", fontWeight: "500", p: "40px 0 16px 0" }}
+          sx={{ fontSize: {sm:"35px", md: "42px", xs: "24px" }, fontWeight: "500", p: "40px 0 16px 0" , flexWrap:"wrap" }}
         >
           Birth announcements
         </Typography>

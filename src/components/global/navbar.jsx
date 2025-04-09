@@ -29,7 +29,7 @@ const Navbar = () => {
 
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
@@ -38,7 +38,7 @@ const Navbar = () => {
     };
 
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");
+        const storedUser = sessionStorage.getItem("user");
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
@@ -53,8 +53,8 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("user");
         setUser(null);
         navigate("/");
     };
@@ -464,7 +464,7 @@ const Navbar = () => {
 
                     {/* Menu Items */}
                     {(
-                        parentcategories.map((item, index) => (
+                        parentcategories?.map((item, index) => (
                             item.categories.map((category, index) => (
                                 <Accordion
                                     key={index}
@@ -488,8 +488,9 @@ const Navbar = () => {
                                                     {subcategory.types.map((types, i) => (
                                                         <Typography key={i} sx={{ mt: 1, fontSize: "14px" }}
                                                             onClick={() => {
-                                                                navigate("/template-page");
+                                                                navigate(`/template-page?type=${types._id}`);
                                                                 setOpenMenu(null);
+                                                                setDrawerOpen(false);
                                                             }}>{types.name}</Typography>
                                                     ))}
                                                 </Grid>
