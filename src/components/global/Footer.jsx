@@ -5,7 +5,7 @@ import {
 import {
     Facebook, Instagram, YouTube, Twitter, Pinterest,
 } from "@mui/icons-material";
-import Logo from "../../assets/logo/logo.svg";
+import Logo from "../../assets/logo/logo.png";
 import Apple from "../../assets/logo/app-store-button.webp";
 import Play from "../../assets/logo/google-play-6647242_1280.webp";
 import LanguageIcon from "@mui/icons-material/Language";

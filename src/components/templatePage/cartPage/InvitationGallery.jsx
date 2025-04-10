@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Box, Container, Grid, CircularProgress, Skeleton, Typography, Tooltip, Button} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import {useLocation, useNavigate} from "react-router-dom";
 import axiosInstance from "../../../Instance.jsx";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {isLogin, LoginContext} from "../../../App.jsx";
 
 const InvitationGallery = () => {
     const [templates, setTemplates] = useState([]);
@@ -36,6 +37,8 @@ const InvitationGallery = () => {
             setLoading(false);
         }
     };
+
+
 
     const url = searchParams.search ? `/api/template${searchParams.search}` : '/api/template';
     useEffect(() => {
@@ -127,6 +130,7 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
     const navigate = useNavigate();
     const [userId, setUserId] = useState("");
     const [favTemplate, setFavTemplate] = useState([]);
+    const {setOpenLoginPage} = useContext(LoginContext);
 
 
     useEffect(() => {
@@ -155,6 +159,8 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
     const favTemp = favTemplate.find((item) => (item?.template?._id === id))
 
     const handleSubmit = () => {
+        if(isLogin()){
+
         if (isFavorite) {
             axiosInstance.delete(`/api/favourite-template/${favTemp?._id}`)
                 .then(() => fetchTemplates(url))
@@ -165,6 +171,9 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
                     fetchTemplates(url)
                 )
                 .catch((error) => console.error("API Error:", error));
+        }
+        }else {
+            setOpenLoginPage(true)
         }
     }
 
