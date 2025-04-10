@@ -7,54 +7,19 @@ import MdcCloudAlert from '@meronex/icons/mdc/MdcCloudAlert';
 import MdcCloudCheck from '@meronex/icons/mdc/MdcCloudCheck';
 import MdcCloudSync from '@meronex/icons/mdc/MdcCloudSync';
 import { CloudWarning } from '../cloud-warning';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { useEditorData } from '../../../pages/editor/EditorDataContext';
 import { useSearchParams } from 'react-router-dom';
 
 
 const SaveButton = observer(({ store, colorIndex, formData, setFormData }) => {
   const navigate = useNavigate();
-  const { setEditorData,setTempletImage ,editorData} = useEditorData();
-
-  const [searchParams] = useSearchParams();
-const id = searchParams.get('id');
-
-  useEffect(() => {
-    if(editorData){
-      store.loadJSON(editorData)
-    }
-  },[editorData])
-
-  const handleSave = async () => {
-    try {
-      const json = await store.toJSON();
-      const dataUrl = await store.toDataURL();
-      setTempletImage(dataUrl)
-  
-      setEditorData(store.toJSON());
-      navigate(id ? `/template-form/${id}` : '/template-form');
-  
-      const updatedColors = [...formData.colors];
-      updatedColors[colorIndex].editorData = json;
-      updatedColors[colorIndex].blogUrl = dataUrl;
-
-      setFormData(prev => ({
-        ...prev,
-        colors: updatedColors,
-      }));
-  
-      alert('Design saved and blog URL generated!');
-    } catch (err) {
-      console.error('Save failed:', err);
-    }
-  };
 
   return (
-    <Button 
+    <Button
       icon={<FloppyDisk />}
       text="Save"
       intent="success"
-      onClick={handleSave}
       style={{ marginRight: '10px' }}
     />
   );
@@ -150,6 +115,7 @@ const Topbar = observer(({ store, colorIndex, formData, setFormData }) => {
             formData={formData}
             setFormData={setFormData}
           />
+          <DownloadButton store={store} />
         </Navbar.Group>
       </NavInner>
     </NavbarContainer>
