@@ -5,8 +5,8 @@ import Navbar from './components/global/navbar';
 import Favorites from "./pages/myprofile/favorites.jsx";
 import TemplatePage from "./pages/templatePage.jsx";
 import About from './pages/About.jsx';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import {Route, Routes, useLocation} from 'react-router-dom';
+import {useEffect} from 'react';
 import Blog from './pages/Blog.jsx';
 import ContactPage from "./pages/contactPage.jsx";
 import Invitations from "./pages/invitations.jsx";
@@ -15,6 +15,7 @@ import SingleBlog from "./components/blog/singleBlog.jsx";
 import PolotnoEditor from './pages/editor/PolotnoEditor.jsx';
 import createStore from 'polotno/model/store.js';
 import InvitationCard from './components/Invitation/InvitationCard .jsx';
+import OAuthSuccess from "./components/login/OAuthSuccess.jsx";
 
 function App() {
   function ScrollToTop() {
@@ -49,6 +50,7 @@ function App() {
         <Route path='/singleblog' element={<SingleBlog />} />
         <Route path="/profile/*" element={<Favorites />} />
         <Route path="/editor/:id" element={<PolotnoEditor store={store} />} /> {/* Polotno Editor Route */} 
+        <Route path="/oauth-success" element={<OAuthSuccess/>}/>
       </Routes>
 
       {!hideHeaderFooter && <Footer />}

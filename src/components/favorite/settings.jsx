@@ -4,25 +4,23 @@ import axiosInstance from "../../Instance";
 import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Container } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-function Settings() {
+function Settings({setUserId}) {
     const { register, handleSubmit, setValue } = useForm();
 
-    // 🔹 Fetch User Data from API
     useEffect(() => {
         axiosInstance.get("/api/auth/me")
             .then(response => {
-                const userData = response.data.data; // ✅ Corrected Path
+                const userData = response.data.data;
 
-                // ✅ Set form values correctly
                 setValue("firstName", userData.firstName);
                 setValue("lastName", userData.lastName);
                 setValue("contact", userData.contact);
                 setValue("email", userData.email);
+                setUserId(userData._id);
             })
             .catch(error => console.error("Error fetching user data:", error));
     }, [setValue]);
 
-    // 🔹 Form Submit (Update User Data)
     const onSubmit = (data) => {
         axiosInstance.put("/api/auth/me", data)
             .then(response => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, Skeleton } from "@mui/material";
+import {Typography, Box, Skeleton, Button} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate, useLocation } from "react-router-dom";
 import axiosInstance from "../../../Instance.jsx";
@@ -231,7 +231,7 @@ const FilterSidebar = ({ setOpenDrawer }) => {
                                                 height: "30px",
                                                 borderRadius: "50%",
                                                 backgroundColor: color.hex,
-                                                boxShadow: "0px 2px 4px rgba(0,0,0,0.2)", // Soft shadow for depth
+                                                boxShadow: "0px 2px 4px rgba(0,0,0,0.2)",
                                             }}
                                         />
                                     </Box>
@@ -258,7 +258,7 @@ const FilterSidebar = ({ setOpenDrawer }) => {
                                             backgroundColor: searchParams.get("orientation") === item ? "#E9E9EA" : "transparent",
                                             "&:hover": { bgcolor: "#E9E9EA", color: "#000" },
                                         }}
-                                        onClick={() => handleFilterClick("orientation", item)}
+                                        onClick={() => handleFilterClick("orientation", item.toLowerCase())}
                                     >
                                         {item}
                                     </Box>
