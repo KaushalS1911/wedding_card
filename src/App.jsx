@@ -1,7 +1,7 @@
-import './App.css'
+import './App.css';
 import Home from "./pages/HomePage/home.jsx";
-import Footer from './components/global/Footer'
-import Navbar from './components/global/navbar'
+import Footer from './components/global/Footer';
+import Navbar from './components/global/navbar';
 import Favorites from "./pages/myprofile/favorites.jsx";
 import TemplatePage from "./pages/templatePage.jsx";
 import About from './pages/About.jsx';
@@ -11,9 +11,10 @@ import Blog from './pages/Blog.jsx';
 import ContactPage from "./pages/contactPage.jsx";
 import Invitations from "./pages/invitations.jsx";
 import Card from './pages/Card.jsx';
-import InvitationCard from './components/Invitation/InvitationCard .jsx';
 import SingleBlog from "./components/blog/singleBlog.jsx";
-// import Editor from './components/Editor/Editor.jsx';
+import PolotnoEditor from './pages/editor/PolotnoEditor.jsx';
+import createStore from 'polotno/model/store.js';
+import InvitationCard from './components/Invitation/InvitationCard .jsx';
 
 function App() {
   function ScrollToTop() {
@@ -27,11 +28,15 @@ function App() {
   const location = useLocation();
   const hideHeaderFooter = location.pathname.startsWith('/editor');
 
+  // Create a store for Polotno
+  const store = createStore({ key: 'nFA5H9elEytDyPyvKL7T' });
+
+
   return (
     <>
       <ScrollToTop />
       {!hideHeaderFooter && <Navbar />}
-      {/* <Favorites /> */}
+
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
@@ -43,11 +48,12 @@ function App() {
         <Route path='/template-page/invitation-card/:id' element={<InvitationCard />} />
         <Route path='/singleblog' element={<SingleBlog />} />
         <Route path="/profile/*" element={<Favorites />} />
-        {/* <Route path="/editor/:id" element={<Editor />} /> */}
+        <Route path="/editor/:id" element={<PolotnoEditor store={store} />} /> {/* Polotno Editor Route */} 
       </Routes>
+
       {!hideHeaderFooter && <Footer />}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,27 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Grid, CircularProgress, Skeleton, Typography } from "@mui/material";
+import {
+    Box,
+    Container,
+    Grid,
+    CircularProgress,
+    Skeleton,
+    Typography,
+    Button
+} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import { useLocation, useNavigate } from "react-router-dom";
-import axiosInstance from "../../../Instance.jsx";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../../Instance";
 
 const InvitationGallery = () => {
     const [templates, setTemplates] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const searchParams = useLocation();
 
-    const fetchTemplates = async (url) => {
+    const fetchTemplates = async () => {
         try {
             setLoading(true);
-            const response = await axiosInstance.get(url);
+            const response = await axiosInstance.get("/api/template");
             if (response.data?.data) {
-                const formattedTemplates = response.data.data.map(item => ({
-                    title: item.name || "Untitled",
-                    images: item.colors?.map(color => color.templateImages) || [],
-                    colors: item.colors?.map(c => c.hex) || ["#000000"],
-                    isPremium: item.isPremium || false,
-                    id: item._id,
-                }));
+                const formattedTemplates = response.data.data.map(item => {
+                    const textObject = item.initialDetail?.pages?.[0]?.children?.find(el => el.type === 'text');
+                    return {
+                        title: item.name || "Untitled",
+                        desc: item.desc || "",
+                        tags: item.tags || [],
+                        size: item.size || "",
+                        images: item.colors?.map(color => color.templateImages) || [],
+                        colors: item.colors?.map(c => c.hex) || ["#000000"],
+                        isPremium: item.isPremium || false,
+                        id: item._id,
+                        text: textObject?.text || "", // ⬅️ Extracted text
+                    };
+                });
                 setTemplates(formattedTemplates);
             } else {
                 setTemplates([]);
@@ -35,9 +49,8 @@ const InvitationGallery = () => {
     };
 
     useEffect(() => {
-        const url = searchParams.search ? `/api/template${searchParams.search}` : '/api/template';
-        fetchTemplates(url);
-    }, [searchParams]);
+        fetchTemplates();
+    }, []);
 
     if (loading) {
         return (
@@ -107,6 +120,7 @@ const InvitationGallery = () => {
                             colors={template.colors}
                             isPremium={template.isPremium}
                             id={template.id}
+                            text={template.text} // ⬅️ Passing text prop
                         />
                     </Grid>
                 ))}
@@ -115,7 +129,7 @@ const InvitationGallery = () => {
     );
 };
 
-const InvitationCard = ({ title, images, colors, isPremium, id }) => {
+const InvitationCard = ({ title, images, colors, isPremium, id, text }) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [imageLoading, setImageLoading] = useState(true);
     const navigate = useNavigate();
@@ -150,7 +164,7 @@ const InvitationCard = ({ title, images, colors, isPremium, id }) => {
                 sx={{
                     height: { sm: "400px", xs: "auto" },
                     width: "100%",
-                    maxWidth: "380px", // Fix width for better layout
+                    maxWidth: "380px",
                     borderRadius: "14px",
                     overflow: "hidden",
                     border: "1px solid #EBEBEB",
@@ -159,7 +173,8 @@ const InvitationCard = ({ title, images, colors, isPremium, id }) => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    mx: "auto", // Centers horizontally
+                    mx: "auto",
+                    cursor: "pointer",
                 }}
             >
                 {imageLoading && (
@@ -206,13 +221,33 @@ const InvitationCard = ({ title, images, colors, isPremium, id }) => {
                 {title}
             </Typography>
 
+            {text && (
+                <Typography
+                    sx={{
+                        fontSize: "14px",
+                        mt: 0.5,
+                        color: "#444",
+                        fontWeight: "400",
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        fontStyle: 'italic'
+                    }}
+                >
+                    “{text}”
+                </Typography>
+            )}
+
             <Box sx={{ display: "flex", justifyContent: "start", gap: "8px", mt: "8px" }}>
                 {colors.map((color, index) => (
                     <Box
                         key={index}
-                        onClick={() => setSelectedIndex(index)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedIndex(index);
+                        }}
                         sx={{
-                            width: "32px", // Fixed size for uniform circles
+                            width: "32px",
                             height: "32px",
                             display: "flex",
                             alignItems: "center",

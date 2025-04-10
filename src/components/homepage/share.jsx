@@ -63,7 +63,7 @@ function ShareSection() {
                             <Typography variant="h6" sx={{ fontSize: "16px", fontWeight: "500", my: 1, color: '#20282d' }}>
                                 {feature.title}
                             </Typography>
-                            <Typography sx={{ color: "#777",fontWeight:'400', maxWidth: "250px", fontSize: '12px', color: '#20282d' }}>
+                            <Typography sx={{ fontWeight: '400', maxWidth: "250px", fontSize: '12px', color: '#20282d' }}>
                                 {feature.description}
                             </Typography>
                         </Box>
