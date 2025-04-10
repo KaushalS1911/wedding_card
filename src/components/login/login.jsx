@@ -8,6 +8,7 @@ import axiosInstance from '../../Instance.jsx';
 import {useLocation, useNavigate} from 'react-router-dom';
 import google from '../../assets/login/google.png';
 import facebook from '../../assets/login/facebook.png';
+import OAuthSuccess from "./OAuthSuccess.jsx";
 
 function Login({ openLoginPage, setOpenLoginPage }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -77,11 +78,11 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                 }}><CloseIcon /></Box>
                 <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>Log in</DialogTitle>
                 <DialogContent>
-                    <Button fullWidth variant="outlined" sx={{ mb: 1 }} onClick={handleGoogleLogin}>
-                        <Typography component={'img'} src={google} alt="Google" width="25px" style={{ marginRight: 8 }} /> Continue with Google
+                    <Button fullWidth variant="outlined" sx={{ mb: 1 , border:"none" , backgroundColor:"#E9E9EA" , p:1 , color:"#000" , fontWeight:600}} onClick={handleGoogleLogin}>
+                        <Typography component={'img'} src={google} alt="Google" width="35px" style={{ marginRight: 8  }} /> Continue with Google
                     </Button>
-                    <Button fullWidth variant="outlined" color="primary" sx={{ mb: 1 }} onClick={handleFacebookLogin}>
-                        <Typography component={'img'} src={facebook} alt="Facebook" width="25px" style={{ marginRight: 8 }} /> Continue with Facebook
+                    <Button fullWidth variant="outlined" color="primary" sx={{ mb: 1 , border:"none" , backgroundColor:"#E9E9EA" , p:1 ,color:"#000" , fontWeight:600}} onClick={handleFacebookLogin}>
+                        <Typography component={'img'} src={facebook} alt="Facebook" width="35px" style={{ marginRight: 8 }} /> Continue with Facebook
                     </Button>
                     <Typography sx={{ textAlign: 'center', mb: 1 }}>- or -</Typography>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -158,6 +159,7 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                 </DialogContent>
             </Dialog>
             <Ragister openRegister={openRegister} setOpenRegister={setOpenRegister} setOpenLoginPage={setOpenLoginPage} />
+            {/*<OAuthSuccess setOpenLoginPage={setOpenLoginPage} />*/}
         </Box>
     );
 }

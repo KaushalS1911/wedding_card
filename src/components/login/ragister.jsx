@@ -67,11 +67,11 @@ function Register({ openRegister, setOpenRegister, setOpenLoginPage }) {
                 }}><CloseIcon /></Box>
                 <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>Sign up</DialogTitle>
                 <DialogContent>
-                    <Button fullWidth variant="outlined" sx={{ mb: 1 }} onClick={handleGoogleLogin}>
-                        <Typography component={'img'} src={google} alt="Google" width="25px" style={{ marginRight: 8 }} /> Continue with Google
+                    <Button fullWidth variant="outlined" sx={{ mb: 1 , border:"none" , backgroundColor:"#E9E9EA" , p:1 , color:"#000" , fontWeight:600}} onClick={handleGoogleLogin}>
+                        <Typography component={'img'} src={google} alt="Google" width="35px" style={{ marginRight: 8 }} /> Continue with Google
                     </Button>
-                    <Button fullWidth variant="outlined" color="primary" sx={{ mb: 1, display: "flex", alignItems: "center", justifyContent: "center" }} onClick={handleFacebookLogin}>
-                        <Typography component={'img'} src={facebook} alt="Facebook" width="25px" style={{ marginRight: 8 }} /> Continue with Facebook
+                    <Button fullWidth variant="outlined" color="primary" sx={{ mb: 1, display: "flex", alignItems: "center", justifyContent: "center", border:"none" , backgroundColor:"#E9E9EA" , p:1 , color:"#000" , fontWeight:600 }} onClick={handleFacebookLogin}>
+                        <Typography component={'img'} src={facebook} alt="Facebook" width="35px" style={{ marginRight: 8 }} /> Continue with Facebook
                     </Button>
                     <Typography sx={{ textAlign: 'center', mb: 1 }}>- or -</Typography>
                     <form onSubmit={handleSubmit(onSubmit)}>

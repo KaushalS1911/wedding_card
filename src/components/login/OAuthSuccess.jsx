@@ -1,23 +1,54 @@
-import {useEffect} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+// import {useEffect} from 'react';
+// import {useLocation, useNavigate} from 'react-router-dom';
+//
+// const   OAuthSuccess = ({setOpenLoginPage}) => {
+//     const navigate = useNavigate();
+//     const location = useLocation();
+//
+//     useEffect(() => {
+//         const queryParams = new URLSearchParams(location.search);
+//         const token = queryParams.get("token");
+//
+//         if (token) {
+//             sessionStorage.setItem("token", token);
+//             // setOpenLoginPage(false)
+//             navigate("/login");
+//         } else {
+//             navigate("/");
+//             // setOpenLoginPage(true)
+//         }
+//     }, [location, navigate]);
+//
+//     return null;
+// };
+//
+// export default OAuthSuccess;
 
-const OAuthSuccess = () => {
-    const navigate = useNavigate();
+
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+const OAuthSuccess = ({ setOpenLoginPage }) => {
     const location = useLocation();
+    const navigate = useNavigate();
+
+    const allowedRoutes = ['/', '/login'];
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
-        const token = queryParams.get("token");
+        const token = sessionStorage.getItem("token");
+        const path = location.pathname;
+        console.log(token,"321321321321321321321321321321321")
 
         if (token) {
             sessionStorage.setItem("token", token);
-            navigate("/");
-        } else {
-            navigate("/login");
+        } else if (!token && !allowedRoutes.includes(path)) {
+            setOpenLoginPage(true);
         }
-    }, [location, navigate]);
+    }, [location, setOpenLoginPage]);
 
     return null;
 };
 
 export default OAuthSuccess;
+

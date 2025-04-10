@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { AppBar, Toolbar, Typography, Button, IconButton, Box, Grid, useMediaQuery, useTheme, Drawer, Accordion, AccordionSummary, AccordionDetails, Container, Menu, MenuItem, Divider, } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Logo from "../../assets/logo/logo.svg";
+import Logo from "../../assets/logo/logo.png";
 import { useNavigate } from "react-router-dom";
 import Ragister from "../login/ragister.jsx";
 import Login from "../login/login.jsx";
@@ -13,6 +13,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import axiosInstance from "../../Instance.jsx";
+import GoPremium from "../Premium/goPremium.jsx";
+import {LoginContext} from "../../App.jsx";
 
 const Navbar = () => {
     const [openMenu, setOpenMenu] = useState(null);
@@ -20,13 +22,13 @@ const Navbar = () => {
     const [expandedAccordion, setExpandedAccordion] = useState(null);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
-    const [openLoginPage, setOpenLoginPage] = useState(false);
+    const [premium, setPremium] = useState(false);
     const [user, setUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const [parentcategories, setParentCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const {setOpenLoginPage} = useContext(LoginContext)
     const navigate = useNavigate();
 
     const token = sessionStorage.getItem("token");
@@ -445,6 +447,7 @@ const Navbar = () => {
                                             boxShadow: "none",
                                         },
                                     }}
+                                    onClick={() => setPremium(true)}
                                 >
                                     Go Premium
                                 </Button>
@@ -519,13 +522,15 @@ const Navbar = () => {
                                     boxShadow: "none",
                                 },
                             }}
+                            onClick={() => setPremium(true)}
                         >
                             Go Premium
                         </Button>
                     </Box>
                 </Drawer>
             </AppBar>
-            <Login openLoginPage={openLoginPage} setOpenLoginPage={setOpenLoginPage} />
+            {/*<Login openLoginPage={openLoginPage} setOpenLoginPage={setOpenLoginPage} />*/}
+            <GoPremium setPremium={setPremium} premium={premium}/>
         </>
     );
 };
