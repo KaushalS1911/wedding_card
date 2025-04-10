@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Box, Container, Grid, CircularProgress, Skeleton, Typography, Tooltip, Button} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import axiosInstance from "../../../Instance.jsx";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -10,6 +10,8 @@ const InvitationGallery = () => {
     const [templates, setTemplates] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get('id');
 
     const fetchTemplates = async () => {
         try {
