@@ -63,20 +63,13 @@ const PolotnoEditor = observer(({ store }) => {
         const templateData = res.data?.data;
         const colorData = templateData?.colors?.[0]; // first color block
 
-        const editorJson = colorData?.initialDetail;
-        console.log(editorJson, 'hhhhhhhhhhhhhhhhhhh')
+        const editorJson = JSON.parse(colorData?.initialDetail);
+        
         const imageUrl = colorData?.templateImages;
 
-        if (imageUrl && typeof imageUrl === 'object') {
+        if (editorJson) {
+          console.log('editorJson : ', editorJson)
           store.loadJSON(editorJson);
-        } else if (editorJson) {
-          const page = store.pages[0];
-          page.addElement({
-            type: 'image',
-            src: editorJson,
-            width: 400,
-            height: 400,
-          });
         }
       })
       .catch((err) => console.error('Error loading template:', err));

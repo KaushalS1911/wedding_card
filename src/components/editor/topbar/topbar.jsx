@@ -8,8 +8,8 @@ import MdcCloudCheck from '@meronex/icons/mdc/MdcCloudCheck';
 import MdcCloudSync from '@meronex/icons/mdc/MdcCloudSync';
 import { CloudWarning } from '../cloud-warning';
 import { useNavigate } from 'react-router-dom';
-import { useEditorData } from '../../../pages/editor/EditorDataContext';
-import { useSearchParams } from 'react-router-dom';
+// import { useEditorData } from '../../../pages/editor/EditorDataContext';
+// import { useSearchParams } from 'react-router-dom';
 
 
 const SaveButton = observer(({ store, colorIndex, formData, setFormData }) => {
