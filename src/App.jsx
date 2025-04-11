@@ -16,6 +16,7 @@ import SingleBlog from "./components/blog/singleBlog.jsx";
 import OAuthSuccess from "./components/login/OAuthSuccess.jsx";
 import GoPremium from "./components/Premium/goPremium.jsx";
 import Login from "./components/login/login.jsx";
+import axiosInstance from "./Instance.jsx";
 // import Editor from './components/Editor/Editor.jsx';
 export const LoginContext = createContext()
 
@@ -40,6 +41,19 @@ function App() {
 
   const location = useLocation();
   const hideHeaderFooter = location.pathname.startsWith('/editor');
+
+  useEffect(() => {
+    axiosInstance.get("/api/auth/me")
+        .then((response) => {
+          const userData = response.data?.data;
+          if (userData) {
+            sessionStorage.setItem("user", JSON.stringify(userData));
+          }
+        })
+        .catch((error) => {
+          console.log("Error fetching user data:", error);
+        });
+  }, []);
 
   return (
     <>

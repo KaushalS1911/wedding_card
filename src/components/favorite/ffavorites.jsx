@@ -31,6 +31,7 @@ function Ffavorites() {
                     hex: c.hex,
                     image: c.templateImages || ""
                 })) || [];
+                const like = item.template.templateLiked.map((item) => item)
                 return {
                     title: item.template.name || "Untitled",
                     colors: colors,
@@ -39,6 +40,7 @@ function Ffavorites() {
                     isFavorite: item.template.isFavorite,
                     isPremium: item.template.isPremium,
                     favId: item._id,
+                    like: like,
                 };
             });
             setTemplates(formattedTemplates);
@@ -110,9 +112,10 @@ function Ffavorites() {
                                         }}>Premium</Typography>
                                     </Box>
                                 )}
-
-                                <Tooltip title={template.isFavorite ? "Remove from Favorite" : "Save to Favorite"}
-                                         arrow>
+                                {console.log(template?.like[0],userId)}
+                                <Tooltip
+                                    title={template?.like.includes(userId)  ? "Remove from Favorite" : "Save to Favorite"}
+                                    arrow>
                                     <Box
                                         sx={{
                                             position: "absolute",
@@ -131,13 +134,13 @@ function Ffavorites() {
                                         }}
                                         onClick={() => handleSubmit(template?.favId)}
                                     >
-                                        {template.isFavorite ? <FavoriteIcon fontSize={"small"}/> :
+                                        {template?.like.includes(userId) ? <FavoriteIcon fontSize={"small"}/> :
                                             <FavoriteBorderIcon fontSize={"small"}/>}
                                     </Box>
                                 </Tooltip>
                                 <Box
                                     sx={{
-                                        height: { xs: "250px", sm: "350px" },
+                                        height: {xs: "250px", sm: "350px"},
                                         width: "100%",
                                         overflow: "hidden",
                                         borderRadius: "14px",

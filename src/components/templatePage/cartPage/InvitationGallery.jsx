@@ -25,6 +25,7 @@ const InvitationGallery = () => {
                     isPremium: item.isPremium || false,
                     id: item._id,
                     isFavorite: item.isFavorite || false,
+                    templateLiked : item.templateLiked?.map((id) => id) || false,
                 }));
                 setTemplates(formattedTemplates);
             } else {
@@ -37,6 +38,7 @@ const InvitationGallery = () => {
             setLoading(false);
         }
     };
+    console.log(templates , "templates");
 
 
 
@@ -116,6 +118,7 @@ const InvitationGallery = () => {
                             isFavorite={template.isFavorite}
                             url={url}
                             fetchTemplates={fetchTemplates}
+                            templateLiked={template.templateLiked}
                         />
                     </Grid>
                 ))}
@@ -124,7 +127,7 @@ const InvitationGallery = () => {
     );
 };
 
-const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, fetchTemplates}) => {
+const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, fetchTemplates , templateLiked}) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [imageLoading, setImageLoading] = useState(true);
     const navigate = useNavigate();
@@ -158,10 +161,10 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
 
     const favTemp = favTemplate.find((item) => (item?.template?._id === id))
 
-    const handleSubmit = () => {
+    const handleSubmit = (templateLiked,userId) => {
         if(isLogin()){
 
-        if (isFavorite) {
+        if (templateLiked.includes(userId)) {
             axiosInstance.delete(`/api/favourite-template/${favTemp?._id}`)
                 .then(() => fetchTemplates(url))
                 .catch((error) => console.error("API Error:", error));
@@ -202,7 +205,7 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
                 </Box>
             )}
 
-            <Tooltip title={isFavorite ? "Remove from Favorite" : "Save to Favorite"} arrow>
+            <Tooltip title={templateLiked.includes(userId)  ? "Remove from Favorite" : "Save to Favorite"} arrow>
                 <Box
                     sx={{
                         position: "absolute",
@@ -219,9 +222,9 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
                         zIndex: 1,
                         cursor: "pointer",
                     }}
-                    onClick={handleSubmit}
+                    onClick={()=>handleSubmit(templateLiked,userId)}
                 >
-                    {isFavorite ? <FavoriteIcon fontSize={"small"}/> :
+                    {templateLiked.includes(userId) ? <FavoriteIcon fontSize={"small"}/> :
                         <FavoriteBorderIcon fontSize={"small"}/>}
                 </Box>
             </Tooltip>

@@ -26,6 +26,16 @@ const InvitationCard = () => {
     const navigate = useNavigate();
     const [userId, setUserId] = useState("");
     const [favTemplate, setFavTemplate] = useState([]);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const storedUser = sessionStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
+
+    console.log(data , "ncvbjchzsdjfvhjkfgvbhfjdhvfvb")
 
     const getTemplate = () => {
         if (!id) return;
@@ -63,7 +73,7 @@ const InvitationCard = () => {
 
 
     function favourite(id) {
-        axiosInstance.get(`/api/favourite-template/${userId || id}`)
+        axiosInstance.get(`/api/favourite-template/${user?._id || id}`)
             .then((response) => {
                 const templateId = response.data.data
                 setFavTemplate(templateId);
@@ -74,8 +84,8 @@ const InvitationCard = () => {
     const favTemp = favTemplate.find((item) => (item?.template?._id === id))
 
 
-    const handleSubmit = () => {
-        if (data?.isFavorite) {
+    const handleSubmit = (templateLiked2 , userId) => {
+        if (data?.templateLiked.includes(userId) ) {
             axiosInstance.delete(`/api/favourite-template/${favTemp?._id}`)
                 .then(() => getTemplate())
                 .catch((error) => console.error("API Error:", error));
@@ -103,6 +113,8 @@ const InvitationCard = () => {
         </Box>)
     }
 
+    console.log(data.templateLiked , "56+5+5+5465+46465464")
+
     return (
         <Box sx={{p: 4}}>
             <Grid container spacing={4} justifyContent="center">
@@ -120,7 +132,7 @@ const InvitationCard = () => {
                             <Typography variant="h5" fontWeight={600}>{data.name}</Typography>
                             <Typography variant="body2" color="textSecondary">{data.templateType}</Typography>
                         </Box>
-                        <Tooltip title={data?.isFavorite ? "Remove from Favorite" : "Save to Favorite"} arrow>
+                        <Tooltip title={data?.templateLiked.includes(userId)  ? "Remove from Favorite" : "Save to Favorite"} arrow>
                             <Box
                                 sx={{
                                     backgroundColor: "#8D51E7",
@@ -135,9 +147,9 @@ const InvitationCard = () => {
                                     zIndex: 1,
                                     cursor: "pointer",
                                 }}
-                                onClick={handleSubmit}
+                                onClick={() => handleSubmit(data?.templateLiked , userId)}
                             >
-                                {data?.isFavorite ? <FavoriteIcon/> : <FavoriteBorderIcon/>}
+                                {data?.templateLiked.includes(userId) ? <FavoriteIcon/> : <FavoriteBorderIcon/>}
                             </Box>
                         </Tooltip>
                     </Box>
