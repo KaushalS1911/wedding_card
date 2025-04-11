@@ -57,7 +57,7 @@ const CardSharingOptions = () => {
                             <Typography variant="h6" sx={{ fontSize: "16px", fontWeight: "500", my: 1, color: '#20282d' }}>
                                 {feature.title}
                             </Typography>
-                            <Typography sx={{ color: "#777", maxWidth: "250px", fontSize: '12px', color: '#20282d' }}>
+                            <Typography sx={{  maxWidth: "250px", fontSize: '12px', color: '#20282d' }}>
                                 {feature.description}
                             </Typography>
                         </Box>

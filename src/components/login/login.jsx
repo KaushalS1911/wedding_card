@@ -33,7 +33,6 @@ function Login({ openLoginPage, setOpenLoginPage }) {
             if (response.data?.token) {
                 sessionStorage.setItem('token', response.data.token);
                 console.log("Login Successful:", response.data);
-                navigate("/");
             } else {
                 console.error("No token received!");
             }
@@ -45,10 +44,12 @@ function Login({ openLoginPage, setOpenLoginPage }) {
         }
     };
 
+    // Google Login
     const handleGoogleLogin = () => {
         window.location.href = `${import.meta.env.VITE_PUBLIC_BASE_URL}/api/auth/google`;
     };
 
+    // Facebook Login Handler
     const handleFacebookLogin = () => {
         window.location.href = `${import.meta.env.VITE_PUBLIC_BASE_URL}/api/auth/facebook`;
     };
@@ -60,10 +61,10 @@ function Login({ openLoginPage, setOpenLoginPage }) {
     };
 
     return (
-        <Box textAlign="center">
+        <Box textAlign="center" >
             <Dialog open={openLoginPage} onClose={handleClose}
                 sx={{ '& .MuiPaper-root': { borderRadius: '16px', padding: '20px' } }}>
-                <Box onClick={handleClose} sx={{
+                <Box onClick={() => handleClose()} sx={{
                     backgroundColor: "#F7F7F7",
                     p: 1,
                     display: "flex",
@@ -74,9 +75,7 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                     position: "absolute",
                     right: "2%",
                     top: "2%",
-                }}>
-                    <CloseIcon />
-                </Box>
+                }}><CloseIcon /></Box>
                 <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>Log in</DialogTitle>
                 <DialogContent>
                     <Button fullWidth variant="outlined" sx={{ mb: 1 , border:"none" , backgroundColor:"#E9E9EA" , p:1 , color:"#000" , fontWeight:600}} onClick={handleGoogleLogin}>
@@ -98,6 +97,7 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                             })}
                             error={!!errors.email}
                             helperText={errors.email?.message}
+                            sx={{ borderRadius: '24px' }}
                         />
                         <Box position="relative">
                             <TextField
@@ -112,6 +112,7 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                                 })}
                                 error={!!errors.password}
                                 helperText={errors.password?.message || "At least 6 characters"}
+                                sx={{ borderRadius: '24px' }}
                             />
                             <IconButton
                                 onClick={() => setShowPassword(!showPassword)}
@@ -139,7 +140,7 @@ function Login({ openLoginPage, setOpenLoginPage }) {
                         </Button>
                     </form>
                     <Typography variant="body2" sx={{ marginTop: '16px', textAlign: 'center', color: '#63696C' }}>
-                        Not a member? <a onClick={() => {
+                        Already a member? <a onClick={() => {
                             setOpenLoginPage(false);
                             setOpenRegister(true);
                         }}

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Box, Container, Grid, CircularProgress, Skeleton, Typography, Tooltip, Button} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import axiosInstance from "../../../Instance.jsx";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -11,12 +11,13 @@ const InvitationGallery = () => {
     const [templates, setTemplates] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const searchParams = useLocation();
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get('id');
 
-    const fetchTemplates = async (url) => {
+    const fetchTemplates = async () => {
         try {
             setLoading(true);
-            const response = await axiosInstance.get(url);
+            const response = await axiosInstance.get("/api/template");
             if (response.data?.data) {
                 const formattedTemplates = response.data.data.map(item => ({
                     title: item.name || "Untitled",
@@ -305,7 +306,10 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
                 {colors.map((color, index) => (
                     <Box
                         key={index}
-                        onClick={() => setSelectedIndex(index)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedIndex(index);
+                        }}
                         sx={{
                             width: "32px",
                             height: "32px",

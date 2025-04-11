@@ -13,6 +13,8 @@ import Invitations from "./pages/invitations.jsx";
 import Card from './pages/Card.jsx';
 import InvitationCard from './components/Invitation/InvitationCard .jsx';
 import SingleBlog from "./components/blog/singleBlog.jsx";
+import PolotnoEditor from './pages/editor/PolotnoEditor.jsx';
+import createStore from 'polotno/model/store.js';
 import OAuthSuccess from "./components/login/OAuthSuccess.jsx";
 import GoPremium from "./components/Premium/goPremium.jsx";
 import Login from "./components/login/login.jsx";
@@ -55,12 +57,16 @@ function App() {
         });
   }, []);
 
+  // Create a store for Polotno
+  const store = createStore({ key: 'nFA5H9elEytDyPyvKL7T' });
+
+
   return (
     <>
       <ScrollToTop />
       <LoginContext.Provider value={{openLoginPage, setOpenLoginPage}}>
       {!hideHeaderFooter && <Navbar />}
-      {/* <Favorites /> */}
+
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
@@ -72,15 +78,16 @@ function App() {
         <Route path='/template-page/invitation-card/:id' element={<InvitationCard />} />
         <Route path='/singleblog' element={<SingleBlog />} />
         <Route path="/profile/*" element={<Favorites />} />
-        {/*<Route path="/oauth-success" element={<OAuthSuccess setOpenLoginPage={setOpenLoginPage}/>}/>*/}
         <Route path="/premium" element={<GoPremium/>}/>
-        {/* <Route path="/editor/:id" element={<Editor />} /> */}
+        <Route path="/editor/:id" element={<PolotnoEditor store={store} />} />
+        <Route path="/oauth-success" element={<OAuthSuccess/>}/>
       </Routes>
         <Login openLoginPage={openLoginPage} setOpenLoginPage={setOpenLoginPage} />
+
       {!hideHeaderFooter && <Footer />}
       </LoginContext.Provider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
