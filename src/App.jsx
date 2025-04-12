@@ -45,16 +45,19 @@ function App() {
   const hideHeaderFooter = location.pathname.startsWith('/editor');
 
   useEffect(() => {
-    axiosInstance.get("/api/auth/me")
-        .then((response) => {
-          const userData = response.data?.data;
-          if (userData) {
-            sessionStorage.setItem("user", JSON.stringify(userData));
-          }
-        })
-        .catch((error) => {
-          console.log("Error fetching user data:", error);
-        });
+      const token = sessionStorage.getItem("token");
+      if (token) {
+          axiosInstance.get("/api/auth/me")
+              .then((response) => {
+                  const userData = response.data?.data;
+                  if (userData) {
+                      sessionStorage.setItem("user", JSON.stringify(userData));
+                  }
+              })
+              .catch((error) => {
+                  console.log("Error fetching user data:", error);
+              });
+      }
   }, []);
 
   // Create a store for Polotno

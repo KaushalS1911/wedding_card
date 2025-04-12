@@ -6,24 +6,26 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 function Ffavorites() {
-    const [userId, setUserId] = useState(null);
     const [templates, setTemplates] = useState([]);
+    const [user, setUser] = useState(null);
+
 
     useEffect(() => {
-        axiosInstance.get("/api/auth/me")
-            .then(async (response) => {
-                const userData = response.data.data;
-                setUserId(userData._id);
-                if (userData?._id) {
-                    await getFavourites(userData._id);
-                }
-            })
-            .catch(error => console.error("Error fetching user data:", error));
+        const storedUser = sessionStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
     }, []);
 
-    const getFavourites = async (id) => {
+    useEffect(() => {
+        getFavourites()
+    } , [user?._id])
+
+
+
+    async function getFavourites(id) {
         try {
-            const response = await axiosInstance.get(`/api/favourite-template/${userId || id}`);
+            const response = await axiosInstance.get(`/api/favourite-template/${user?._id || id}`);
             const data = response.data.data;
 
             const formattedTemplates = data.map(item => {
@@ -31,7 +33,9 @@ function Ffavorites() {
                     hex: c.hex,
                     image: c.templateImages || ""
                 })) || [];
-                const like = item.template.templateLiked.map((item) => item)
+
+                const like = item.template.templateLiked.map(likeItem => likeItem);
+
                 return {
                     title: item.template.name || "Untitled",
                     colors: colors,
@@ -43,11 +47,17 @@ function Ffavorites() {
                     like: like,
                 };
             });
+
             setTemplates(formattedTemplates);
         } catch (error) {
             console.error("Error fetching favorite templates:", error);
         }
-    };
+    }
+
+
+    // useEffect(() => {
+    //
+    // }, []);
 
     const handleSubmit = (favId) => {
         axiosInstance.delete(`/api/favourite-template/${favId}`)
@@ -112,9 +122,9 @@ function Ffavorites() {
                                         }}>Premium</Typography>
                                     </Box>
                                 )}
-                                {console.log(template?.like[0],userId)}
+                                {console.log(template?.like[0],user._id)}
                                 <Tooltip
-                                    title={template?.like.includes(userId)  ? "Remove from Favorite" : "Save to Favorite"}
+                                    title={template?.like.includes(user._id)  ? "Remove from Favorite" : "Save to Favorite"}
                                     arrow>
                                     <Box
                                         sx={{
@@ -134,7 +144,7 @@ function Ffavorites() {
                                         }}
                                         onClick={() => handleSubmit(template?.favId)}
                                     >
-                                        {template?.like.includes(userId) ? <FavoriteIcon fontSize={"small"}/> :
+                                        {template?.like.includes(user._id) ? <FavoriteIcon fontSize={"small"}/> :
                                             <FavoriteBorderIcon fontSize={"small"}/>}
                                     </Box>
                                 </Tooltip>

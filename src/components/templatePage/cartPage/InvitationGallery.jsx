@@ -11,13 +11,12 @@ const InvitationGallery = () => {
     const [templates, setTemplates] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [searchParams] = useSearchParams();
-    const id = searchParams.get('id');
+    const searchParams = useLocation();
 
-    const fetchTemplates = async () => {
+    const fetchTemplates = async (url) => {
         try {
             setLoading(true);
-            const response = await axiosInstance.get("/api/template");
+            const response = await axiosInstance.get(url);
             if (response.data?.data) {
                 const formattedTemplates = response.data.data.map(item => ({
                     title: item.name || "Untitled",
@@ -39,11 +38,11 @@ const InvitationGallery = () => {
             setLoading(false);
         }
     };
-    console.log(templates , "templates");
 
 
 
     const url = searchParams.search ? `/api/template${searchParams.search}` : '/api/template';
+
     useEffect(() => {
         fetchTemplates(url);
     }, [searchParams]);
@@ -132,27 +131,24 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [imageLoading, setImageLoading] = useState(true);
     const navigate = useNavigate();
-    const [userId, setUserId] = useState("");
     const [favTemplate, setFavTemplate] = useState([]);
     const {setOpenLoginPage} = useContext(LoginContext);
-
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        axiosInstance.get("/api/auth/me")
-            .then(async (response) => {
-                const userData = response.data.data;
-                setUserId(userData?._id);
-                if (userData?._id) {
-                    await favourite(userData?._id)
-                }
-            })
-            .catch(error => console.error("Error fetching user data:", error));
+        const storedUser = sessionStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
 
-    }, [])
+    useEffect(() => {
+        favourite()
+    } , [user?._id])
 
 
     function favourite(id) {
-        axiosInstance.get(`/api/favourite-template/${userId || id}`)
+        axiosInstance.get(`/api/favourite-template/${user?._id || id}`)
             .then((response) => {
                 const templateId = response.data.data
                 setFavTemplate(templateId);
@@ -162,15 +158,15 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
 
     const favTemp = favTemplate.find((item) => (item?.template?._id === id))
 
-    const handleSubmit = (templateLiked,userId) => {
+    const handleSubmit = (templateLiked,user1) => {
         if(isLogin()){
 
-        if (templateLiked.includes(userId)) {
+        if (templateLiked.includes(user?._id)) {
             axiosInstance.delete(`/api/favourite-template/${favTemp?._id}`)
                 .then(() => fetchTemplates(url))
                 .catch((error) => console.error("API Error:", error));
         } else {
-            axiosInstance.post('/api/favourite-template', {user: userId, template: id})
+            axiosInstance.post('/api/favourite-template', {user: user?._id, template: id})
                 .then(() =>
                     fetchTemplates(url)
                 )
@@ -206,7 +202,7 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
                 </Box>
             )}
 
-            <Tooltip title={templateLiked.includes(userId)  ? "Remove from Favorite" : "Save to Favorite"} arrow>
+            <Tooltip title={templateLiked.includes(user?._id)  ? "Remove from Favorite" : "Save to Favorite"} arrow>
                 <Box
                     sx={{
                         position: "absolute",
@@ -223,9 +219,9 @@ const InvitationCard = ({title, images, colors, isPremium, isFavorite, id, url, 
                         zIndex: 1,
                         cursor: "pointer",
                     }}
-                    onClick={()=>handleSubmit(templateLiked,userId)}
+                    onClick={()=>handleSubmit(templateLiked,user?._id)}
                 >
-                    {templateLiked.includes(userId) ? <FavoriteIcon fontSize={"small"}/> :
+                    {templateLiked.includes(user?._id) ? <FavoriteIcon fontSize={"small"}/> :
                         <FavoriteBorderIcon fontSize={"small"}/>}
                 </Box>
             </Tooltip>

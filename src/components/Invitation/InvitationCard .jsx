@@ -28,6 +28,7 @@ const InvitationCard = () => {
     const [favTemplate, setFavTemplate] = useState([]);
     const [user, setUser] = useState(null);
 
+
     useEffect(() => {
         const storedUser = sessionStorage.getItem("user");
         if (storedUser) {
@@ -35,7 +36,9 @@ const InvitationCard = () => {
         }
     }, []);
 
-    console.log(data , "ncvbjchzsdjfvhjkfgvbhfjdhvfvb")
+    useEffect(() => {
+        favourite()
+    } , [id , user?._id])
 
     const getTemplate = () => {
         if (!id) return;
@@ -58,18 +61,18 @@ const InvitationCard = () => {
     }, [id]);
 
 
-    useEffect(() => {
-        axiosInstance.get("/api/auth/me")
-            .then(async (response) => {
-                const userData = response.data.data;
-                setUserId(userData?._id);
-                if (userData?._id) {
-                    await favourite(userData?._id)
-                }
-            })
-            .catch(error => console.error("Error fetching user data:", error));
-
-    }, [])
+    // useEffect(() => {
+    //     axiosInstance.get("/api/auth/me")
+    //         .then(async (response) => {
+    //             const userData = response.data.data;
+    //             setUserId(userData?._id);
+    //             if (userData?._id) {
+    //                 await favourite(userData?._id)
+    //             }
+    //         })
+    //         .catch(error => console.error("Error fetching user data:", error));
+    //
+    // }, [])
 
 
     function favourite(id) {
@@ -83,16 +86,23 @@ const InvitationCard = () => {
 
     const favTemp = favTemplate.find((item) => (item?.template?._id === id))
 
+    console.log(favTemp?._id , "hjksdhcdhfkgdfvvfdfvvvfdv")
+
 
     const handleSubmit = (templateLiked2 , userId) => {
-        if (data?.templateLiked.includes(userId) ) {
+        if (data?.templateLiked.includes(user?._id) ) {
             axiosInstance.delete(`/api/favourite-template/${favTemp?._id}`)
-                .then(() => getTemplate())
+                .then(() => {
+                    getTemplate()
+                    favourite()
+                })
                 .catch((error) => console.error("API Error:", error));
         } else {
-            axiosInstance.post('/api/favourite-template', {user: userId, template: id})
-                .then(() =>
-                    getTemplate()
+            axiosInstance.post('/api/favourite-template', {user: user?._id, template: id})
+                .then(() => {
+                        getTemplate()
+                        favourite()
+                    }
                 )
                 .catch((error) => console.error("API Error:", error));
         }
@@ -132,7 +142,7 @@ const InvitationCard = () => {
                             <Typography variant="h5" fontWeight={600}>{data.name}</Typography>
                             <Typography variant="body2" color="textSecondary">{data.templateType}</Typography>
                         </Box>
-                        <Tooltip title={data?.templateLiked.includes(userId)  ? "Remove from Favorite" : "Save to Favorite"} arrow>
+                        <Tooltip title={data?.templateLiked.includes(user?._id)  ? "Remove from Favorite" : "Save to Favorite"} arrow>
                             <Box
                                 sx={{
                                     backgroundColor: "#8D51E7",
@@ -147,9 +157,9 @@ const InvitationCard = () => {
                                     zIndex: 1,
                                     cursor: "pointer",
                                 }}
-                                onClick={() => handleSubmit(data?.templateLiked , userId)}
+                                onClick={() => handleSubmit(data?.templateLiked , user?._id)}
                             >
-                                {data?.templateLiked.includes(userId) ? <FavoriteIcon/> : <FavoriteBorderIcon/>}
+                                {data?.templateLiked.includes(user?._id) ? <FavoriteIcon/> : <FavoriteBorderIcon/>}
                             </Box>
                         </Tooltip>
                     </Box>
