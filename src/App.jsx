@@ -83,6 +83,7 @@ function App() {
         <Route path="/profile/*" element={<Favorites />} />
         <Route path="/premium" element={<GoPremium/>}/>
         <Route path="/editor/:id" element={<PolotnoEditor store={store} />} />
+        <Route path="/editor/draft/:id" element={<PolotnoEditor store={store} />} />
         <Route path="/oauth-success" element={<OAuthSuccess/>}/>
       </Routes>
         <Login openLoginPage={openLoginPage} setOpenLoginPage={setOpenLoginPage} />

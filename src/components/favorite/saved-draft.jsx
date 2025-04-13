@@ -118,7 +118,7 @@ function SavedDraft() {
                                             size="small"
                                             variant="contained"
                                             color="primary"
-                                            onClick={() => navigate(`/editor/${draft._id}`)}
+                                            onClick={() => navigate(`/editor/draft/${draft._id}`)}
                                         >
                                             <EditIcon />
                                         </Button>
