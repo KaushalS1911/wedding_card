@@ -1,13 +1,19 @@
 import axios from 'axios';
 
-const token = sessionStorage.getItem("token");
-
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_BASE_URL ,
-  headers: {
-    // athorName: "syket",
-    authorization: `Bearer ${token}`,
-  },
+  baseURL: import.meta.env.VITE_PUBLIC_BASE_URL,
 });
+
+// Automatically attach token to every request
+axiosInstance.interceptors.request.use(
+    (config) => {
+      const token = sessionStorage.getItem("token"); // <-- always fetch latest token
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+);
 
 export default axiosInstance;

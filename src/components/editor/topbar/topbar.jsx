@@ -7,21 +7,57 @@ import MdcCloudAlert from '@meronex/icons/mdc/MdcCloudAlert';
 import MdcCloudCheck from '@meronex/icons/mdc/MdcCloudCheck';
 import MdcCloudSync from '@meronex/icons/mdc/MdcCloudSync';
 import { CloudWarning } from '../cloud-warning';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useParams, useSearchParams} from 'react-router-dom';
+import axiosInstance from "../../../Instance.jsx";
 // import { useEditorData } from '../../../pages/editor/EditorDataContext';
 // import { useSearchParams } from 'react-router-dom';
 
 
 const SaveButton = observer(({ store, colorIndex, formData, setFormData }) => {
   const navigate = useNavigate();
+  const { id: template_id } = useParams(); // ✅ get from route
+
+  const handleSave = async () => {
+    try {
+      const dataUrl = await store.toDataURL(); // Generate image preview
+      const editorData = store.toJSON();       // Get design JSON
+
+      // Get user ID from API
+      const userRes = await axiosInstance.get('/api/auth/me');
+      const user_id = userRes.data?.data?._id;
+
+      if (!user_id || !template_id) {
+        alert('User ID or Template ID missing.');
+        return;
+      }
+
+      // Save design to backend
+      await axiosInstance.post('/api/user-template', {
+        user_id,
+        template_id,
+        edited_object: {
+          designJson: editorData,
+          previewImage: dataUrl
+        }
+      });
+
+      alert('Design saved successfully!');
+      navigate('/profile/saved');
+
+    } catch (error) {
+      console.error('Save failed:', error);
+      alert('Save failed');
+    }
+  };
 
   return (
-    <Button
-      icon={<FloppyDisk />}
-      text="Save"
-      intent="success"
-      style={{ marginRight: '10px' }}
-    />
+      <Button
+          icon={<FloppyDisk />}
+          text="Save"
+          intent="success"
+          style={{ marginRight: '10px' }}
+          onClick={handleSave}
+      />
   );
 });
 
