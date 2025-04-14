@@ -60,21 +60,6 @@ const InvitationCard = () => {
         getTemplate()
     }, [id]);
 
-
-    // useEffect(() => {
-    //     axiosInstance.get("/api/auth/me")
-    //         .then(async (response) => {
-    //             const userData = response.data.data;
-    //             setUserId(userData?._id);
-    //             if (userData?._id) {
-    //                 await favourite(userData?._id)
-    //             }
-    //         })
-    //         .catch(error => console.error("Error fetching user data:", error));
-    //
-    // }, [])
-
-
     function favourite(id) {
         axiosInstance.get(`/api/favourite-template/${user?._id || id}`)
             .then((response) => {
@@ -85,8 +70,6 @@ const InvitationCard = () => {
     }
 
     const favTemp = favTemplate.find((item) => (item?.template?._id === id))
-
-    console.log(favTemp?._id , "hjksdhcdhfkgdfvvfdfvvvfdv")
 
 
     const handleSubmit = (templateLiked2 , userId) => {
