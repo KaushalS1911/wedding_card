@@ -21,8 +21,6 @@ function Ffavorites() {
         getFavourites()
     } , [user?._id])
 
-
-
     async function getFavourites(id) {
         try {
             const response = await axiosInstance.get(`/api/favourite-template/${user?._id || id}`);
@@ -79,7 +77,7 @@ function Ffavorites() {
     return (
         <Container maxWidth="md" sx={{my: 5}}>
             {templates.length === 0 ? (
-                <Box textAlign="center" mt={5}>
+                <Box textAlign="center" mt={5} sx={{height:'78vh' ,display:'flex' , justifyContent:'center' ,alignItems:'center'}}>
                     <Typography variant="h6" color="textSecondary">
                         No favorite templates found.
                     </Typography>
