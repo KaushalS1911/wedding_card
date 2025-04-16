@@ -76,7 +76,9 @@ const PolotnoEditor = observer(({store}) => {
                     const templateData = res.data?.data;
                     const colorData = templateData?.colors?.[0];
 
-                    const editorJson = JSON.parse(colorData?.initialDetail);
+                    // const editorJson = JSON.parse(colorData?.initialDetail);
+                    const editorJson = colorData?.initialDetail;
+                    console.log('editorJson : ', editorJson)
 
                     const imageUrl = colorData?.templateImages;
 

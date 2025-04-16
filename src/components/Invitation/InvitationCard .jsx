@@ -106,8 +106,6 @@ const InvitationCard = () => {
         </Box>)
     }
 
-    console.log(data.templateLiked , "56+5+5+5465+46465464")
-
     return (
         <Box sx={{p: 4}}>
             <Grid container spacing={4} justifyContent="center">
