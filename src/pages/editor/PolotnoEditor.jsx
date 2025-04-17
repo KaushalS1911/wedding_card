@@ -28,6 +28,7 @@ import zhCh from '../../components/editor/translations/zh-ch.json';
 
 import Topbar from '../../components/editor/topbar/topbar';
 import axiosInstance from '../../Instance';
+import {useEditorData} from "./EditorDataContext.jsx";
 
 setTranslations(en); // Default language
 
@@ -39,6 +40,7 @@ const PolotnoEditor = observer(({store}) => {
     const project = useProject();
     const {id} = useParams();
     const path = useLocation();
+    const {templateIndex} = useEditorData();
 
     useEffect(() => {
         const lang = project?.language?.toLowerCase();
@@ -74,7 +76,7 @@ const PolotnoEditor = observer(({store}) => {
             axiosInstance.get(`/api/template/${id}`)
                 .then((res) => {
                     const templateData = res.data?.data;
-                    const colorData = templateData?.colors?.[0];
+                    const colorData = templateData?.colors[templateIndex];
 
                     // const editorJson = JSON.parse(colorData?.initialDetail);
                     const editorJson = colorData?.initialDetail;

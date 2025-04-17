@@ -7,9 +7,10 @@ export const useEditorData = () => useContext(EditorDataContext);
 export const EditorDataProvider = ({ children }) => {
     const [editorData, setEditorData] = useState(null);
     const [templetImage, setTempletImage] = useState(null);
+    const [templateIndex, setTemplatetIndex] = useState(0);
 
     return (
-        <EditorDataContext.Provider value={{ editorData, setEditorData, templetImage, setTempletImage }}>
+        <EditorDataContext.Provider value={{ editorData, setEditorData, templetImage, setTempletImage ,templateIndex, setTemplatetIndex }}>
             {children}
         </EditorDataContext.Provider>
     );

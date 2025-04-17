@@ -9,6 +9,7 @@ import MdcCloudSync from '@meronex/icons/mdc/MdcCloudSync';
 import {CloudWarning} from '../cloud-warning';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import axiosInstance from '../../../Instance.jsx';
+import toast from 'react-hot-toast';
 
 const SaveButton = observer(({store}) => {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ const SaveButton = observer(({store}) => {
                         previewImage: dataUrl
                     }
                 });
-                alert('Draft updated successfully!');
+                toast.success('Draft updated successfully!');
             } else {
                 await axiosInstance.post('/api/user-template', {
                     user_id,
@@ -47,19 +48,19 @@ const SaveButton = observer(({store}) => {
                         previewImage: dataUrl
                     }
                 });
-                alert('Draft created successfully!');
+                toast.success('Draft created successfully!');
             }
             navigate('/profile/saved');
         } catch (error) {
             console.error('Save failed:', error);
-            alert('Failed to save the design.');
+            toast.error('Failed to save the design.');
         }
     };
 
     return (
         <Button
             icon={<FloppyDisk/>}
-            text="Save"
+            text="Save Draft"
             intent="success"
             style={{marginRight: '10px'}}
             onClick={handleSave}
