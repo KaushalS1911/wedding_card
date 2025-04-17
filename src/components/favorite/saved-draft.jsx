@@ -14,27 +14,31 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
+    CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../Instance.jsx';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {Html} from "@mui/icons-material";
-
 
 function SavedDraft() {
     const navigate = useNavigate();
     const [drafts, setDrafts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [openConfirm, setOpenConfirm] = useState(false);
     const [selectedDraftId, setSelectedDraftId] = useState(null);
+    const user = JSON.parse(sessionStorage.getItem('user'));
 
     useEffect(() => {
         const fetchDrafts = async () => {
+            setLoading(true);
             try {
-                const { data } = await axiosInstance.get('/api/user-template');
+                const { data } = await axiosInstance.get(`/api/user-template/user/${user._id}`);
                 setDrafts(Array.isArray(data.data) ? data.data : []);
             } catch (error) {
                 console.error('Error fetching drafts:', error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchDrafts();
@@ -52,7 +56,11 @@ function SavedDraft() {
 
     return (
         <Container maxWidth="lg" sx={{ my: 4 }}>
-            {drafts.length === 0 ? (
+            {loading ? (
+                <Box display="flex" justifyContent="center" mt={8}>
+                    <CircularProgress size={48} x={{color: "#1BC47D"}} />
+                </Box>
+            ) : drafts.length === 0 ? (
                 <Box textAlign="center" my={5}>
                     <Typography variant="h6" color="textSecondary">
                         No saved templates found.
@@ -106,9 +114,6 @@ function SavedDraft() {
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
                                         Orientation: {draft.template_id?.orientation || 'N/A'}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary" mt={1}>
-                                        By: {draft.user_id?.firstName} {draft.user_id?.lastName}
                                     </Typography>
                                 </CardContent>
 
