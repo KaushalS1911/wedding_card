@@ -24,10 +24,8 @@ const InvitationCard = () => {
     const [data, setData] = useState(null);
     const {id} = useParams();
     const navigate = useNavigate();
-    const [userId, setUserId] = useState("");
     const [favTemplate, setFavTemplate] = useState([]);
     const [user, setUser] = useState(null);
-
 
     useEffect(() => {
         const storedUser = sessionStorage.getItem("user");
@@ -71,7 +69,6 @@ const InvitationCard = () => {
 
     const favTemp = favTemplate.find((item) => (item?.template?._id === id))
 
-
     const handleSubmit = (templateLiked2 , userId) => {
         if (data?.templateLiked.includes(user?._id) ) {
             axiosInstance.delete(`/api/favourite-template/${favTemp?._id}`)
@@ -90,7 +87,6 @@ const InvitationCard = () => {
                 .catch((error) => console.error("API Error:", error));
         }
     }
-
 
     const handleColorChange = (selectedColor) => {
         setColor(selectedColor.color);

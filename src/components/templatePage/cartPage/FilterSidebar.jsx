@@ -330,8 +330,6 @@ const FilterSidebar = ({ setOpenDrawer }) => {
                                     } else {
                                         newSearchParams.append("tag", tagObj.tag);
                                     }
-
-                                    navigate(`?${newSearchParams.toString()}`, { replace: true });
                                 };
 
                                 return (

@@ -52,11 +52,6 @@ function Ffavorites() {
         }
     }
 
-
-    // useEffect(() => {
-    //
-    // }, []);
-
     const handleSubmit = (favId) => {
         axiosInstance.delete(`/api/favourite-template/${favId}`)
             .then(() => getFavourites())
